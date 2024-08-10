@@ -67,3 +67,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.dev-banner {
+  display: none !important;
+}
