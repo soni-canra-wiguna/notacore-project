@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   title: "nota core",
   description:
     "catat hasil penjulanmu, dan lihat hasil analisanya. mari bertumbuh dan berkembang dengan nota core",
+    icons: {
+      icon: "/notacore.png",
+    },
 }
 
 export default function RootLayout({
