@@ -1,9 +1,15 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Plus_Jakarta_Sans } from "next/font/google"
 import "./globals.css"
 import { WithClerkProvider } from "@/lib/provider"
+import { cn } from "@/lib/utils"
 
-const inter = Inter({ subsets: ["latin"] })
+const plusJakartaSans = Plus_Jakarta_Sans({
+  weight: ["200", "300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-plus_jakarta_sans",
+})
 
 export const metadata: Metadata = {
   title: "nota core",
@@ -19,7 +25,9 @@ export default function RootLayout({
   return (
     <WithClerkProvider>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={cn("w-full min-h-screen", plusJakartaSans.className)}>
+          {children}
+        </body>
       </html>
     </WithClerkProvider>
   )
