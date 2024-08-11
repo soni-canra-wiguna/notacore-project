@@ -1,6 +1,10 @@
-import { Product } from "@prisma/client"
+import { Product, Stock } from "@prisma/client"
 
-export type CreateProductRequest = Omit<
-  Product,
-  "id" | "createdAt" | "updatedAt"
->
+export type CreateProductRequest = {
+  userId: string
+  title: string
+  description: string | null
+  image: string
+  price: number
+  stock?: Pick<Stock, "quantity" | "unit">
+}

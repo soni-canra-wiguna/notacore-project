@@ -21,17 +21,33 @@ export const PATCH = async (
     }
 
     const request: CreateProductRequest = await req.json()
-    const validationRequest = Validation.validate(
-      ProductValidation.UPDATE,
-      request,
-    )
+    const {
+      description,
+      title,
+      image,
+      price,
+      stock,
+      userId: idUser,
+    } = Validation.validate(ProductValidation.UPDATE, request)
 
     await prisma.product.update({
       where: {
         id,
         userId,
       },
-      data: validationRequest,
+      data: {
+        description,
+        title,
+        image,
+        price,
+        userId: idUser,
+        stock: {
+          update: {
+            quantity: stock?.quantity!,
+            unit: stock?.unit,
+          },
+        },
+      },
     })
 
     return NextResponse.json(

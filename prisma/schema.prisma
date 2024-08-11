@@ -14,13 +14,36 @@ model Product {
   description String?
   image       String
   price       Int
-  stock       Int
+  stock       Stock?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([title, createdAt, userId])
   @@map("products")
+}
+
+enum Unit {
+  PCS // Pieces / buah
+  PACK // Pack
+  KG // Kilogram
+  GRAM // Gram
+  L // Liter
+  ML // Milliliter
+  SACHET // Sachet
+  BOX // Box / kardus
+  DOZEN // Dozen/ lusin
+}
+
+model Stock {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  quantity Int
+  unit     Unit   @default(PCS)
+
+  productId String  @unique
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("stocks")
 }
 
 model SaleRecord {
