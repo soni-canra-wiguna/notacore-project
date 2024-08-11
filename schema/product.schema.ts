@@ -15,4 +15,13 @@ export class ProductValidation {
     price: z.number().positive(),
     stock: z.number().positive(),
   })
+
+  static readonly UPDATE: z.ZodType = z.object({
+    userId: z.string().optional(),
+    image: z.string().optional(),
+    title: z.string().optional(),
+    description: z.string().optional(),
+    price: z.number().positive().optional(),
+    stock: z.number().positive().optional(),
+  })
 }
