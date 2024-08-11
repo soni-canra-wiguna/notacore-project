@@ -98,6 +98,9 @@ export const GET = async (
         id,
         userId,
       },
+      include: {
+        stock: true,
+      },
     })
 
     if (!product) {
