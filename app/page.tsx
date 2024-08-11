@@ -16,7 +16,7 @@ export default function Home() {
   // const user = useUser()
   // const auth = useAuth()
   const auths = auth()
-  console.log(auths.userId)
+  // console.log(auths.userId)
 
   return (
     <main className="mx-auto my-20 min-h-screen w-full max-w-7xl">
