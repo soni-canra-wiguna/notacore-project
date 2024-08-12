@@ -31,7 +31,7 @@ const DashboardPage = () => {
                 <FilterIcon className="size-4 stroke-[1.5]" />
               </Button>
             </DrawerTrigger>
-            <DrawerContent className="max-w-md mx-auto">
+            <DrawerContent className="">
               <DrawerHeader className="flex items-center justify-between border-b pb-3 pt-1">
                 <div className="flex items-center gap-3">
                   <h3 className="text-lg font-semibold capitalize">
@@ -52,7 +52,7 @@ const DashboardPage = () => {
                   </DrawerClose>
                 </div>
               </DrawerHeader>
-              <div className="h-full max-h-[400px] w-full overflow-y-auto p-4">
+              <div className="h-full max-h-[400px] w-full overflow-y-auto scrollbar-hide p-4">
                 <div className="flex h-full flex-col gap-4">
                   {Array.from({ length: 10 }, (_, i) => (
                     <Card
