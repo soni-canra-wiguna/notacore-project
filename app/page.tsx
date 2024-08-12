@@ -20,6 +20,8 @@ export default function Home() {
 
   return (
     <main className="mx-auto my-20 min-h-screen w-full max-w-7xl">
+      <Link href="/test">test page</Link>
+      <Link href="/dashboard">dashboard page</Link>
       <UserButton afterSignOutUrl="/" showName />
       <p>{JSON.stringify(auths)}</p>
       {/* <p>email: {user.user?.emailAddresses[0].emailAddress}</p>

@@ -3,6 +3,8 @@ import { Plus_Jakarta_Sans } from "next/font/google"
 import "./globals.css"
 import { WithClerkProvider } from "@/lib/provider"
 import { cn } from "@/lib/utils"
+import NextTopLoader from "nextjs-toploader"
+import { Toaster } from "@/components/ui/toaster"
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["200", "300", "400", "500", "600", "700"],
@@ -15,9 +17,9 @@ export const metadata: Metadata = {
   title: "nota core",
   description:
     "catat hasil penjulanmu, dan lihat hasil analisanya. mari bertumbuh dan berkembang dengan nota core",
-    icons: {
-      icon: "/notacore.png",
-    },
+  icons: {
+    icon: "/notacore.png",
+  },
 }
 
 export default function RootLayout({
@@ -28,8 +30,10 @@ export default function RootLayout({
   return (
     <WithClerkProvider>
       <html lang="en">
-        <body className={cn("w-full min-h-screen", plusJakartaSans.className)}>
+        <body className={plusJakartaSans.className}>
+          <NextTopLoader color="#84ff00" height={3} showSpinner={false} />
           {children}
+          <Toaster />
         </body>
       </html>
     </WithClerkProvider>

@@ -26,6 +26,8 @@ const config = {
         "2xl": "1440px",
       },
       colors: {
+        main: "hsl(var(--main))",
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
