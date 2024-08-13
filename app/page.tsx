@@ -1,4 +1,4 @@
-// "use client"
+"use client"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -9,48 +9,29 @@ import {
   useUser,
   SignedIn,
 } from "@clerk/nextjs"
-import { auth } from "@clerk/nextjs/server"
 import Link from "next/link"
 
 export default function Home() {
-  // const user = useUser()
-  // const auth = useAuth()
-  const auths = auth()
-  // console.log(auths.userId)
-
+  const {} = useUser()
   return (
-    <main className="mx-auto my-20 min-h-screen w-full max-w-7xl">
-      <Link href="/test">test page</Link>
-      <Link href="/dashboard">dashboard page</Link>
-      <UserButton afterSignOutUrl="/" showName />
-      <p>{JSON.stringify(auths)}</p>
-      {/* <p>email: {user.user?.emailAddresses[0].emailAddress}</p>
-      <p>fullname: {user.user?.fullName}</p>
+    <main className="flex w-full h-screen flex-col items-center justify-center overflow-hidden">
+      <h1 className="mb-6 text-3xl font-bold capitalize">Welcome!</h1>
       <SignedIn>
-        {!user.isLoaded ? (
-          <p>loading ...</p>
-        ) : (
-          <div>
-            <p className="mb-8">{JSON.stringify(user.user)}</p>
-            <div className="my-20">hello world</div>
-            <p className="mb-8">{JSON.stringify(auth)}</p>
-          </div>
-        )}
-      </SignedIn> */}
-
-      {/* component yang di wrap signedOut, hanya muncul ketika dalam keadaan sign out/ belum login */}
+        <div className="flex items-center gap-4">
+          <UserButton />
+          <Link href="/dashboard">dashboard</Link>
+        </div>
+      </SignedIn>
       <SignedOut>
-        <Link href="/sign-in">
-          <Button>Sign In</Button>
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/sign-up">
+            <Button className="capitalize">sign up</Button>
+          </Link>
+          <Link href="/sign-in">
+            <Button className="capitalize">sign in</Button>
+          </Link>
+        </div>
       </SignedOut>
-      {/* <SignedOut>
-        <SignInButton>
-          <button className="px-4 py-2 rounded-full bg-[#131316] text-white text-sm font-semibold">
-            Sign In
-          </button>
-        </SignInButton>
-      </SignedOut> */}
     </main>
   )
 }
