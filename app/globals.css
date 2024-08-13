@@ -4,6 +4,8 @@
 
 @layer base {
   :root {
+    --main: 89 100% 50%;
+    
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -63,11 +65,29 @@
   * {
     @apply border-border;
   }
+
+  html::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  html {
+    scrollbar-width: none;
+    scroll-behavior: smooth !important;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
-.dev-banner {
-  display: none !important;
+@layer components {
+  .scrollbar-hide::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+.dd {
+  color: hsl(89, 100%, 50%)
 }

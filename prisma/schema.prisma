@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String // generate with clerk
+  title       String
+  description String?
+  image       String
+  price       Int
+  category    String
+  stock       Stock?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([title, createdAt, userId])
+  @@map("products")
+}
+
+enum Unit {
+  PCS // Pieces / buah
+  PACK // Pack
+  KG // Kilogram
+  GRAM // Gram
+  L // Liter
+  ML // Milliliter
+  SACHET // Sachet
+  BOX // Box / kardus
+  DOZEN // Dozen/ lusin
+}
+
+model Stock {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  quantity Int
+  unit     Unit   @default(PCS)
+
+  productId String  @unique
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("stocks")
+}
+
+model SaleRecord {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String
+  title       String
+  description String?
+  image       String
+  price       Int
+  qty         Int // total product sales
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([title, createdAt, userId])
+  @@map("sales-records")
+}
