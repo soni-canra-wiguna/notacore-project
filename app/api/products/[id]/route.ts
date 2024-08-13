@@ -27,6 +27,7 @@ export const PATCH = async (
       image,
       price,
       stock,
+      category,
       userId: idUser,
     } = Validation.validate(ProductValidation.UPDATE, request)
 
@@ -40,6 +41,7 @@ export const PATCH = async (
         title,
         image,
         price,
+        category,
         userId: idUser,
         stock: {
           update: {

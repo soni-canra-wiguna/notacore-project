@@ -16,7 +16,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     }
 
     const request: CreateProductRequest = await req.json()
-    const { description, title, image, price, userId, stock } =
+    const { description, title, image, price, userId, stock, category } =
       Validation.validate(ProductValidation.CREATE, request)
 
     await prisma.product.create({
@@ -25,6 +25,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         title,
         image,
         price,
+        category,
         userId,
         stock: {
           create: {

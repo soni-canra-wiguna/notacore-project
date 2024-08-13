@@ -14,6 +14,9 @@ export class ProductValidation {
     }),
     description: z.string().optional(),
     price: z.number().positive(),
+    category: z.string().min(1, {
+      message: "category product is required",
+    }),
     stock: z
       .object({
         quantity: z.number().positive(),
@@ -28,6 +31,7 @@ export class ProductValidation {
     title: z.string().optional(),
     description: z.string().optional(),
     price: z.number().positive().optional(),
+    category: z.string().optional(),
     stock: z
       .object({
         quantity: z.number().positive().optional(),

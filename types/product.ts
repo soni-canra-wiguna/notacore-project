@@ -6,5 +6,6 @@ export type CreateProductRequest = {
   description: string | null
   image: string
   price: number
+  category: string
   stock?: Pick<Stock, "quantity" | "unit">
 }
