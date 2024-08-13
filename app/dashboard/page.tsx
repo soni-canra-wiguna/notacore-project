@@ -15,6 +15,8 @@ import {
   Settings2,
   ArrowUpDown,
   ArrowDownUp,
+  Pencil,
+  TrashIcon,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -45,6 +47,40 @@ const DashboardPage = () => {
 export default DashboardPage
 
 const TestCard = () => {
+  const MoreOptions = () => {
+    const [isOpen, setIsOpen] = useState(false)
+
+    return (
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <Button className="size-8 rounded-lg" size="icon" variant="ghost">
+            <MoreVertical className="size-4 stroke-[1.5]" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent align="end" className="flex w-32 flex-col">
+          <div
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
+            )}
+          >
+            <Pencil className="size-4 stroke-[1.5]" />
+            edit
+          </div>
+          <div
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
+            )}
+          >
+            <TrashIcon className="size-4 stroke-[1.5]" />
+            hapus
+          </div>
+        </PopoverContent>
+      </Popover>
+    )
+  }
+
   const Card1 = () => {
     return (
       <Card className="flex h-24 items-start justify-between rounded-xl p-1.5">
@@ -61,9 +97,7 @@ const TestCard = () => {
           </div>
         </div>
         <div className="flex h-full flex-col justify-between gap-2">
-          <Button className="size-8 rounded-lg" size="icon" variant="ghost">
-            <MoreVertical className="size-4 stroke-[1.5]" />
-          </Button>
+          <MoreOptions />
           <Button
             onClick={() => {
               toast({
@@ -128,7 +162,7 @@ const FilterProducts = () => {
             }}
             key={item.label}
             className={cn(
-              "group cursor-pointer relative flex w-full items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-main/10",
+              "group relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-main/10",
               isActive === item.label && "bg-main/10",
             )}
           >
