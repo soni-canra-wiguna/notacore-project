@@ -3,7 +3,7 @@
 import { TopBar } from "@/components/dashboard/top-bar"
 import { Container } from "@/components/layout/container"
 import { Card } from "@/components/ui/card"
-import React from "react"
+import React, { useState } from "react"
 import {
   MoreVertical,
   Plus,
@@ -25,6 +25,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
 
 const DashboardPage = () => {
   return (
@@ -91,29 +92,56 @@ const TestCard = () => {
 }
 
 const FilterProducts = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [isActive, setIsActive] = useState<string>("terbaru")
+  const filterItems = [
+    {
+      label: "terbaru",
+      icon: ArrowUpDown,
+    },
+    {
+      label: "terlama",
+      icon: ArrowDownUp,
+    },
+    {
+      label: "a - z",
+      icon: ArrowDownAZ,
+    },
+    {
+      label: "z - a",
+      icon: ArrowDownZA,
+    },
+  ]
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" size="icon" className="size-9">
           <Settings2 className="size-4 stroke-[1.5]" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="flex w-40 flex-col">
-        <div className="relative flex w-full items-center gap-3 bg-main/10 px-4 py-2 text-sm capitalize">
-          <span className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-lg bg-main" />
-          <ArrowUpDown className="size-4 stroke-[1.5]" />
-          terbaru
-        </div>
-        <div className="relative flex w-full items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary">
-          <ArrowDownUp className="size-4 stroke-[1.5]" />
-          terlama
-        </div>
-        <div className="relative flex w-full items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary">
-          <ArrowDownAZ className="size-4 stroke-[1.5]" />a - z
-        </div>
-        <div className="relative flex w-full items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary">
-          <ArrowDownZA className="size-4 stroke-[1.5]" />z - a
-        </div>
+        {filterItems.map((item) => (
+          <div
+            onClick={() => {
+              setIsActive(item.label)
+              setIsOpen(!isOpen)
+            }}
+            key={item.label}
+            className={cn(
+              "group cursor-pointer relative flex w-full items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-main/10",
+              isActive === item.label && "bg-main/10",
+            )}
+          >
+            <span
+              className={cn(
+                "absolute left-0 top-1/2 hidden h-6 w-1 -translate-y-1/2 rounded-lg bg-main group-hover:inline",
+                isActive === item.label && "inline",
+              )}
+            />
+            <item.icon className="size-4 stroke-[1.5]" />
+            {item.label}
+          </div>
+        ))}
       </PopoverContent>
     </Popover>
   )
