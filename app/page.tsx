@@ -1,5 +1,3 @@
-"use client"
-
 import { Button } from "@/components/ui/button"
 import {
   UserButton,
@@ -9,12 +7,17 @@ import {
   useUser,
   SignedIn,
 } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
 export default function Home() {
-  const {} = useUser()
+  const { userId } = auth()
+
+  if (userId) redirect("/dashboard")
+
   return (
-    <main className="flex w-full h-screen flex-col items-center justify-center overflow-hidden">
+    <main className="flex h-screen w-full flex-col items-center justify-center overflow-hidden">
       <h1 className="mb-6 text-3xl font-bold capitalize">Welcome!</h1>
       <SignedIn>
         <div className="flex items-center gap-4">
