@@ -1,5 +1,9 @@
-[] make page create-product to server components
-[] fix layout form upload product
+[x] upload image
+[x] login uploadthing, get api key
+[x] make page create-product to server components
+[x] fix layout form upload product
+[] add preview product
+
 [] fetch products
 [] edit product
 [] delete product
