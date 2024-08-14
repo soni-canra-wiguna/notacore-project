@@ -2,7 +2,7 @@
 [x] login uploadthing, get api key
 [x] make page create-product to server components
 [x] fix layout form upload product
-[] add preview product
+[x] add preview product
 
 [] fetch products
 [] edit product

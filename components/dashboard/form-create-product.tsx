@@ -32,6 +32,9 @@ import { UNIT_PRODUCTS } from "@/constants/units"
 import { Label } from "@/components/ui/label"
 import { formatToIDR } from "@/utils/format-to-idr"
 import LoadingButton from "@/components/loading-button"
+import { Button } from "../ui/button"
+import { FileSearch } from "lucide-react"
+import { PreviewDetailProduct } from "./preview-product"
 
 type InferCreateProduct = z.infer<typeof ProductValidation.CREATE>
 
@@ -111,6 +114,15 @@ export const FormCreateProduct = ({
     }
   }
 
+  const previewProduct = {
+    title: form.watch("title"),
+    image: form.watch("image"),
+    description: form.watch("description") ?? "",
+    price: form.watch("price"),
+    category: form.watch("category"),
+    stock: form.watch("stock"),
+  }
+
   return (
     <main className="min-h-screen w-full">
       <Container className="pb-20 pt-8">
@@ -182,7 +194,7 @@ export const FormCreateProduct = ({
                 name="price"
                 render={({ field }) => {
                   return (
-                    <FormItem className='flex-1'>
+                    <FormItem className="flex-1">
                       <FormLabel>Harga produk</FormLabel>
                       <FormControl>
                         <Input
@@ -279,14 +291,21 @@ export const FormCreateProduct = ({
                 )
               }}
             />
-            <LoadingButton
-              type="submit"
-              loading={isPending}
-              disabled={isPending}
-              className="capitalize"
-            >
-              tambah produk
-            </LoadingButton>
+            <div className="flex flex-col gap-2.5 pt-3">
+              <LoadingButton
+                type="submit"
+                loading={isPending}
+                disabled={isPending}
+                className="capitalize w-full"
+              >
+                tambah produk
+              </LoadingButton>
+              <PreviewDetailProduct product={previewProduct}>
+                <Button className="w-full" variant="outline">
+                  <FileSearch className="mr-2 size-4" /> preview
+                </Button>
+              </PreviewDetailProduct>
+            </div>
           </form>
         </Form>
       </Container>
