@@ -182,7 +182,7 @@ export const FormCreateProduct = ({
                 name="price"
                 render={({ field }) => {
                   return (
-                    <FormItem>
+                    <FormItem className='flex-1'>
                       <FormLabel>Harga produk</FormLabel>
                       <FormControl>
                         <Input
