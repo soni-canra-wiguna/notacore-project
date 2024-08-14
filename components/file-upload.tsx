@@ -2,7 +2,7 @@
 
 "use client"
 
-import { UploadDropzone } from "@/lib/uploadthing"
+import { UploadButton, UploadDropzone } from "@/lib/uploadthing"
 import { toast } from "./ui/use-toast"
 
 interface FileUploadProps {
@@ -22,9 +22,9 @@ export const FileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
         />
         <UploadButton
           endpoint={endpoint}
-          className="ut-button:bg-primary ut-button:text-background ut-button:shadow-md ut-button:focus-within:ring-primary ut-allowed-content:text-paragraph"
+          className="ut-button:bg-primary ut-button:text-background ut-button:shadow-md ut-button:focus-within:ring-primary ut-allowed-content:hidden ut-allowed-content:text-background"
           appearance={{
-            container: "absolute bottom-2 right-6",
+            container: "absolute bottom-2 right-2",
           }}
           onClientUploadComplete={(res) => {
             if (!res) return
@@ -50,7 +50,7 @@ export const FileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
 
   return (
     <UploadDropzone
-      // className="ut-button:bg-primary ut-button:text-background ut-allowed-content:text-paragraph ut-label:font-medium ut-label:text-primary ut-upload-icon:text-primary/30 ut-uploading:!border-secondary/70 border-secondary/70"
+      className="ut-allowed-content:text-paragraph border-secondary/70 ut-button:bg-primary ut-button:text-background ut-label:font-medium ut-label:text-primary ut-upload-icon:text-primary/30 ut-uploading:!border-secondary/70"
       endpoint={endpoint}
       onClientUploadComplete={(res) => {
         if (!res) return

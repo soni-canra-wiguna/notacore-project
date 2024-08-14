@@ -31,6 +31,8 @@ import {
 } from "@/components/ui/select"
 import { UNIT_PRODUCTS } from "@/constants/units"
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { formatToIDR } from "@/utils/format-to-idr"
 
 type InferCreateProduct = z.infer<typeof ProductValidation.CREATE>
 
@@ -101,6 +103,11 @@ const CreateProductPage = () => {
 
   const onSubmit = (data: InferCreateProduct) => {
     try {
+      data.price = Number(data.price)
+      if (data.stock?.quantity) {
+        data.stock.quantity = Number(data.stock.quantity)
+      }
+
       createProduct(data)
     } catch (error) {
       console.log("[FAILED TO SUBMIT PRODUCT]", error)
@@ -172,26 +179,34 @@ const CreateProductPage = () => {
                 )
               }}
             />
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Harga produk</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="masukkan nominal harga"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )
-              }}
-            />
-            <div className="flex w-full items-center gap-4">
+            <div className="flex w-full items-start gap-4">
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Harga produk</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="masukkan nominal harga"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
+              />
+              <div className="space-y-2">
+                <Label>Preview harga</Label>
+                <div className="flex h-10 w-full items-center rounded-xl bg-secondary px-4">
+                  {formatToIDR(form.watch("price"))}
+                </div>
+              </div>
+            </div>
+            <div className="flex w-full items-start gap-4">
               <FormField
                 control={form.control}
                 name="stock.quantity"
