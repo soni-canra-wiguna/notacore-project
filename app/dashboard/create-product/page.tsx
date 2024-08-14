@@ -103,11 +103,6 @@ const CreateProductPage = () => {
 
   const onSubmit = (data: InferCreateProduct) => {
     try {
-      data.price = Number(data.price)
-      if (data.stock?.quantity) {
-        data.stock.quantity = Number(data.stock.quantity)
-      }
-
       createProduct(data)
     } catch (error) {
       console.log("[FAILED TO SUBMIT PRODUCT]", error)
