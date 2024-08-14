@@ -17,6 +17,7 @@ import {
   ArrowDownUp,
   Pencil,
   TrashIcon,
+  FileSearch,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -58,6 +59,15 @@ const TestCard = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent align="end" className="flex w-32 flex-col">
+          <div
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
+            )}
+          >
+            <FileSearch className="size-4 stroke-[1.5]" />
+            Detail
+          </div>
           <div
             onClick={() => setIsOpen(!isOpen)}
             className={cn(
