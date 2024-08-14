@@ -33,6 +33,7 @@ import { UNIT_PRODUCTS } from "@/constants/units"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { formatToIDR } from "@/utils/format-to-idr"
+import LoadingButton from "@/components/loading-button"
 
 type InferCreateProduct = z.infer<typeof ProductValidation.CREATE>
 
@@ -277,9 +278,14 @@ const CreateProductPage = () => {
                 )
               }}
             />
-            <Button type="submit" className="capitalize">
+            <LoadingButton
+              type="submit"
+              loading={isPending}
+              disabled={isPending}
+              className="capitalize"
+            >
               tambah produk
-            </Button>
+            </LoadingButton>
           </form>
         </Form>
       </Container>
