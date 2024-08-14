@@ -13,13 +13,13 @@ export class ProductValidation {
       message: "title product is required",
     }),
     description: z.string().optional(),
-    price: z.number().positive(),
+    price: z.coerce.number().positive(),
     category: z.string().min(1, {
       message: "category product is required",
     }),
     stock: z
       .object({
-        quantity: z.number().positive(),
+        quantity: z.coerce.number().positive(),
         unit: z.nativeEnum(Unit),
       })
       .optional(),
@@ -30,11 +30,11 @@ export class ProductValidation {
     image: z.string().optional(),
     title: z.string().optional(),
     description: z.string().optional(),
-    price: z.number().positive().optional(),
+    price: z.coerce.number().positive().optional(),
     category: z.string().optional(),
     stock: z
       .object({
-        quantity: z.number().positive().optional(),
+        quantity: z.coerce.number().positive().optional(),
         unit: z.nativeEnum(Unit).optional(),
       })
       .optional(),

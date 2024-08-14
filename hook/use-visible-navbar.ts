@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react"
 
 export default function useVisibleNavbar() {
-  const [prevScroll, setPrevScroll] = useState<number>(window?.scrollY)
+  const [prevScroll, setPrevScroll] = useState<number | null | any>(
+    typeof window !== "undefined" ? window.scrollY : null,
+  )
   const [visible, setVisible] = useState<boolean>(true)
 
   const handleScroll = () => {

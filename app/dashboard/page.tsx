@@ -3,7 +3,7 @@
 import { TopBar } from "@/components/dashboard/top-bar"
 import { Container } from "@/components/layout/container"
 import { Card } from "@/components/ui/card"
-import React from "react"
+import React, { useState } from "react"
 import {
   MoreVertical,
   Plus,
@@ -15,6 +15,9 @@ import {
   Settings2,
   ArrowUpDown,
   ArrowDownUp,
+  Pencil,
+  TrashIcon,
+  FileSearch,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -25,6 +28,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
 
 const DashboardPage = () => {
   return (
@@ -44,6 +48,49 @@ const DashboardPage = () => {
 export default DashboardPage
 
 const TestCard = () => {
+  const MoreOptions = () => {
+    const [isOpen, setIsOpen] = useState(false)
+
+    return (
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <Button className="size-8 rounded-lg" size="icon" variant="ghost">
+            <MoreVertical className="size-4 stroke-[1.5]" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent align="end" className="flex w-32 flex-col">
+          <div
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
+            )}
+          >
+            <FileSearch className="size-4 stroke-[1.5]" />
+            Detail
+          </div>
+          <div
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
+            )}
+          >
+            <Pencil className="size-4 stroke-[1.5]" />
+            edit
+          </div>
+          <div
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
+            )}
+          >
+            <TrashIcon className="size-4 stroke-[1.5]" />
+            hapus
+          </div>
+        </PopoverContent>
+      </Popover>
+    )
+  }
+
   const Card1 = () => {
     return (
       <Card className="flex h-24 items-start justify-between rounded-xl p-1.5">
@@ -60,9 +107,7 @@ const TestCard = () => {
           </div>
         </div>
         <div className="flex h-full flex-col justify-between gap-2">
-          <Button className="size-8 rounded-lg" size="icon" variant="ghost">
-            <MoreVertical className="size-4 stroke-[1.5]" />
-          </Button>
+          <MoreOptions />
           <Button
             onClick={() => {
               toast({
@@ -91,29 +136,56 @@ const TestCard = () => {
 }
 
 const FilterProducts = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [isActive, setIsActive] = useState<string>("terbaru")
+  const filterItems = [
+    {
+      label: "terbaru",
+      icon: ArrowUpDown,
+    },
+    {
+      label: "terlama",
+      icon: ArrowDownUp,
+    },
+    {
+      label: "a - z",
+      icon: ArrowDownAZ,
+    },
+    {
+      label: "z - a",
+      icon: ArrowDownZA,
+    },
+  ]
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" size="icon" className="size-9">
           <Settings2 className="size-4 stroke-[1.5]" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="flex w-40 flex-col">
-        <div className="relative flex w-full items-center gap-3 bg-main/10 px-4 py-2 text-sm capitalize">
-          <span className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-lg bg-main" />
-          <ArrowUpDown className="size-4 stroke-[1.5]" />
-          terbaru
-        </div>
-        <div className="relative flex w-full items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary">
-          <ArrowDownUp className="size-4 stroke-[1.5]" />
-          terlama
-        </div>
-        <div className="relative flex w-full items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary">
-          <ArrowDownAZ className="size-4 stroke-[1.5]" />a - z
-        </div>
-        <div className="relative flex w-full items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary">
-          <ArrowDownZA className="size-4 stroke-[1.5]" />z - a
-        </div>
+        {filterItems.map((item) => (
+          <div
+            onClick={() => {
+              setIsActive(item.label)
+              setIsOpen(!isOpen)
+            }}
+            key={item.label}
+            className={cn(
+              "group relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-main/10",
+              isActive === item.label && "bg-main/10",
+            )}
+          >
+            <span
+              className={cn(
+                "absolute left-0 top-1/2 hidden h-6 w-1 -translate-y-1/2 rounded-lg bg-main group-hover:inline",
+                isActive === item.label && "inline",
+              )}
+            />
+            <item.icon className="size-4 stroke-[1.5]" />
+            {item.label}
+          </div>
+        ))}
       </PopoverContent>
     </Popover>
   )

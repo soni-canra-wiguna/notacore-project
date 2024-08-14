@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import { Container } from "../layout/container"
-import logo from "@/public/notacore.png"
 import {
   SearchIcon,
   UserCircle2Icon,
@@ -27,9 +26,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { X, SortAsc, MoreVertical, Plus, FilterIcon } from "lucide-react"
-// import useVisibleNavbar from "@/hook/use-visible-navbar"
+import useVisibleNavbar from "@/hook/use-visible-navbar"
 import { cn } from "@/lib/utils"
-// import { useMounted } from "@/hook/use-mounted"
 import {
   Popover,
   PopoverTrigger,
@@ -43,34 +41,13 @@ import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
 import Account from "./account"
 
 export const TopBar = () => {
-  // const { isMounted } = useMounted()
-  // const { visible } = useVisibleNavbar()
-
-  // if (!isMounted)
-  //   return (
-  //     <nav
-  //       className={cn(
-  //         "duration-[400ms] fixed left-0 top-0 z-50 h-max w-full bg-background",
-  //       )}
-  //     >
-  //       <Container className="flex items-center gap-6 py-3">
-  //         <Input
-  //           className="pllaceholder:text-sm h-8 rounded-full border-none bg-secondary px-4 text-sm placeholder:capitalize focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-  //           placeholder="cari produk"
-  //         />
-  //         <div className="flex items-center gap-6">
-  //           <ListItems />
-  //           <UserCircle2Icon className="size-6 cursor-pointer stroke-[1.5] text-inherit" />
-  //         </div>
-  //       </Container>
-  //     </nav>
-  //   )
+  const { visible } = useVisibleNavbar()
 
   return (
     <nav
       className={cn(
-        "duration-[400ms] fixed left-0 top-0 z-50 h-max w-full bg-background transition ease-in-out",
-        // visible ? "translate-y-0 opacity-100" : "-translate-y-20 opacity-0",
+        "fixed left-0 top-0 z-50 h-max w-full bg-background transition duration-300 ease-in-out",
+        visible ? "translate-y-0 opacity-100" : "-translate-y-20 opacity-0",
       )}
     >
       <Container className="flex items-center gap-6 py-3">
