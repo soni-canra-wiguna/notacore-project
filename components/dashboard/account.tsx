@@ -14,7 +14,7 @@ const Account = () => {
   const email = user?.externalAccounts[0].emailAddress
   const firstName = user?.externalAccounts[0].firstName
   const lastName = user?.externalAccounts[0].lastName
-  const fullName = firstName! + lastName!
+  const fullName = `${firstName!} ${lastName!}`
 
   if (!isLoaded) return <Skeleton className="size-7 rounded-full" />
 
