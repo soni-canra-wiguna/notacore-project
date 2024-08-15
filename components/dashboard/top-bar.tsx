@@ -35,9 +35,6 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover"
-import { toast } from "../ui/use-toast"
-import testImage from "@/public/mouse.webp"
-import { Badge } from "../ui/badge"
 import { useState } from "react"
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
 import Account from "./account"
@@ -52,6 +49,7 @@ import {
 } from "@/redux/features/product/product-slice"
 import { formatToIDR } from "@/utils/format-to-idr"
 import { useMounted } from "@/hook/use-mounted"
+import { toast } from "@/components/ui/use-toast"
 
 export const TopBar = () => {
   const { visible } = useVisibleNavbar()
@@ -176,7 +174,13 @@ const CardDrawer = ({ product }: { product: ProductSliceType }) => {
   const DeleteButton = ({ id }: { id: string }) => {
     return (
       <span
-        onClick={() => dispatch(removeProduct(id))}
+        onClick={() => {
+          dispatch(removeProduct(id))
+          toast({
+            title: "produk di hapus",
+            variant: "destructive",
+          })
+        }}
         className="absolute left-0 top-0 flex cursor-pointer items-center justify-center rounded-lg bg-destructive p-1.5"
       >
         <X className="size-3 text-background" />

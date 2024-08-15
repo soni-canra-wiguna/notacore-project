@@ -52,8 +52,7 @@ export const ProductCard = ({ product }: { product: ResponseDataType }) => {
           onClick={() => {
             dispacth(incermentProduct(dataProduct))
             toast({
-              title: "di tambahkan",
-              description: "yayaya ini description",
+              title: "produk berhasil ditambahkan",
             })
           }}
           className="size-8 rounded-lg"
