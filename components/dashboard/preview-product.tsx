@@ -73,15 +73,6 @@ export const PreviewDetailProduct = ({
           </p>
           <p className="text-sm">{product.description}</p>
         </div>
-        {/* <DrawerFooter className="border-t">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <p className="text-xs font-medium">Total Harga : </p>
-          <p className="text-sm font-semibold">Rp. 500.000</p>
-        </div>
-        <Button>Tambahkan</Button>
-      </div>
-    </DrawerFooter> */}
       </DrawerContent>
     </Drawer>
   )
