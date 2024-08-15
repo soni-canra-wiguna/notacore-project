@@ -81,3 +81,11 @@ export const FilterButton = () => {
     </Popover>
   )
 }
+
+export const FallbackFilterButton = () => {
+  return (
+    <Button variant="outline" size="icon" className="size-9">
+      <Settings2 className="size-4 stroke-[1.5]" />
+    </Button>
+  )
+}
