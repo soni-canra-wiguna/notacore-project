@@ -21,7 +21,7 @@ const ListsProducts = ({
   token: string
 }) => {
   const [sortBy] = useQueryState("sortBy", {
-    defaultValue: "featured",
+    defaultValue: "new",
     history: "push",
   })
 
