@@ -15,8 +15,7 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { PreviewDetailProduct } from "@/components/dashboard/preview-product"
-import { Unit } from "@prisma/client"
-import { CreateProductRequest, ResponseDataType } from "@/types/product"
+import { ResponseDataType } from "@/types/product"
 
 export const ProductCard = ({ product }: { product: ResponseDataType }) => {
   const dispacth = useDispatch()
@@ -42,11 +41,13 @@ export const ProductCard = ({ product }: { product: ResponseDataType }) => {
         <div className="">
           <h4 className="text-sm font-semibold capitalize">{product.title}</h4>
           <p className="text-xs">{formatToIDR(product.price)}</p>
-          <p className="text-xs">stock: 5 pcs</p>
+          <p className="text-xs">
+            stock: {product.stock.quantity} {product.stock.unit}
+          </p>
         </div>
       </div>
       <div className="flex h-full flex-col justify-between gap-2">
-        <MoreOptions />
+        <MoreOptions product={product} />
         <Button
           onClick={() => {
             dispacth(incermentProduct(dataProduct))
@@ -66,21 +67,8 @@ export const ProductCard = ({ product }: { product: ResponseDataType }) => {
   )
 }
 
-const MoreOptions = () => {
+const MoreOptions = ({ product }: { product: ResponseDataType }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-
-  const product = {
-    userId: "userID123",
-    title: "hello titlte",
-    image: "/mouse.webp",
-    description: "description product",
-    price: 10000,
-    category: "elektronik",
-    stock: {
-      quantity: 10,
-      unit: Unit.PCS,
-    },
-  }
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
