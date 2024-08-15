@@ -1,7 +1,11 @@
 import "./globals.css"
 import type { Metadata } from "next"
 import { Plus_Jakarta_Sans } from "next/font/google"
-import { WithClerkProvider, TanstackProvider } from "@/lib/provider"
+import {
+  WithClerkProvider,
+  TanstackProvider,
+  ReduxProvider,
+} from "@/lib/provider"
 import NextTopLoader from "nextjs-toploader"
 import { Toaster } from "@/components/ui/toaster"
 
@@ -29,13 +33,15 @@ export default function RootLayout({
   return (
     <WithClerkProvider>
       <TanstackProvider>
-        <html lang="en">
-          <body className={plusJakartaSans.className}>
-            <NextTopLoader color="#84ff00" height={3} showSpinner={false} />
-            {children}
-            <Toaster />
-          </body>
-        </html>
+        <ReduxProvider>
+          <html lang="en">
+            <body className={plusJakartaSans.className}>
+              <NextTopLoader color="#84ff00" height={3} showSpinner={false} />
+              {children}
+              <Toaster />
+            </body>
+          </html>
+        </ReduxProvider>
       </TanstackProvider>
     </WithClerkProvider>
   )
