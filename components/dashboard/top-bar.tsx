@@ -51,6 +51,7 @@ import {
   removeProduct,
 } from "@/redux/features/product/product-slice"
 import { formatToIDR } from "@/utils/format-to-idr"
+import { useMounted } from "@/hook/use-mounted"
 
 export const TopBar = () => {
   const { visible } = useVisibleNavbar()
@@ -77,6 +78,7 @@ export const TopBar = () => {
 }
 
 const ListItems = () => {
+  const { isMounted } = useMounted()
   const [layoutSwitcher, setLayoutSwitcher] = useState<"list" | "slider">(
     "list",
   )
@@ -85,6 +87,17 @@ const ListItems = () => {
   const totalPrice = products.reduce((acc, product) => {
     return acc + product.price
   }, 0)
+
+  if (!isMounted) {
+    return (
+      <div className="relative size-max cursor-pointer">
+        <span className="absolute -bottom-1 -right-1.5 flex size-4 items-center justify-center rounded-full border-[2px] border-white bg-red-500 p-2 text-xs text-background">
+          0
+        </span>
+        <ClipboardList className="size-6 stroke-[1.5] text-inherit" />
+      </div>
+    )
+  }
 
   return (
     <Drawer>
