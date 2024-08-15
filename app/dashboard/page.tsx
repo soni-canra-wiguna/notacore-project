@@ -31,7 +31,12 @@ import { cn } from "@/lib/utils"
 import { v4 as uuidv4 } from "uuid"
 import { formatToIDR } from "@/utils/format-to-idr"
 import { useDispatch } from "react-redux"
-import { incermentProduct } from "@/redux/features/product/product-slice"
+import {
+  incermentProduct,
+  ProductSliceType,
+} from "@/redux/features/product/product-slice"
+import { PreviewDetailProduct } from "@/components/dashboard/preview-product"
+import { Unit } from "@prisma/client"
 
 const DashboardPage = () => {
   return (
@@ -54,6 +59,19 @@ const TestCard = () => {
   const MoreOptions = () => {
     const [isOpen, setIsOpen] = useState(false)
 
+    const product = {
+      userId: "userID123",
+      title: "hello titlte",
+      image: "/mouse.webp",
+      description: "description product",
+      price: 10000,
+      category: "elektronik",
+      stock: {
+        quantity: 10,
+        unit: Unit.PCS,
+      },
+    }
+
     return (
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
@@ -62,15 +80,17 @@ const TestCard = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent align="end" className="flex w-32 flex-col">
-          <div
-            onClick={() => setIsOpen(!isOpen)}
-            className={cn(
-              "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
-            )}
-          >
-            <FileSearch className="size-4 stroke-[1.5]" />
-            Detail
-          </div>
+          <PreviewDetailProduct product={product}>
+            <div
+              onClick={() => setIsOpen(!isOpen)}
+              className={cn(
+                "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
+              )}
+            >
+              <FileSearch className="size-4 stroke-[1.5]" />
+              Detail
+            </div>
+          </PreviewDetailProduct>
           <div
             onClick={() => setIsOpen(!isOpen)}
             className={cn(
@@ -96,7 +116,6 @@ const TestCard = () => {
 
   const Card1 = () => {
     const dispacth = useDispatch()
-    // const uuid = uuidv4()
 
     const product = {
       id: uuidv4(),
@@ -109,6 +128,7 @@ const TestCard = () => {
       unit: "PCS",
       unitPrice: 1000,
     }
+
     return (
       <Card className="flex h-24 items-start justify-between rounded-xl p-1.5">
         <div className="flex w-full items-start gap-2">
