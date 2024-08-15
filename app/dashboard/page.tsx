@@ -57,7 +57,7 @@ export default DashboardPage
 
 const TestCard = () => {
   const MoreOptions = () => {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState<boolean>(false)
 
     const product = {
       userId: "userID123",
@@ -80,9 +80,8 @@ const TestCard = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent align="end" className="flex w-32 flex-col">
-          <PreviewDetailProduct product={product}>
+          <PreviewDetailProduct product={product} setIsOpen={setIsOpen}>
             <div
-              onClick={() => setIsOpen(!isOpen)}
               className={cn(
                 "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
               )}
