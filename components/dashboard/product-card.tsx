@@ -2,7 +2,6 @@
 
 import { formatToIDR } from "@/utils/format-to-idr"
 import { useDispatch } from "react-redux"
-import { v4 as uuidv4 } from "uuid"
 import { Button } from "../ui/button"
 import { incermentProduct } from "@/redux/features/product/product-slice"
 import { toast } from "../ui/use-toast"
@@ -17,20 +16,21 @@ import {
 import { cn } from "@/lib/utils"
 import { PreviewDetailProduct } from "@/components/dashboard/preview-product"
 import { Unit } from "@prisma/client"
+import { CreateProductRequest, ResponseDataType } from "@/types/product"
 
-export const ProductCard = () => {
+export const ProductCard = ({ product }: { product: ResponseDataType }) => {
   const dispacth = useDispatch()
 
-  const product = {
-    id: uuidv4(),
-    userId: "userid",
-    title: "product title",
-    image: "/mouse.webp",
-    price: 1000,
-    category: "elektronik",
+  const dataProduct = {
+    id: product.id,
+    userId: product.userId,
+    title: product.title,
+    image: product.image,
+    price: product.price,
+    category: product.category,
     quantity: 1,
-    unit: "PCS",
-    unitPrice: 1000,
+    unit: product.stock.unit,
+    unitPrice: product.price,
   }
 
   return (
@@ -49,7 +49,7 @@ export const ProductCard = () => {
         <MoreOptions />
         <Button
           onClick={() => {
-            dispacth(incermentProduct(product))
+            dispacth(incermentProduct(dataProduct))
             toast({
               title: "di tambahkan",
               description: "yayaya ini description",
