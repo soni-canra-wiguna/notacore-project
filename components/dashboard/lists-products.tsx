@@ -95,11 +95,13 @@ export default ListsProducts
 
 export const LoadingListProducts = ({
   type,
+  lengthLoading = 4,
 }: {
   type: "loading" | "fallback"
+  lengthLoading?: number
 }) => {
-  const loadings = Array.from({ length: 4 }, (_, i) => {
-    return <Skeleton className="h-24 w-full rounded-xl" />
+  const loadings = Array.from({ length: lengthLoading }, (_, i) => {
+    return <Skeleton className="h-24 w-full rounded-xl" key={i} />
   })
 
   if (type === "loading") {
