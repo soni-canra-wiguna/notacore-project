@@ -35,6 +35,7 @@ import LoadingButton from "@/components/loading-button"
 import { Button } from "../ui/button"
 import { FileSearch } from "lucide-react"
 import { PreviewDetailProduct } from "./preview-product"
+import { v4 as uuidv4 } from "uuid"
 
 type InferCreateProduct = z.infer<typeof ProductValidation.CREATE>
 
@@ -115,12 +116,16 @@ export const FormCreateProduct = ({
   }
 
   const previewProduct = {
+    id: uuidv4(),
+    userId: userId!,
     title: form.watch("title"),
     image: form.watch("image"),
     description: form.watch("description") ?? "",
     price: form.watch("price"),
     category: form.watch("category"),
-    stock: form.watch("stock"),
+    stock: form.watch("stock")!,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   }
 
   return (
@@ -296,7 +301,7 @@ export const FormCreateProduct = ({
                 type="submit"
                 loading={isPending}
                 disabled={isPending}
-                className="capitalize w-full"
+                className="w-full capitalize"
               >
                 tambah produk
               </LoadingButton>

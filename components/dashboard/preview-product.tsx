@@ -6,19 +6,18 @@ import {
   DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { X } from "lucide-react"
 import { WithChildren } from "@/types"
-import { CreateProductRequest } from "@/types/product"
+import { ResponseDataType } from "@/types/product"
 import { formatToIDR } from "@/utils/format-to-idr"
 import { Badge } from "../ui/badge"
 
 interface PreviewDetailProductProps extends WithChildren {
-  product: Omit<CreateProductRequest, "userId">
+  product: ResponseDataType
   setIsOpen?: (isOpen: boolean) => void
 }
 
