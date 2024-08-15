@@ -1,7 +1,9 @@
 import { auth } from "@clerk/nextjs/server"
 import { TopBar } from "@/components/dashboard/top-bar"
 import { Container } from "@/components/layout/container"
-import ListsProducts from "@/components/dashboard/lists-products"
+import ListsProducts, {
+  LoadingListProducts,
+} from "@/components/dashboard/lists-products"
 import {
   FallbackFilterButton,
   FilterButton,
@@ -22,7 +24,7 @@ const DashboardPage = async () => {
             <FilterButton />
           </Suspense>
         </div>
-        <Suspense fallback={"loading"}>
+        <Suspense fallback={<LoadingListProducts type="fallback" />}>
           <ListsProducts userId={userId!} token={token!} />
         </Suspense>
       </Container>

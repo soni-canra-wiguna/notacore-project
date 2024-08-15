@@ -5,11 +5,9 @@ import { ProductCard } from "./product-card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { Loader2, RefreshCcw } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { Loader2 } from "lucide-react"
 import { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
-import { Button } from "../ui/button"
 import { useQueryState } from "nuqs"
 import { ProductResponse } from "@/types/product"
 
@@ -66,7 +64,7 @@ const ListsProducts = ({
     <>
       <div className="flex h-full flex-col gap-4">
         {isPending ? (
-          <p>loading...</p>
+          <LoadingListProducts type="loading" />
         ) : isError ? (
           <p>error...</p>
         ) : (
@@ -94,3 +92,19 @@ const ListsProducts = ({
 }
 
 export default ListsProducts
+
+export const LoadingListProducts = ({
+  type,
+}: {
+  type: "loading" | "fallback"
+}) => {
+  const loadings = Array.from({ length: 4 }, (_, i) => {
+    return <Skeleton className="h-24 w-full rounded-xl" />
+  })
+
+  if (type === "loading") {
+    return <>{loadings}</>
+  }
+
+  return <div className="flex h-full flex-col gap-4">{loadings}</div>
+}
