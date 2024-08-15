@@ -21,7 +21,6 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import testImage from "@/public/mouse.webp"
 import { toast } from "@/components/ui/use-toast"
 import {
   Popover,
@@ -29,6 +28,10 @@ import {
   PopoverContent,
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
+import { v4 as uuidv4 } from "uuid"
+import { formatToIDR } from "@/utils/format-to-idr"
+import { useDispatch } from "react-redux"
+import { incermentProduct } from "@/redux/features/product/product-slice"
 
 const DashboardPage = () => {
   return (
@@ -92,17 +95,31 @@ const TestCard = () => {
   }
 
   const Card1 = () => {
+    const dispacth = useDispatch()
+    // const uuid = uuidv4()
+
+    const product = {
+      id: uuidv4(),
+      userId: "userid",
+      title: "product title",
+      image: "/mouse.webp",
+      price: 1000,
+      category: "elektronik",
+      quantity: 1,
+      unit: "PCS",
+      unitPrice: 1000,
+    }
     return (
       <Card className="flex h-24 items-start justify-between rounded-xl p-1.5">
         <div className="flex w-full items-start gap-2">
           <div className="aspect-square h-20 overflow-hidden rounded-xl">
-            <Image alt="image" src={testImage} className="size-full" />
+            <img alt="image" src={product.image} className="size-full" />
           </div>
           <div className="">
             <h4 className="text-sm font-semibold capitalize">
-              mouse gaming anti lag by pressplay{" "}
+              {product.title}
             </h4>
-            <p className="text-xs">Rp. 300.000</p>
+            <p className="text-xs">{formatToIDR(product.price)}</p>
             <p className="text-xs">stock: 5 pcs</p>
           </div>
         </div>
@@ -110,6 +127,7 @@ const TestCard = () => {
           <MoreOptions />
           <Button
             onClick={() => {
+              dispacth(incermentProduct(product))
               toast({
                 title: "di tambahkan",
                 description: "yayaya ini description",
