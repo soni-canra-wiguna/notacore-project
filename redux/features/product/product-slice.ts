@@ -19,7 +19,6 @@ const products =
 const initialState = {
   products:
     (JSON.parse(products!) as ProductSliceType[]) || ([] as ProductSliceType[]),
-  // products: [] as ProductSliceType[],
 }
 
 export const productSlice = createSlice({
