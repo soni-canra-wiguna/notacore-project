@@ -35,7 +35,7 @@ export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
     price: product.price,
     category: product.category,
     quantity: 1,
-    unit: product.stock.unit,
+    unit: product.unit!,
     unitPrice: product.price,
   }
 
@@ -53,7 +53,7 @@ export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
           <h4 className="text-sm font-semibold capitalize">{product.title}</h4>
           <p className="text-xs">{formatToIDR(product.price)}</p>
           <p className="text-xs">
-            stock: {product.stock.quantity} {product.stock.unit}
+            stock: {product.stock} {product.unit}
           </p>
         </div>
       </div>

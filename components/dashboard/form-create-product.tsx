@@ -58,10 +58,8 @@ export const FormCreateProduct = ({
       image: "",
       price: 0,
       category: "",
-      stock: {
-        quantity: 0,
-        unit: "PCS",
-      },
+      stock: 0,
+      unit: "PCS",
     },
   })
 
@@ -86,10 +84,8 @@ export const FormCreateProduct = ({
         image: "",
         price: 0,
         category: "",
-        stock: {
-          quantity: 0,
-          unit: "PCS",
-        },
+        stock: 0,
+        unit: "PCS",
       })
       toast({
         title: "Produk di buat",
@@ -123,7 +119,8 @@ export const FormCreateProduct = ({
     description: form.watch("description") ?? "",
     price: form.watch("price"),
     category: form.watch("category"),
-    stock: form.watch("stock")!,
+    stock: form.watch("stock"),
+    unit: form.watch("unit")!,
     createdAt: new Date(),
     updatedAt: new Date(),
   }
@@ -223,7 +220,7 @@ export const FormCreateProduct = ({
             <div className="flex w-full items-start gap-4">
               <FormField
                 control={form.control}
-                name="stock.quantity"
+                name="stock"
                 render={({ field }) => {
                   return (
                     <FormItem className="flex-1">
@@ -243,7 +240,7 @@ export const FormCreateProduct = ({
               {/* unit / satuan */}
               <FormField
                 control={form.control}
-                name="stock.unit"
+                name="unit"
                 render={({ field }) => {
                   return (
                     <FormItem>
