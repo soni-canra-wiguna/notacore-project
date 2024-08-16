@@ -76,6 +76,7 @@ export const FormEditProduct = ({
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          userId: product.userId,
         },
       })
     },
