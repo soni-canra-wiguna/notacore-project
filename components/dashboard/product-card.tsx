@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils"
 import { PreviewDetailProduct } from "@/components/dashboard/preview-product"
 import { ResponseDataType } from "@/types/product"
 import { DeleteProduct } from "./delete-product"
+import Link from "next/link"
 
 interface ProductCardProps {
   product: ResponseDataType
@@ -98,7 +99,8 @@ const MoreOptions = ({ product, userId, token }: ProductCardProps) => {
             Detail
           </div>
         </PreviewDetailProduct>
-        <div
+        <Link
+          href={`/dashboard/${product.id}/edit-product`}
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
             "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
@@ -106,7 +108,7 @@ const MoreOptions = ({ product, userId, token }: ProductCardProps) => {
         >
           <Pencil className="size-4 stroke-[1.5]" />
           edit
-        </div>
+        </Link>
         <DeleteProduct
           setIsOpen={setIsOpen}
           userId={userId}
