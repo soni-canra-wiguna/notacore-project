@@ -5,7 +5,7 @@ import { ProductCard } from "./product-card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { Loader2 } from "lucide-react"
+import { Loader2, PackageOpen } from "lucide-react"
 import { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
 import { useQueryState } from "nuqs"
@@ -29,6 +29,7 @@ const ListsProducts = ({
     isPending,
     isSuccess,
     isError,
+    error,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -60,26 +61,46 @@ const ListsProducts = ({
       fetchNextPage()
     }
   }, [inView, fetchNextPage, hasNextPage])
+
+  const products = data?.pages?.flatMap((page) => page.data)
+
+  if (isPending) {
+    return (
+      <div className="flex h-full flex-col gap-4">
+        <LoadingListProducts type="loading" />
+      </div>
+    )
+  }
+
+  if (products?.length === 0) {
+    return (
+      <div className="mt-40 flex h-full w-full flex-col items-center justify-center gap-4 text-center">
+        <PackageOpen className="size-16" strokeWidth={1} />
+        <p className="max-w-[60vw]">Belum ada produknya nih, Yuk tambahin😆!</p>
+      </div>
+    )
+  }
+
+  if (isError) {
+    return (
+      <div className="mt-6 max-w-[80vw] text-center">
+        Ada yang salah nih, coba refresh lagi deh
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="flex h-full flex-col gap-4">
-        {isPending ? (
-          <LoadingListProducts type="loading" />
-        ) : isError ? (
-          <p>error...</p>
-        ) : (
-          isSuccess &&
-          data?.pages?.map((page) => {
-            return page?.data?.map((product) => (
-              <ProductCard
-                product={product}
-                key={product.id}
-                userId={userId}
-                token={token}
-              />
-            ))
-          })
-        )}
+        {isSuccess &&
+          products?.map((product) => (
+            <ProductCard
+              product={product}
+              key={product.id}
+              userId={userId}
+              token={token}
+            />
+          ))}
       </div>
       <div
         ref={ref}

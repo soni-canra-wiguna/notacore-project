@@ -125,9 +125,9 @@ export const GET = async (
     if (!totalProducts || productNotFound) {
       return NextResponse.json(
         {
-          message: "data not found",
+          data: []
         },
-        { status: 404 },
+        { status: 200 },
       )
     }
 

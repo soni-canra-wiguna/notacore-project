@@ -49,13 +49,13 @@ export const DeleteProduct = ({
       })
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lists_products"] })
       toast({
         description: "produk telah di hapus",
         // variant: "destructive",
       })
       setIsOpenDialog(!isOpenDialog)
       setIsOpen(false)
-      queryClient.invalidateQueries({ queryKey: ["lists_products"] })
     },
     onError: () => {
       toast({

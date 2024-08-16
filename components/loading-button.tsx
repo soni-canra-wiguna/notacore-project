@@ -13,8 +13,8 @@ type LoadingButtonProps = {
 const LoadingButton = ({ children, loading, ...props }: LoadingButtonProps) => {
   return (
     <Button disabled={loading ? true : false} {...props}>
+      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
       {children}
-      {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
     </Button>
   )
 }
