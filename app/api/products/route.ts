@@ -16,24 +16,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     }
 
     const request: CreateProductRequest = await req.json()
-    const { description, title, image, price, userId, stock, category } =
-      Validation.validate(ProductValidation.CREATE, request)
+    const response = Validation.validate(ProductValidation.CREATE, request)
 
     await prisma.product.create({
-      data: {
-        description,
-        title,
-        image,
-        price,
-        category,
-        userId,
-        stock: {
-          create: {
-            quantity: stock?.quantity!,
-            unit: stock?.unit,
-          },
-        },
-      },
+      data: response,
     })
 
     return NextResponse.json(
@@ -119,9 +105,6 @@ export const GET = async (
             mode: "insensitive",
           },
         },
-      },
-      include: {
-        stock: true,
       },
       orderBy,
       skip: skip,
