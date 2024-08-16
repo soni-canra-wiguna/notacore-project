@@ -192,7 +192,11 @@ const CardDrawer = ({ product }: { product: ProductSliceType }) => {
       <DeleteButton id={product.id} />
       <div className="flex w-full items-start gap-2">
         <div className="aspect-square h-20 overflow-hidden rounded-xl">
-          <img alt="image" src={product.image} className="size-full" />
+          <img
+            alt="image"
+            src={product.image}
+            className="size-full object-cover"
+          />
         </div>
         <div className="">
           {/* <Badge className="text-xs font-medium capitalize" variant="secondary">

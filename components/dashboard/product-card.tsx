@@ -36,7 +36,11 @@ export const ProductCard = ({ product }: { product: ResponseDataType }) => {
     <Card className="flex h-24 items-start justify-between rounded-xl p-1.5">
       <div className="flex w-full items-start gap-2">
         <div className="aspect-square h-20 overflow-hidden rounded-xl border">
-          <img alt="image" src={product.image} className="size-full" />
+          <img
+            alt="image"
+            src={product.image}
+            className="size-full object-cover"
+          />
         </div>
         <div className="">
           <h4 className="text-sm font-semibold capitalize">{product.title}</h4>
