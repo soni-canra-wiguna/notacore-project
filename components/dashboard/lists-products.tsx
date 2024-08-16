@@ -71,7 +71,12 @@ const ListsProducts = ({
           isSuccess &&
           data?.pages?.map((page) => {
             return page?.data?.map((product) => (
-              <ProductCard product={product} key={product.id} />
+              <ProductCard
+                product={product}
+                key={product.id}
+                userId={userId}
+                token={token}
+              />
             ))
           })
         )}

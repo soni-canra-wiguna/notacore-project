@@ -16,8 +16,15 @@ import {
 import { cn } from "@/lib/utils"
 import { PreviewDetailProduct } from "@/components/dashboard/preview-product"
 import { ResponseDataType } from "@/types/product"
+import { DeleteProduct } from "./delete-product"
 
-export const ProductCard = ({ product }: { product: ResponseDataType }) => {
+interface ProductCardProps {
+  product: ResponseDataType
+  userId: string
+  token: string
+}
+
+export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
   const dispacth = useDispatch()
 
   const dataProduct = {
@@ -51,7 +58,7 @@ export const ProductCard = ({ product }: { product: ResponseDataType }) => {
         </div>
       </div>
       <div className="flex h-full flex-col justify-between gap-2">
-        <MoreOptions product={product} />
+        <MoreOptions product={product} userId={userId} token={token} />
         <Button
           onClick={() => {
             dispacth(incermentProduct(dataProduct))
@@ -70,7 +77,7 @@ export const ProductCard = ({ product }: { product: ResponseDataType }) => {
   )
 }
 
-const MoreOptions = ({ product }: { product: ResponseDataType }) => {
+const MoreOptions = ({ product, userId, token }: ProductCardProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
@@ -100,15 +107,13 @@ const MoreOptions = ({ product }: { product: ResponseDataType }) => {
           <Pencil className="size-4 stroke-[1.5]" />
           edit
         </div>
-        <div
-          onClick={() => setIsOpen(!isOpen)}
-          className={cn(
-            "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
-          )}
-        >
-          <TrashIcon className="size-4 stroke-[1.5]" />
-          hapus
-        </div>
+        <DeleteProduct
+          setIsOpen={setIsOpen}
+          userId={userId}
+          token={token}
+          id={product.id}
+          title={product.title}
+        />
       </PopoverContent>
     </Popover>
   )
