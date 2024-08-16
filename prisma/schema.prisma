@@ -7,23 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String // generate with clerk
-  title       String
-  description String?
-  image       String
-  price       Int
-  category    String
-  stock       Stock?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([title, createdAt, userId])
-  @@map("products")
-}
-
 enum Unit {
   PCS // Pieces / buah
   PACK // Pack
@@ -36,15 +19,22 @@ enum Unit {
   DOZEN // Dozen/ lusin
 }
 
-model Stock {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  quantity Int
-  unit     Unit   @default(PCS)
+model Product {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String // generate with clerk
+  title       String
+  description String?
+  image       String
+  price       Int
+  category    String
+  stock       Int
+  unit        Unit?   @default(PCS)
 
-  productId String  @unique
-  product   Product @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@map("stocks")
+  @@index([title, createdAt, userId])
+  @@map("products")
 }
 
 model SaleRecord {
@@ -54,7 +44,7 @@ model SaleRecord {
   description String?
   image       String
   price       Int
-  qty         Int // total product sales
+  quantity    Int // total product sales
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -17,12 +17,8 @@ export class ProductValidation {
     category: z.string().min(1, {
       message: "category product is required",
     }),
-    stock: z
-      .object({
-        quantity: z.coerce.number().positive(),
-        unit: z.nativeEnum(Unit),
-      })
-      .optional(),
+    stock: z.coerce.number().positive(),
+    unit: z.nativeEnum(Unit).optional(),
   })
 
   static readonly UPDATE = z.object({
@@ -32,11 +28,7 @@ export class ProductValidation {
     description: z.string().optional(),
     price: z.coerce.number().positive().optional(),
     category: z.string().optional(),
-    stock: z
-      .object({
-        quantity: z.coerce.number().positive().optional(),
-        unit: z.nativeEnum(Unit).optional(),
-      })
-      .optional(),
+    stock: z.coerce.number().positive(),
+    unit: z.nativeEnum(Unit).optional(),
   })
 }
