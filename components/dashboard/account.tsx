@@ -2,8 +2,8 @@
 
 import React from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { SignedIn, SignedOut, SignOutButton, useUser } from "@clerk/nextjs"
-import { ArrowRight, UserCircle2Icon } from "lucide-react"
+import { SignOutButton, useUser } from "@clerk/nextjs"
+import { ArrowRight } from "lucide-react"
 import { Skeleton } from "../ui/skeleton"
 import { Button } from "../ui/button"
 

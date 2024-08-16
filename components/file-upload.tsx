@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 "use client"
 
 import { UploadButton, UploadDropzone } from "@/lib/uploadthing"
@@ -64,7 +62,6 @@ export const FileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
         toast({
           title: "failed",
           description: `gagal menambahkan gambar`,
-          // description: `ERROR! ${error.message}`,
           variant: "destructive",
         })
       }}

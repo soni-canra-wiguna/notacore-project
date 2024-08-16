@@ -1,12 +1,5 @@
 import { Button } from "@/components/ui/button"
-import {
-  UserButton,
-  SignedOut,
-  SignInButton,
-  useAuth,
-  useUser,
-  SignedIn,
-} from "@clerk/nextjs"
+import { UserButton, SignedOut, SignedIn } from "@clerk/nextjs"
 import { auth } from "@clerk/nextjs/server"
 import Link from "next/link"
 import { redirect } from "next/navigation"
