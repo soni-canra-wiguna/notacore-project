@@ -36,31 +36,34 @@ import { Button } from "../ui/button"
 import { FileSearch } from "lucide-react"
 import { PreviewDetailProduct } from "./preview-product"
 import { v4 as uuidv4 } from "uuid"
+import { Product } from "@prisma/client"
 
 type InferCreateProduct = z.infer<typeof ProductValidation.CREATE>
 
-export const FormCreateProduct = ({
-  userId,
+export const FormEditProduct = ({
   token,
+  product,
 }: {
-  userId: string | null
   token: string | null
+  product: Product
 }) => {
   const router = useRouter()
   const queryClient = useQueryClient()
 
+  const defaultValues = {
+    userId: product.userId,
+    title: product.title,
+    description: product.description!,
+    image: product.image,
+    price: product.price,
+    category: product.category,
+    stock: product.stock,
+    unit: product.unit!,
+  }
+
   const form = useForm<InferCreateProduct>({
-    resolver: zodResolver(ProductValidation.CREATE),
-    defaultValues: {
-      userId: userId!,
-      title: "",
-      description: "",
-      image: "",
-      price: 0,
-      category: "",
-      stock: 0,
-      unit: "PCS",
-    },
+    resolver: zodResolver(ProductValidation.UPDATE),
+    defaultValues,
   })
 
   const {
@@ -69,7 +72,7 @@ export const FormCreateProduct = ({
     isError,
   } = useMutation({
     mutationFn: async (data: InferCreateProduct) => {
-      await axios.post("/api/products", data, {
+      await axios.patch(`/api/products/${product.id}`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -77,27 +80,18 @@ export const FormCreateProduct = ({
       })
     },
     onSuccess: () => {
-      form.reset({
-        userId: userId!,
-        title: "",
-        description: "",
-        image: "",
-        price: 0,
-        category: "",
-        stock: 0,
-        unit: "PCS",
-      })
+      form.reset(defaultValues)
       toast({
-        title: "Produk di buat",
-        description: "Product berhasil di buat",
+        title: "Produk di update",
+        description: "Product berhasil di update",
       })
       router.push("/dashboard")
       queryClient.invalidateQueries({ queryKey: ["lists_products"] })
     },
     onError: () => {
       toast({
-        title: "Gagal membuat product",
-        description: "Gagal membuat product, pastikan koneksimu lancar",
+        title: "Gagal mengupdate product",
+        description: "Gagal mengupdate product, pastikan koneksimu lancar",
         variant: "destructive",
       })
     },
@@ -113,7 +107,7 @@ export const FormCreateProduct = ({
 
   const previewProduct = {
     id: uuidv4(),
-    userId: userId!,
+    userId: product.userId,
     title: form.watch("title"),
     image: form.watch("image"),
     description: form.watch("description") ?? "",
@@ -300,7 +294,7 @@ export const FormCreateProduct = ({
                 disabled={isPending}
                 className="w-full capitalize"
               >
-                tambah produk
+                update produk
               </LoadingButton>
               <PreviewDetailProduct product={previewProduct}>
                 <Button className="w-full" variant="outline">

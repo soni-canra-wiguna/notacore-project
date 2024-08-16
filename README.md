@@ -4,12 +4,12 @@
 [x] fix layout form upload product
 [x] add preview product
 
-[] fetch products
-[] edit product
-[] delete product
+[x] fetch products
+[x] edit product
+[x] delete product
 
-[] setup redux toolkit
-[] add functionality to add to cart on product card
-[] incerment & decrement quantity
+[x] setup redux toolkit
+[x] add functionality to add to cart on product card
+[x] incerment & decrement quantity
 
-[] add filter products
+[x] add filter product

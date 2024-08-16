@@ -11,7 +11,7 @@ export const PATCH = async (
 ) => {
   try {
     const { id } = params
-    const userId = req.headers.get("userId") ?? ""
+    const idUser = req.headers.get("userId") ?? ""
     const token = req.headers.get("authorization")
     if (!token) {
       return NextResponse.json(
@@ -21,35 +21,14 @@ export const PATCH = async (
     }
 
     const request: CreateProductRequest = await req.json()
-    const {
-      description,
-      title,
-      image,
-      price,
-      stock,
-      category,
-      userId: idUser,
-    } = Validation.validate(ProductValidation.UPDATE, request)
+    const response = Validation.validate(ProductValidation.UPDATE, request)
 
     await prisma.product.update({
       where: {
         id,
-        userId,
-      },
-      data: {
-        description,
-        title,
-        image,
-        price,
-        category,
         userId: idUser,
-        stock: {
-          update: {
-            quantity: stock?.quantity!,
-            unit: stock?.unit,
-          },
-        },
       },
+      data: response,
     })
 
     return NextResponse.json(
@@ -99,9 +78,6 @@ export const GET = async (
       where: {
         id,
         userId,
-      },
-      include: {
-        stock: true,
       },
     })
 

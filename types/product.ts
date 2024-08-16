@@ -1,4 +1,4 @@
-import { Product, Stock } from "@prisma/client"
+import { Product, Unit } from "@prisma/client"
 
 export type CreateProductRequest = {
   userId: string
@@ -7,12 +7,11 @@ export type CreateProductRequest = {
   image: string
   price: number
   category: string
-  stock?: Pick<Stock, "quantity" | "unit">
+  stock: number
+  unit?: Unit
 }
 
-export type ResponseDataType = Product & {
-  stock: Pick<Stock, "quantity" | "unit">
-}
+export type ResponseDataType = Product
 
 export interface ProductResponse {
   message: string

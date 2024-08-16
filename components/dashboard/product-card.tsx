@@ -16,8 +16,16 @@ import {
 import { cn } from "@/lib/utils"
 import { PreviewDetailProduct } from "@/components/dashboard/preview-product"
 import { ResponseDataType } from "@/types/product"
+import { DeleteProduct } from "./delete-product"
+import Link from "next/link"
 
-export const ProductCard = ({ product }: { product: ResponseDataType }) => {
+interface ProductCardProps {
+  product: ResponseDataType
+  userId: string
+  token: string
+}
+
+export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
   const dispacth = useDispatch()
 
   const dataProduct = {
@@ -28,7 +36,7 @@ export const ProductCard = ({ product }: { product: ResponseDataType }) => {
     price: product.price,
     category: product.category,
     quantity: 1,
-    unit: product.stock.unit,
+    unit: product.unit!,
     unitPrice: product.price,
   }
 
@@ -36,18 +44,22 @@ export const ProductCard = ({ product }: { product: ResponseDataType }) => {
     <Card className="flex h-24 items-start justify-between rounded-xl p-1.5">
       <div className="flex w-full items-start gap-2">
         <div className="aspect-square h-20 overflow-hidden rounded-xl border">
-          <img alt="image" src={product.image} className="size-full" />
+          <img
+            alt="image"
+            src={product.image}
+            className="size-full object-cover"
+          />
         </div>
         <div className="">
           <h4 className="text-sm font-semibold capitalize">{product.title}</h4>
           <p className="text-xs">{formatToIDR(product.price)}</p>
           <p className="text-xs">
-            stock: {product.stock.quantity} {product.stock.unit}
+            stock: {product.stock} {product.unit}
           </p>
         </div>
       </div>
       <div className="flex h-full flex-col justify-between gap-2">
-        <MoreOptions product={product} />
+        <MoreOptions product={product} userId={userId} token={token} />
         <Button
           onClick={() => {
             dispacth(incermentProduct(dataProduct))
@@ -66,7 +78,7 @@ export const ProductCard = ({ product }: { product: ResponseDataType }) => {
   )
 }
 
-const MoreOptions = ({ product }: { product: ResponseDataType }) => {
+const MoreOptions = ({ product, userId, token }: ProductCardProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
@@ -87,7 +99,8 @@ const MoreOptions = ({ product }: { product: ResponseDataType }) => {
             Detail
           </div>
         </PreviewDetailProduct>
-        <div
+        <Link
+          href={`/dashboard/${product.id}/edit-product`}
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
             "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
@@ -95,16 +108,14 @@ const MoreOptions = ({ product }: { product: ResponseDataType }) => {
         >
           <Pencil className="size-4 stroke-[1.5]" />
           edit
-        </div>
-        <div
-          onClick={() => setIsOpen(!isOpen)}
-          className={cn(
-            "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",
-          )}
-        >
-          <TrashIcon className="size-4 stroke-[1.5]" />
-          hapus
-        </div>
+        </Link>
+        <DeleteProduct
+          setIsOpen={setIsOpen}
+          userId={userId}
+          token={token}
+          id={product.id}
+          title={product.title}
+        />
       </PopoverContent>
     </Popover>
   )

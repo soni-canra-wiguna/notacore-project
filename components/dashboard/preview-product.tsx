@@ -68,7 +68,7 @@ export const PreviewDetailProduct = ({
             {product.title}
           </h2>
           <p className="text-sm font-medium">
-            stock : {`${product.stock?.quantity} ${product.stock?.unit}`}
+            stock : {`${product.stock} ${product.unit}`}
           </p>
           <p className="text-sm">{product.description}</p>
         </div>
