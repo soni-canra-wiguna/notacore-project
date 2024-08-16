@@ -15,6 +15,8 @@ import { WithChildren } from "@/types"
 import { ResponseDataType } from "@/types/product"
 import { formatToIDR } from "@/utils/format-to-idr"
 import { Badge } from "../ui/badge"
+import { cn } from "@/lib/utils"
+import { Balancer } from "react-wrap-balancer"
 
 interface PreviewDetailProductProps extends WithChildren {
   product: ResponseDataType
@@ -30,7 +32,7 @@ export const PreviewDetailProduct = ({
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent className="">
-        <DrawerHeader className="flex items-center justify-between border-b pb-3 pt-1">
+        <DrawerHeader className="flex items-center justify-between border-b">
           <DrawerTitle className="sr-only">detail produk</DrawerTitle>
           <DrawerDescription className="sr-only">
             detail produk {product.title}
@@ -50,29 +52,63 @@ export const PreviewDetailProduct = ({
             </Button>
           </DrawerClose>
         </DrawerHeader>
-        <div className="scrollbar-hide h-full max-h-[400px] w-full overflow-y-auto p-4">
-          <div className="mb-2 aspect-square w-full overflow-hidden rounded-xl">
+        <div className="scrollbar-hide h-full max-h-[450px] w-full overflow-y-auto p-4">
+          <div className="mb-5 aspect-[14/9] w-full overflow-hidden rounded-xl">
             <img
               src={product.image}
               alt={product.title}
               className="size-full object-cover"
             />
           </div>
-          <Badge variant="secondary" className="mb-2 capitalize">
-            {product.category}
-          </Badge>
-          <h1 className="mb-4 text-lg font-semibold">
-            {formatToIDR(product.price)}
-          </h1>
-          <h2 className="mb-1.5 text-xl font-semibold capitalize">
-            {product.title}
-          </h2>
-          <p className="text-sm font-medium">
-            stock : {`${product.stock} ${product.unit}`}
-          </p>
-          <p className="text-sm">{product.description}</p>
+          <div className="rounded-xl border">
+            <WrapperDetailProduct title="title">
+              <Balancer className="">{product.title}</Balancer>
+            </WrapperDetailProduct>
+            <WrapperDetailProduct className="bg-secondary" title="harga">
+              <p className="">{formatToIDR(product.price)}</p>
+            </WrapperDetailProduct>
+            <WrapperDetailProduct title="kategori">
+              <Badge variant="secondary" className="capitalize">
+                {product.category}
+              </Badge>
+            </WrapperDetailProduct>
+            <WrapperDetailProduct className="bg-secondary" title="stock">
+              <p className="">{`${product.stock} ${product.unit}`}</p>
+            </WrapperDetailProduct>
+            {/* using type description in here */}
+            <WrapperDetailProduct title="deskripsi">
+              <p className="">{product.description}</p>
+            </WrapperDetailProduct>
+          </div>
         </div>
       </DrawerContent>
     </Drawer>
+  )
+}
+
+interface WrapperDetailProductProps extends WithChildren {
+  title: string
+  type?: string
+  className?: string
+}
+
+const WrapperDetailProduct = ({
+  children,
+  title,
+  type,
+  className,
+}: WrapperDetailProductProps) => {
+  return (
+    <div className={cn("flex w-full items-start px-3 py-3 text-sm", className)}>
+      <div className="w-16">
+        <h5 className="text-balance font-semibold capitalize">{title}</h5>
+      </div>
+      <span className="mx-2">:</span>
+      {type === "description" ? (
+        <p>content using text editor</p>
+      ) : (
+        <div className="flex-1 text-left">{children}</div>
+      )}
+    </div>
   )
 }
