@@ -96,7 +96,7 @@ export const FormCreateProduct = ({
         description: "Product berhasil di buat",
       })
       router.push("/dashboard")
-      queryClient.invalidateQueries({ queryKey: ["products"] })
+      queryClient.invalidateQueries({ queryKey: ["lists_products"] })
     },
     onError: () => {
       toast({

@@ -33,7 +33,7 @@ const ListsProducts = ({
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["product page", sortBy],
+    queryKey: ["lists_products", sortBy],
     queryFn: async ({ pageParam = 1 }) => {
       const { data }: { data: ProductResponse } = await axios.get(
         `/api/products?sortBy=${sortBy}&page=${+pageParam}&limit=${20}`,
