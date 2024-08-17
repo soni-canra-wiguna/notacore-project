@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 "use client"
 
 import { UploadButton, UploadDropzone } from "@/lib/uploadthing"
@@ -14,7 +12,7 @@ interface FileUploadProps {
 export const FileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
   if (value) {
     return (
-      <div className="relative h-[189px] w-full overflow-hidden rounded-lg border border-input">
+      <div className="relative h-[189px] w-full overflow-hidden rounded-xl border border-input">
         <img
           src={value}
           alt="preview image"
@@ -50,7 +48,7 @@ export const FileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
 
   return (
     <UploadDropzone
-      className="ut-allowed-content:text-paragraph border-primary/50 ut-button:bg-primary ut-button:text-background ut-label:font-medium ut-label:text-primary ut-upload-icon:text-primary/30 ut-uploading:!border-primary/50"
+      className="ut-allowed-content:text-paragraph !rounded-xl !border-foreground/50 ut-button:bg-primary ut-button:text-background ut-label:font-medium ut-label:text-primary ut-upload-icon:text-primary/30"
       endpoint={endpoint}
       onClientUploadComplete={(res) => {
         if (!res) return
@@ -64,7 +62,6 @@ export const FileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
         toast({
           title: "failed",
           description: `gagal menambahkan gambar`,
-          // description: `ERROR! ${error.message}`,
           variant: "destructive",
         })
       }}

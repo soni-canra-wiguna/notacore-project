@@ -21,7 +21,6 @@ export default function useVisibleNavbar() {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
 
-    // cleaning listener
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }

@@ -5,7 +5,7 @@ import { ProductCard } from "./product-card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { Loader2, PackageOpen } from "lucide-react"
+import { Frown, Loader2, PackageOpen } from "lucide-react"
 import { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
 import { useQueryState } from "nuqs"
@@ -83,8 +83,11 @@ const ListsProducts = ({
 
   if (isError) {
     return (
-      <div className="mt-6 max-w-[80vw] text-center">
-        Ada yang salah nih, coba refresh lagi deh
+      <div className="mt-40 flex h-full w-full flex-col items-center justify-center gap-4 text-center">
+        <Frown className="size-16" strokeWidth={1} />
+        <p className="max-w-[60vw]">
+          Ada yang salah nih, coba refresh lagi deh😞
+        </p>
       </div>
     )
   }

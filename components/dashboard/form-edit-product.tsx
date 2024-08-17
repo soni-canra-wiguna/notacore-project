@@ -38,7 +38,7 @@ import { PreviewDetailProduct } from "./preview-product"
 import { v4 as uuidv4 } from "uuid"
 import { Product } from "@prisma/client"
 
-type InferCreateProduct = z.infer<typeof ProductValidation.CREATE>
+type InferUpdateProduct = z.infer<typeof ProductValidation.UPDATE>
 
 export const FormEditProduct = ({
   token,
@@ -61,7 +61,7 @@ export const FormEditProduct = ({
     unit: product.unit!,
   }
 
-  const form = useForm<InferCreateProduct>({
+  const form = useForm<InferUpdateProduct>({
     resolver: zodResolver(ProductValidation.UPDATE),
     defaultValues,
   })
@@ -71,11 +71,12 @@ export const FormEditProduct = ({
     mutate: createProduct,
     isError,
   } = useMutation({
-    mutationFn: async (data: InferCreateProduct) => {
+    mutationFn: async (data: InferUpdateProduct) => {
       await axios.patch(`/api/products/${product.id}`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          userId: product.userId,
         },
       })
     },
@@ -97,7 +98,7 @@ export const FormEditProduct = ({
     },
   })
 
-  const onSubmit = (data: InferCreateProduct) => {
+  const onSubmit = (data: InferUpdateProduct) => {
     try {
       createProduct(data)
     } catch (error) {
@@ -108,11 +109,11 @@ export const FormEditProduct = ({
   const previewProduct = {
     id: uuidv4(),
     userId: product.userId,
-    title: form.watch("title"),
-    image: form.watch("image"),
+    title: form.watch("title") ?? "",
+    image: form.watch("image") ?? "",
     description: form.watch("description") ?? "",
-    price: form.watch("price"),
-    category: form.watch("category"),
+    price: form.watch("price") ?? 0,
+    category: form.watch("category") ?? "PCS",
     stock: form.watch("stock"),
     unit: form.watch("unit")!,
     createdAt: new Date(),
@@ -137,11 +138,11 @@ export const FormEditProduct = ({
                     <FormControl>
                       <FileUpload
                         endpoint="product"
-                        value={field.value}
+                        value={field.value!}
                         onChange={field.onChange}
                       />
                     </FormControl>
-                    {/* <FormMessage /> */}
+                    <FormMessage />
                   </FormItem>
                 )
               }}
@@ -207,7 +208,7 @@ export const FormEditProduct = ({
               <div className="space-y-2">
                 <Label>Preview harga</Label>
                 <div className="flex h-10 w-full items-center rounded-xl bg-secondary px-4">
-                  {formatToIDR(form.watch("price"))}
+                  {formatToIDR(form.watch("price")!)}
                 </div>
               </div>
             </div>
