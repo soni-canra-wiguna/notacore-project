@@ -118,14 +118,14 @@ export const GET = async (
         {
           message: "search result not found",
         },
-        { status: 404 },
+        { status: 200 },
       )
     }
 
     if (!totalProducts || productNotFound) {
       return NextResponse.json(
         {
-          data: []
+          data: [],
         },
         { status: 200 },
       )
