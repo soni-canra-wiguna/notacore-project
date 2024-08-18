@@ -50,6 +50,7 @@ export const DeleteProduct = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["lists_products"] })
+      queryClient.invalidateQueries({ queryKey: ["search_input"] })
       toast({
         description: "produk telah di hapus",
         // variant: "destructive",

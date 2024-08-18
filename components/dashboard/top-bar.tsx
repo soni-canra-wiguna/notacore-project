@@ -1,21 +1,15 @@
 "use client"
 
-import Image from "next/image"
 import { Container } from "../layout/container"
 import {
-  SearchIcon,
-  UserCircle2Icon,
   ClipboardList,
-  SortAscIcon,
-  SortDescIcon,
-  ListIcon,
   Minus,
   LayoutGrid,
   Columns2,
   AlignJustify,
+  Trash,
 } from "lucide-react"
 import { Button } from "../ui/button"
-import { Input } from "../ui/input"
 import { Card } from "../ui/card"
 import {
   Drawer,
@@ -27,7 +21,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { X, SortAsc, MoreVertical, Plus, FilterIcon } from "lucide-react"
+import { X, Plus } from "lucide-react"
 import useVisibleNavbar from "@/hook/use-visible-navbar"
 import { cn } from "@/lib/utils"
 import {
@@ -46,12 +40,24 @@ import {
   incermentProduct,
   ProductSliceType,
   removeProduct,
+  resetProduct,
 } from "@/redux/features/product/product-slice"
 import { formatToIDR } from "@/utils/format-to-idr"
 import { useMounted } from "@/hook/use-mounted"
 import { toast } from "@/components/ui/use-toast"
+import { SearchBar } from "./search"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
-export const TopBar = () => {
+export const TopBar = ({token}: {token: string}) => {
   const { visible } = useVisibleNavbar()
 
   return (
@@ -62,10 +68,7 @@ export const TopBar = () => {
       )}
     >
       <Container className="flex items-center gap-6 py-3">
-        <Input
-          className="pllaceholder:text-sm h-8 rounded-full border-none bg-secondary px-4 text-sm placeholder:capitalize focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-          placeholder="cari produk"
-        />
+        <SearchBar token={token} />
         <div className="flex items-center gap-6">
           <ListItems />
           <Account />
@@ -85,6 +88,7 @@ const ListItems = () => {
   const totalPrice = products.reduce((acc, product) => {
     return acc + product.price
   }, 0)
+  const disabledButton: boolean = totalProduct <= 0
 
   if (!isMounted) {
     return (
@@ -108,7 +112,7 @@ const ListItems = () => {
         </div>
       </DrawerTrigger>
       <DrawerContent className="">
-        <DrawerHeader className="flex items-center justify-between border-b pb-3 pt-1">
+        <DrawerHeader className="flex items-center justify-between border-b">
           <DrawerTitle className="sr-only">jumlah produk</DrawerTitle>
           <DrawerDescription className="sr-only">
             jumlah produk di keranjang yaitu {totalProduct}
@@ -119,6 +123,7 @@ const ListItems = () => {
           </div>
           <div className="flex items-center gap-2">
             <LayoutSwitcher
+              disabledButton={disabledButton}
               layoutSwitcher={layoutSwitcher}
               setLayoutSwitcher={setLayoutSwitcher}
             />
@@ -160,7 +165,10 @@ const ListItems = () => {
               <p className="text-xs font-medium">Total Harga : </p>
               <p className="text-sm font-semibold">{formatToIDR(totalPrice)}</p>
             </div>
-            <Button>Tambahkan</Button>
+            <div className="flex items-center gap-2.5">
+              <ResetListsProductsButton disabledButton={disabledButton} />
+              <Button disabled={disabledButton}>Tambahkan</Button>
+            </div>
           </div>
         </DrawerFooter>
       </DrawerContent>
@@ -238,11 +246,13 @@ const CardDrawer = ({ product }: { product: ProductSliceType }) => {
 }
 
 interface LayoutSwitcherProps {
+  disabledButton: boolean
   layoutSwitcher: "list" | "slider"
   setLayoutSwitcher: (layoutSwitcher: "list" | "slider") => void
 }
 
 const LayoutSwitcher = ({
+  disabledButton,
   layoutSwitcher,
   setLayoutSwitcher,
 }: LayoutSwitcherProps) => {
@@ -277,7 +287,7 @@ const LayoutSwitcher = ({
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="">
+        <Button variant="ghost" size="icon" disabled={disabledButton}>
           <LayoutGrid className="size-5 stroke-[1.5]" />
         </Button>
       </PopoverTrigger>
@@ -286,5 +296,61 @@ const LayoutSwitcher = ({
         <ButtonSwitcher icon={Columns2} type="slider" />
       </PopoverContent>
     </Popover>
+  )
+}
+
+const ResetListsProductsButton = ({
+  disabledButton,
+}: {
+  disabledButton: boolean
+}) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const dispatch = useDispatch()
+
+  const handleResetProduct = () => {
+    dispatch(resetProduct())
+    setIsOpen(!isOpen)
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button
+          disabled={disabledButton}
+          className=""
+          variant="secondary"
+          size="icon"
+        >
+          <Trash className="size-5 stroke-[1.5]" />
+          <p className="sr-only">reset produk</p>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-[90vw]">
+        <DialogHeader>
+          <DialogTitle className="capitalize">Hapus semua produk</DialogTitle>
+          <DialogDescription>
+            Apakah kamu yakin ingin menghapus semua produk ?
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="gap-2.5">
+          <DialogClose asChild>
+            <Button
+              onClick={() => setIsOpen(!isOpen)}
+              className="capitalize"
+              variant="outline"
+            >
+              batal
+            </Button>
+          </DialogClose>
+          <Button
+            onClick={handleResetProduct}
+            className="capitalize"
+            variant="destructive"
+          >
+            ya, hapus produk
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
