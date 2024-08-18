@@ -86,8 +86,12 @@
     width: 0;
     height: 0;
   }
-}
 
-.dd {
-  color: hsl(89, 100%, 50%)
+  .absolute-horizontal {
+    @apply absolute transform -translate-x-1/2 left-1/2;
+  }
+  
+  .absolute-vertical {
+    @apply absolute transform -translate-y-1/2 top-1/2;
+  }
 }
