@@ -36,6 +36,7 @@ import { Button } from "../ui/button"
 import { FileSearch } from "lucide-react"
 import { PreviewDetailProduct } from "./preview-product"
 import { v4 as uuidv4 } from "uuid"
+import { TextEditor } from "../text-editor"
 
 type InferCreateProduct = z.infer<typeof ProductValidation.CREATE>
 
@@ -179,10 +180,9 @@ export const FormCreateProduct = ({
                   <FormItem>
                     <FormLabel>Deskripsi produk</FormLabel>
                     <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="masukkan deskripsi produk"
-                        {...field}
+                      <TextEditor
+                        value={field.value!}
+                        onChange={field.onChange}
                       />
                     </FormControl>
                     <FormMessage />
