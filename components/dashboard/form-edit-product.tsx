@@ -37,6 +37,7 @@ import { FileSearch } from "lucide-react"
 import { PreviewDetailProduct } from "./preview-product"
 import { v4 as uuidv4 } from "uuid"
 import { Product } from "@prisma/client"
+import { TextEditor } from "../text-editor"
 
 type InferUpdateProduct = z.infer<typeof ProductValidation.UPDATE>
 
@@ -174,10 +175,9 @@ export const FormEditProduct = ({
                   <FormItem>
                     <FormLabel>Deskripsi produk</FormLabel>
                     <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="masukkan deskripsi produk"
-                        {...field}
+                      <TextEditor
+                        value={field.value!}
+                        onChange={field.onChange}
                       />
                     </FormControl>
                     <FormMessage />
