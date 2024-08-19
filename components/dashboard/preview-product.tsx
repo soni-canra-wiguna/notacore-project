@@ -17,6 +17,7 @@ import { formatToIDR } from "@/utils/format-to-idr"
 import { Badge } from "../ui/badge"
 import { cn } from "@/lib/utils"
 import { Balancer } from "react-wrap-balancer"
+import parse from "html-react-parser"
 
 interface PreviewDetailProductProps extends WithChildren {
   product: ResponseDataType
@@ -77,12 +78,33 @@ export const PreviewDetailProduct = ({
             </WrapperDetailProduct>
             {/* using type description in here */}
             <WrapperDetailProduct title="deskripsi">
-              <p className="">{product.description}</p>
+              <WithTypographyStyle>
+                {parse(product.description!)}
+              </WithTypographyStyle>
             </WrapperDetailProduct>
           </div>
         </div>
       </DrawerContent>
     </Drawer>
+  )
+}
+
+const WithTypographyStyle = ({
+  className,
+  children,
+}: {
+  className?: string
+  children: React.ReactNode
+}) => {
+  return (
+    <div
+      className={cn(
+        "no-before no-after prose prose-p:text-sm prose-p:text-foreground",
+        className,
+      )}
+    >
+      {children}
+    </div>
   )
 }
 
@@ -107,7 +129,7 @@ const WrapperDetailProduct = ({
       {type === "description" ? (
         <p>content using text editor</p>
       ) : (
-        <div className="flex-1 text-left">{children}</div>
+        <div className="flex-1">{children}</div>
       )}
     </div>
   )

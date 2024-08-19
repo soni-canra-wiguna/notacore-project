@@ -94,4 +94,26 @@
   .absolute-vertical {
     @apply absolute transform -translate-y-1/2 top-1/2;
   }
+  .scrollY::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .scrollY::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  
+  .scrollY::-webkit-scrollbar-thumb {
+    background-color: #f4f4f5;
+    border-radius: 20px;
+  }
+  
+  .no-before::before,
+  .no-after::after {
+  content: none;
+  }
+
+  .prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
+    margin: 0.75em 0;
+  }
 }
+
