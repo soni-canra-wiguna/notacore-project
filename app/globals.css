@@ -111,6 +111,10 @@
   .no-after::after {
   content: none;
   }
+  
+  .prose p:first-of-type {
+    margin-top: 0;
+  }
 
   .prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
     margin: 0.75em 0;
