@@ -3,10 +3,7 @@
 import { CreateProductRequest } from "@/types/product"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
-export type ProductSliceType = Omit<
-  CreateProductRequest,
-  "stock" | "description"
-> & {
+export type ProductSliceType = Omit<CreateProductRequest, "description"> & {
   id: string
   quantity: number // jumlah produk yang di tambahkan
   unit: string
