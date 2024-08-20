@@ -34,6 +34,7 @@ export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
     title: product.title,
     image: product.image,
     price: product.price,
+    stock: product.stock,
     category: product.category,
     quantity: 1,
     unit: product.unit!,
