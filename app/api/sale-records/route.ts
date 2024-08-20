@@ -110,7 +110,7 @@ export const GET = async (
         orderBy = { createdAt: "desc" }
     }
 
-    const saleRecords = await prisma.product.findMany({
+    const saleRecords = await prisma.saleRecord.findMany({
       where: {
         userId,
         AND: {
