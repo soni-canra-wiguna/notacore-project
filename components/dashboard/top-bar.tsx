@@ -56,8 +56,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import LoadingButton from "../loading-button"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import axios from "axios"
+import { useAuth } from "@clerk/nextjs"
+import { CreateSaleRecordRequest } from "@/types/sale-record"
+import { promise } from "zod"
 
-export const TopBar = ({token}: {token: string}) => {
+export const TopBar = ({ token }: { token: string }) => {
   const { visible } = useVisibleNavbar()
 
   return (
@@ -70,7 +76,7 @@ export const TopBar = ({token}: {token: string}) => {
       <Container className="flex items-center gap-6 py-3">
         <SearchBar token={token} />
         <div className="flex items-center gap-6">
-          <ListItems />
+          <ListItems token={token} />
           <Account />
         </div>
       </Container>
@@ -78,7 +84,7 @@ export const TopBar = ({token}: {token: string}) => {
   )
 }
 
-const ListItems = () => {
+const ListItems = ({ token }: { token: string }) => {
   const { isMounted } = useMounted()
   const [layoutSwitcher, setLayoutSwitcher] = useState<"list" | "slider">(
     "list",
@@ -167,7 +173,10 @@ const ListItems = () => {
             </div>
             <div className="flex items-center gap-2.5">
               <ResetListsProductsButton disabledButton={disabledButton} />
-              <Button disabled={disabledButton}>Tambahkan</Button>
+              <AddProductToRecord
+                disabledButton={disabledButton}
+                token={token}
+              />
             </div>
           </div>
         </DrawerFooter>
@@ -352,5 +361,107 @@ const ResetListsProductsButton = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  )
+}
+
+const AddProductToRecord = ({
+  disabledButton,
+  token,
+}: {
+  disabledButton: boolean
+  token: string
+}) => {
+  const { userId } = useAuth()
+  const dispatch = useDispatch()
+  const { isMounted } = useMounted()
+  const queryClient = useQueryClient()
+  const { products } = useSelector((state: RootState) => state.products)
+
+  const {
+    mutate: createRecords,
+    isPending,
+    isError,
+  } = useMutation({
+    mutationFn: async (data: CreateSaleRecordRequest[]) => {
+      await axios.post(`/api/sale-records`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          userId: userId!,
+        },
+      })
+    },
+    onSuccess: async () => {
+      // update stock product based on current stock - qunatity
+      await Promise.all(
+        products.map((product) =>
+          axios.patch(
+            `/api/products/${product.id}`,
+            {
+              stock: product.stock - product.quantity,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                userId: userId,
+              },
+            },
+          ),
+        ),
+      )
+      queryClient.invalidateQueries({ queryKey: ["lists_products"] })
+      queryClient.invalidateQueries({ queryKey: ["sale_records"] })
+      dispatch(resetProduct())
+      toast({
+        description: "catatan di tambahkan",
+        // variant: "destructive",
+      })
+    },
+    onError: () => {
+      toast({
+        title: "gagal menambahkan catatan",
+        description: "coba cek koneksi internet kamu",
+        variant: "destructive",
+      })
+    },
+  })
+
+  const handleAddSaleRecords = () => {
+    try {
+      const records: CreateSaleRecordRequest[] = products.map((product) => ({
+        userId: product.userId,
+        title: product.image,
+        image: product.image,
+        category: product.category,
+        price: product.unitPrice,
+        totalPrice: product.price,
+        quantity: product.quantity,
+      }))
+
+      createRecords(records)
+    } catch (error) {
+      console.log("[FAILED TO CREATE RECORD]", error)
+    }
+  }
+
+  if (!isMounted) {
+    return <Button className="capitalize">Tambahkan</Button>
+  }
+
+  if (isError) {
+    toast({
+      title: "gagal menambahkan catatan",
+      description: "coba cek koneksi internet kamu",
+      variant: "destructive",
+    })
+  }
+
+  return (
+    <LoadingButton
+      onClick={handleAddSaleRecords}
+      loading={isPending}
+      disabled={disabledButton}
+    >
+      Tambahkan
+    </LoadingButton>
   )
 }
