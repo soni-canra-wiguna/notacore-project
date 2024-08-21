@@ -7,7 +7,7 @@ import { incermentProduct } from "@/redux/features/product/product-slice"
 import { toast } from "../ui/use-toast"
 import { Card } from "@/components/ui/card"
 import React, { useState } from "react"
-import { MoreVertical, Plus, Pencil, TrashIcon, FileSearch } from "lucide-react"
+import { MoreVertical, Plus, Pencil, FileSearch } from "lucide-react"
 import {
   Popover,
   PopoverTrigger,
@@ -42,7 +42,13 @@ export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
   }
 
   return (
-    <Card className="flex h-24 items-start justify-between rounded-xl p-1.5">
+    <Card
+      className={cn(
+        "flex h-24 items-start justify-between rounded-xl p-1.5",
+        product.stock <= 0 && "border-destructive/50 bg-destructive/10",
+        product.stock <= 5 && "bg-yellow-10 border-yellow-500/50",
+      )}
+    >
       <div className="flex w-full items-start gap-2">
         <div className="aspect-square h-20 overflow-hidden rounded-xl border">
           <img
@@ -68,6 +74,7 @@ export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
               title: "produk berhasil ditambahkan",
             })
           }}
+          disabled={product.stock <= 0}
           className="size-8 rounded-lg"
           size="icon"
           variant="outline"
