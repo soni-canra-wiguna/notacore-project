@@ -45,8 +45,9 @@ export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
     <Card
       className={cn(
         "flex h-24 items-start justify-between rounded-xl p-1.5",
-        product.stock <= 0 && "border-destructive/50 bg-destructive/10",
-        product.stock <= 5 && "bg-yellow-10 border-yellow-500/50",
+        product.stock <= 0
+          ? "border-red-500/50 bg-red-500/10"
+          : product.stock <= 5 && "border-yellow-500/50 bg-yellow-500/10",
       )}
     >
       <div className="flex w-full items-start gap-2">

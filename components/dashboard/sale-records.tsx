@@ -52,7 +52,6 @@ import { useAuth } from "@clerk/nextjs"
 import { CreateSaleRecordRequest } from "@/types/sale-record"
 
 export const SaleRecords = ({ token }: { token: string }) => {
-  const { isMounted } = useMounted()
   const [isOpen, setIsOpen] = useState(false)
   const [layoutSwitcher, setLayoutSwitcher] = useState<"list" | "slider">(
     "list",
@@ -74,7 +73,7 @@ export const SaleRecords = ({ token }: { token: string }) => {
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "fixed bottom-[70px] right-4 z-30 flex size-14 cursor-pointer items-center justify-center rounded-full bg-primary",
-          totalProducts <= 0 ? "hidden" : "block",
+          totalProducts <= 0 ? "hidden" : "flex",
         )}
       >
         <div className="relative">
@@ -85,10 +84,6 @@ export const SaleRecords = ({ token }: { token: string }) => {
         </div>
       </div>
     )
-  }
-
-  if (!isMounted) {
-    return <SaleRecordsButton totalProducts={0} />
   }
 
   return (
@@ -197,7 +192,9 @@ const CardDrawer = ({ product }: { product: ProductSliceType }) => {
           <p className="text-xs font-medium">
             {formatToIDR(product.unitPrice)}
           </p>
-          <p className="text-xs">stock: 5 pcs</p>
+          <p className="text-xs">
+            stock: {product.stock} {product.unit}
+          </p>
         </div>
       </div>
       <div className="flex h-full flex-col justify-between gap-2">
@@ -388,7 +385,7 @@ const AddProductToRecord = ({
       dispatch(resetProduct())
       toast({
         description: "catatan di tambahkan",
-        // variant: "destructive",
+        variant: "success",
       })
     },
     onError: () => {
