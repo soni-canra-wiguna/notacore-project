@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma"
 import { SaleRecordValidation } from "@/schema/sale-record.schema"
 import { Validation } from "@/schema/validation"
 import { CreateSaleRecordRequest } from "@/types/sale-record"
+import { Product } from "@prisma/client"
 import { NextRequest, NextResponse } from "next/server"
 import * as z from "zod"
 
@@ -69,6 +70,7 @@ export const GET = async (
   res: NextResponse,
 ): Promise<any> => {
   try {
+    const request: Product = await req.json()
     const token = req.headers.get("authorization")
     const userId = req.headers.get("userId") ?? ""
 
