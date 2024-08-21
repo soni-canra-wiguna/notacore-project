@@ -9,6 +9,7 @@ import {
   FilterButton,
 } from "@/components/dashboard/filter-button"
 import { Suspense } from "react"
+import { SaleRecords } from "@/components/dashboard/sale-records"
 
 const DashboardPage = async () => {
   const { userId, getToken } = auth()
@@ -28,6 +29,7 @@ const DashboardPage = async () => {
           <ListsProducts userId={userId!} token={token!} />
         </Suspense>
       </Container>
+      <SaleRecords token={token!} />
     </main>
   )
 }
