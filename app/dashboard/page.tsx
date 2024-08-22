@@ -1,13 +1,12 @@
 import { auth } from "@clerk/nextjs/server"
-import { TopBar } from "@/components/dashboard/top-bar"
 import { Container } from "@/components/layout/container"
 import ListsProducts, {
   LoadingListProducts,
 } from "@/components/dashboard/lists-products"
 import {
   FallbackFilterButton,
-  FilterButton,
-} from "@/components/dashboard/filter-button"
+  FilterProducts,
+} from "@/components/dashboard/filter-products"
 import { Suspense } from "react"
 import { SaleRecords } from "@/components/dashboard/sale-records"
 
@@ -21,7 +20,7 @@ const DashboardPage = async () => {
         <div className="mb-3 flex w-full items-center justify-between">
           <h3 className="font-semibold capitalize">produk kamu</h3>
           <Suspense fallback={<FallbackFilterButton />}>
-            <FilterButton />
+            <FilterProducts />
           </Suspense>
         </div>
         <Suspense fallback={<LoadingListProducts type="fallback" />}>
