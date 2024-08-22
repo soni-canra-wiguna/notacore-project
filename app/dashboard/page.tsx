@@ -17,8 +17,7 @@ const DashboardPage = async () => {
 
   return (
     <main className="min-h-screen w-full">
-      <TopBar token={token!} />
-      <Container className="pb-20 pt-[72px]">
+      <Container className="py-20">
         <div className="mb-3 flex w-full items-center justify-between">
           <h3 className="font-semibold capitalize">produk kamu</h3>
           <Suspense fallback={<FallbackFilterButton />}>
