@@ -35,32 +35,35 @@ import { Button } from "../ui/button"
 import { FileSearch } from "lucide-react"
 import { PreviewDetailProduct } from "./preview-product"
 import { v4 as uuidv4 } from "uuid"
+import { Product } from "@prisma/client"
 import { TextEditor } from "../text-editor"
 
-type InferCreateProduct = z.infer<typeof ProductValidation.CREATE>
+type InferUpdateProduct = z.infer<typeof ProductValidation.UPDATE>
 
-export const FormCreateProduct = ({
-  userId,
+export const FormEditProduct = ({
   token,
+  product,
 }: {
-  userId: string | null
   token: string | null
+  product: Product
 }) => {
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const form = useForm<InferCreateProduct>({
-    resolver: zodResolver(ProductValidation.CREATE),
-    defaultValues: {
-      userId: userId!,
-      title: "",
-      description: "",
-      image: "",
-      price: 0,
-      category: "",
-      stock: 0,
-      unit: "PCS",
-    },
+  const defaultValues = {
+    userId: product.userId,
+    title: product.title,
+    description: product.description!,
+    image: product.image,
+    price: product.price,
+    category: product.category,
+    stock: product.stock,
+    unit: product.unit!,
+  }
+
+  const form = useForm<InferUpdateProduct>({
+    resolver: zodResolver(ProductValidation.UPDATE),
+    defaultValues,
   })
 
   const {
@@ -68,42 +71,34 @@ export const FormCreateProduct = ({
     mutate: createProduct,
     isError,
   } = useMutation({
-    mutationFn: async (data: InferCreateProduct) => {
-      await axios.post("/api/products", data, {
+    mutationFn: async (data: InferUpdateProduct) => {
+      await axios.patch(`/api/products/${product.id}`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          userId: product.userId,
         },
       })
     },
     onSuccess: () => {
-      form.reset({
-        userId: userId!,
-        title: "",
-        description: "",
-        image: "",
-        price: 0,
-        category: "",
-        stock: 0,
-        unit: "PCS",
-      })
+      form.reset(defaultValues)
       toast({
-        title: "Produk di buat",
-        description: "Product berhasil di buat",
+        title: "Produk di update",
+        description: "Product berhasil di update",
       })
       router.push("/dashboard")
       queryClient.invalidateQueries({ queryKey: ["lists_products"] })
     },
     onError: () => {
       toast({
-        title: "Gagal membuat product",
-        description: "Gagal membuat product, pastikan koneksimu lancar",
+        title: "Gagal mengupdate product",
+        description: "Gagal mengupdate product, pastikan koneksimu lancar",
         variant: "destructive",
       })
     },
   })
 
-  const onSubmit = (data: InferCreateProduct) => {
+  const onSubmit = (data: InferUpdateProduct) => {
     try {
       createProduct(data)
     } catch (error) {
@@ -113,12 +108,12 @@ export const FormCreateProduct = ({
 
   const previewProduct = {
     id: uuidv4(),
-    userId: userId!,
-    title: form.watch("title"),
-    image: form.watch("image"),
+    userId: product.userId,
+    title: form.watch("title") ?? "",
+    image: form.watch("image") ?? "",
     description: form.watch("description") ?? "",
-    price: form.watch("price"),
-    category: form.watch("category"),
+    price: form.watch("price") ?? 0,
+    category: form.watch("category") ?? "PCS",
     stock: form.watch("stock"),
     unit: form.watch("unit")!,
     createdAt: new Date(),
@@ -141,11 +136,11 @@ export const FormCreateProduct = ({
                 <FormControl>
                   <FileUpload
                     endpoint="product"
-                    value={field.value}
+                    value={field.value!}
                     onChange={field.onChange}
                   />
                 </FormControl>
-                {/* <FormMessage /> */}
+                <FormMessage />
               </FormItem>
             )
           }}
@@ -207,7 +202,7 @@ export const FormCreateProduct = ({
           <div className="space-y-2">
             <Label>Preview harga</Label>
             <div className="flex h-10 w-full items-center rounded-xl bg-secondary px-4">
-              {formatToIDR(form.watch("price"))}
+              {formatToIDR(form.watch("price")!)}
             </div>
           </div>
         </div>
@@ -294,7 +289,7 @@ export const FormCreateProduct = ({
             disabled={isPending}
             className="w-full capitalize"
           >
-            tambah produk
+            update produk
           </LoadingButton>
           <PreviewDetailProduct product={previewProduct}>
             <Button className="w-full" variant="outline">
