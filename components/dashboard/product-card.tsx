@@ -73,6 +73,7 @@ export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
             dispacth(incermentProduct(dataProduct))
             toast({
               title: "produk berhasil ditambahkan",
+              variant: "success",
             })
           }}
           disabled={product.stock <= 0}

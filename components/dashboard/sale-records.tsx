@@ -291,6 +291,10 @@ const ResetListsProductsButton = ({
   const handleResetProduct = () => {
     dispatch(resetProduct())
     setIsOpen(!isOpen)
+    toast({
+      title: "semua produk telah di hapus",
+      variant: "destructive",
+    })
   }
 
   return (
