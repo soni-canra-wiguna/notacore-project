@@ -20,7 +20,7 @@ const EditProductPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <main className="min-h-screen w-full">
-      <Container className="py-20">
+      <Container className="pb-20 pt-16">
         <FormEditProduct product={product} token={token} />
       </Container>
     </main>

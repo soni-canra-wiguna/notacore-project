@@ -7,7 +7,7 @@ const CreateProductPage = async () => {
   const token = await getToken()
   return (
     <main className="min-h-screen w-full">
-      <Container className="py-20">
+      <Container className="pb-20 pt-16">
         <FormCreateProduct userId={userId} token={token} />
       </Container>
     </main>
