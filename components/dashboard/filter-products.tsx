@@ -44,22 +44,22 @@ export const FilterProducts = () => {
       icon: ArrowDownZA,
     },
     {
-      label: "harga : murah",
+      label: "harga : termurah",
       value: "price-low",
       icon: ArrowDownUp,
     },
     {
-      label: "harga : mahal",
+      label: "harga : termahal",
       value: "price-high",
       icon: ArrowUpDown,
     },
     {
-      label: "Stock : banyak",
+      label: "Stock : terbanyak",
       value: "stock-desc",
       icon: ArrowUp10,
     },
     {
-      label: "stock : sedikit",
+      label: "stock : tersedikit",
       value: "stock-asc",
       icon: ArrowDown01,
     },
