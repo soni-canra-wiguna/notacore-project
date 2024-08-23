@@ -21,7 +21,7 @@ const navigationItems = [
   {
     label: "statistik",
     icon: ChartArea,
-    href: "/dashboard/statistic",
+    href: "/dashboard/statistics",
   },
 ]
 

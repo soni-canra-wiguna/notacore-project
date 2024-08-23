@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma"
 import { SaleRecordValidation } from "@/schema/sale-record.schema"
 import { Validation } from "@/schema/validation"
 import { CreateSaleRecordRequest } from "@/types/sale-record"
+import { Product } from "@prisma/client"
 import { NextRequest, NextResponse } from "next/server"
 import * as z from "zod"
 
@@ -82,45 +83,38 @@ export const GET = async (
     const page = parseInt(req.nextUrl.searchParams.get("page") ?? "1")
     const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "20")
     const skip = (page - 1) * limit
-    const sortBy = req.nextUrl.searchParams.get("sortBy")
+    const category = req.nextUrl.searchParams.get("category") ?? ""
+    const searchQuery = req.nextUrl.searchParams
+      .get("search")
+      ?.replace(/-/g, " ")
+
     const totalSaleRecords = await prisma.product.count({
       where: {
         userId,
       },
     })
-    const searchQuery = req.nextUrl.searchParams
-      .get("search")
-      ?.replace(/-/g, " ")
-
-    let orderBy = {}
-    switch (sortBy) {
-      case "new":
-        orderBy = { createdAt: "desc" }
-        break
-      case "old":
-        orderBy = { createdAt: "asc" }
-        break
-      case "a-z":
-        orderBy = { title: "asc" }
-        break
-      case "z-a":
-        orderBy = { title: "desc" }
-        break
-      default:
-        orderBy = { createdAt: "desc" }
-    }
 
     const saleRecords = await prisma.saleRecord.findMany({
       where: {
         userId,
-        AND: {
-          title: {
-            contains: searchQuery,
-            mode: "insensitive",
+        OR: [
+          {
+            title: {
+              contains: searchQuery,
+              mode: "insensitive",
+            },
           },
-        },
+          {
+            title: {
+              contains: category!,
+              mode: "insensitive",
+            },
+          },
+        ],
       },
-      orderBy,
+      orderBy: {
+        createdAt: "desc",
+      },
       skip: skip,
       take: limit,
     })

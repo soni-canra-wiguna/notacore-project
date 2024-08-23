@@ -1,6 +1,7 @@
 import { FormEditProduct } from "@/components/dashboard/form-edit-product"
-import prisma from "@/lib/prisma"
+import { Container } from "@/components/layout/container"
 import { auth } from "@clerk/nextjs/server"
+import prisma from "@/lib/prisma"
 
 const EditProductPage = async ({ params }: { params: { id: string } }) => {
   const { userId, getToken } = auth()
@@ -17,7 +18,13 @@ const EditProductPage = async ({ params }: { params: { id: string } }) => {
     return <div>Produk tidak di temukan :/ </div>
   }
 
-  return <FormEditProduct product={product} token={token} />
+  return (
+    <main className="min-h-screen w-full">
+      <Container className="pb-20 pt-16">
+        <FormEditProduct product={product} token={token} />
+      </Container>
+    </main>
+  )
 }
 
 export default EditProductPage

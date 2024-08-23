@@ -16,12 +16,12 @@ const Account = () => {
   const lastName = user?.externalAccounts[0].lastName
   const fullName = `${firstName!} ${lastName!}`
 
-  if (!isLoaded) return <Skeleton className="size-7 rounded-full" />
+  if (!isLoaded) return <Skeleton className="size-9 rounded-full" />
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className="size-7 cursor-pointer overflow-hidden rounded-full">
+        <div className="size-9 cursor-pointer overflow-hidden rounded-full">
           <img src={image} alt={fullName} className="size-full object-cover" />
         </div>
       </PopoverTrigger>

@@ -69,11 +69,6 @@ export const GET = async (
     const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "20")
     const skip = (page - 1) * limit
     const sortBy = req.nextUrl.searchParams.get("sortBy")
-    const totalProducts = await prisma.product.count({
-      where: {
-        userId,
-      },
-    })
     const searchQuery = req.nextUrl.searchParams
       .get("search")
       ?.replace(/-/g, " ")
@@ -92,6 +87,18 @@ export const GET = async (
       case "z-a":
         orderBy = { title: "desc" }
         break
+      case "price-high":
+        orderBy = { title: "asc" }
+        break
+      case "price-low":
+        orderBy = { title: "desc" }
+        break
+      case "stock-desc":
+        orderBy = { title: "desc" }
+        break
+      case "stock-asc":
+        orderBy = { title: "asc" }
+        break
       default:
         orderBy = { createdAt: "desc" }
     }
@@ -109,6 +116,12 @@ export const GET = async (
       orderBy,
       skip: skip,
       take: limit,
+    })
+
+    const totalProducts = await prisma.product.count({
+      where: {
+        userId,
+      },
     })
 
     const productNotFound = products.length === 0

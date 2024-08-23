@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { Product } from "@prisma/client"
 import { useAuth } from "@clerk/nextjs"
-import { Loader2, SearchIcon, XIcon,ArrowUpFromLine } from "lucide-react"
+import { Loader2, SearchIcon, XIcon, ArrowUpFromLine } from "lucide-react"
 import { ProductCard } from "./product-card"
 import { Container } from "../layout/container"
 
@@ -38,6 +38,7 @@ export const SearchBar = ({ token }: { token: string }) => {
       )
       return data.data
     },
+    enabled: !!debounceSearchInput,
   })
 
   return (
@@ -91,7 +92,7 @@ export const SearchBar = ({ token }: { token: string }) => {
         <Button
           onClick={() => setIsOpen(!isOpen)}
           variant="link"
-          className="absolute -bottom-12 right-6 px-0 tracking-wide text-background capitalize"
+          className="absolute -bottom-12 right-6 px-0 capitalize tracking-wide text-background"
         >
           <ArrowUpFromLine className="mr-1.5 size-4 text-inherit" />
           tutup
