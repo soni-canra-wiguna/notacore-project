@@ -186,3 +186,45 @@ export const GET = async (
     )
   }
 }
+
+export const DELETE = async (req: NextRequest, res: NextResponse) => {
+  try {
+    const token = req.headers.get("authorization")
+    const userId = req.headers.get("userId") ?? ""
+
+    if (!token) {
+      return NextResponse.json(
+        { message: "Unauthorized. No token provided." },
+        { status: 401 },
+      )
+    }
+
+    await prisma.saleRecord.deleteMany({
+      where: {
+        userId: userId,
+      },
+    })
+
+    return NextResponse.json("successfully deleted", {
+      status: 200,
+    })
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        {
+          message: "Validation error",
+          errors: error.errors,
+        },
+        { status: 400 },
+      )
+    }
+    return NextResponse.json(
+      {
+        message: "internal server error",
+      },
+      {
+        status: 500,
+      },
+    )
+  }
+}
