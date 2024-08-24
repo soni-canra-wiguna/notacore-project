@@ -6,20 +6,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 export type ProductSliceType = Omit<CreateProductRequest, "description"> & {
   id: string
   quantity: number // jumlah produk yang di tambahkan
-  // unit: string
   unitPrice: number
 }
 
-// const products =
-//   typeof window !== "undefined" ? localStorage.getItem("products") : "[]"
-
-// const initialState = {
-//   products:
-//     (JSON.parse(products!) as ProductSliceType[]) || ([] as ProductSliceType[]),
-// }
+const products =
+  typeof window !== "undefined" ? localStorage.getItem("products") : "[]"
 
 const initialState = {
-  products: [] as ProductSliceType[],
+  products:
+    (JSON.parse(products!) as ProductSliceType[]) || ([] as ProductSliceType[]),
 }
 
 export const productSlice = createSlice({
@@ -35,11 +30,11 @@ export const productSlice = createSlice({
       )
       if (!product) {
         state.products.push(action.payload)
-        // localStorage.setItem("products", JSON.stringify(state.products))
+        localStorage.setItem("products", JSON.stringify(state.products))
       } else {
         product.quantity += 1
         product.price = product.unitPrice * product.quantity
-        // localStorage.setItem("products", JSON.stringify(state.products))
+        localStorage.setItem("products", JSON.stringify(state.products))
       }
     },
     decrementProduct: (state, action: PayloadAction<ProductSliceType>) => {
@@ -49,22 +44,22 @@ export const productSlice = createSlice({
       if (product && product.quantity > 1) {
         product.quantity -= 1
         product.price = product.unitPrice * product.quantity
-        // localStorage.setItem("products", JSON.stringify(state.products))
+        localStorage.setItem("products", JSON.stringify(state.products))
       } else if (product && product.quantity === 1) {
         product.quantity = 1
         product.price = product.unitPrice
-        // localStorage.setItem("products", JSON.stringify(state.products))
+        localStorage.setItem("products", JSON.stringify(state.products))
       }
     },
     removeProduct: (state, action: PayloadAction<string>) => {
       state.products = state.products.filter(
         (product) => product.id !== action.payload,
       )
-      // localStorage.setItem("products", JSON.stringify(state.products))
+      localStorage.setItem("products", JSON.stringify(state.products))
     },
     resetProduct: (state) => {
       state.products = []
-      // localStorage.setItem("products", JSON.stringify(state.products))
+      localStorage.setItem("products", JSON.stringify(state.products))
     },
   },
 })
