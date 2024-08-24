@@ -62,12 +62,12 @@ export const FilterProducts = () => {
     },
     {
       label: "Stock : terbanyak",
-      value: "stock-desc",
+      value: "stock-high",
       icon: ArrowUp10,
     },
     {
       label: "stock : tersedikit",
-      value: "stock-asc",
+      value: "stock-low",
       icon: ArrowDown01,
     },
   ]

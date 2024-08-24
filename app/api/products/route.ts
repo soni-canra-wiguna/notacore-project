@@ -88,16 +88,16 @@ export const GET = async (
         orderBy = { title: "desc" }
         break
       case "price-high":
-        orderBy = { title: "asc" }
+        orderBy = { price: "desc" }
         break
       case "price-low":
-        orderBy = { title: "desc" }
+        orderBy = { price: "asc" }
         break
-      case "stock-desc":
-        orderBy = { title: "desc" }
+      case "stock-high":
+        orderBy = { stock: "desc" }
         break
-      case "stock-asc":
-        orderBy = { title: "asc" }
+      case "stock-low":
+        orderBy = { stock: "asc" }
         break
       default:
         orderBy = { createdAt: "desc" }
