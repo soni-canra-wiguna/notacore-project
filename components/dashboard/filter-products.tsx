@@ -13,7 +13,14 @@ import {
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useQueryState } from "nuqs"
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 
 export const FilterProducts = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -73,6 +80,12 @@ export const FilterProducts = () => {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="">
+        <DrawerHeader className="sr-only">
+          <DrawerTitle>filter produk</DrawerTitle>
+          <DrawerDescription>
+            filter produk dengan berbagai pilihan
+          </DrawerDescription>
+        </DrawerHeader>
         <div className="scrollbar-hide h-full max-h-[450px] w-full overflow-y-auto p-4">
           <div className="flex flex-col gap-2">
             {filterItems.map((item) => (

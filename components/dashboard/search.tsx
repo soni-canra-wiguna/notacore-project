@@ -1,4 +1,11 @@
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet"
 import { useState } from "react"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
@@ -52,6 +59,10 @@ export const SearchBar = ({ token }: { token: string }) => {
         </div>
       </SheetTrigger>
       <SheetContent side="top" className="h-max w-full px-0 py-4">
+        <SheetHeader className="sr-only">
+          <SheetTitle>cari produk</SheetTitle>
+          <SheetDescription>cari produk yang kamu suka</SheetDescription>
+        </SheetHeader>
         <Container className="flex w-full flex-col gap-6">
           <div className="relative h-max w-full">
             <Input

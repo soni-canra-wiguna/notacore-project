@@ -435,7 +435,7 @@ const AddProductToRecord = ({
     <LoadingButton
       onClick={handleAddSaleRecords}
       loading={isPending}
-      disabled={disabledButton}
+      disabled={isPending || disabledButton}
     >
       Tambahkan
     </LoadingButton>
