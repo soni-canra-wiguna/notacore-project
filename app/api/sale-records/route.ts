@@ -84,6 +84,7 @@ export const GET = async (
     const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "20")
     const skip = (page - 1) * limit
     const category = req.nextUrl.searchParams.get("category") ?? ""
+    const date = req.nextUrl.searchParams.get("date") ?? new Date()
     const searchQuery = req.nextUrl.searchParams
       .get("search")
       ?.replace(/-/g, " ")
@@ -105,8 +106,8 @@ export const GET = async (
             },
           },
           {
-            title: {
-              contains: category!,
+            category: {
+              contains: category,
               mode: "insensitive",
             },
           },
