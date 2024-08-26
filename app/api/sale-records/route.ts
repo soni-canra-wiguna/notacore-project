@@ -2,7 +2,8 @@ import prisma from "@/lib/prisma"
 import { SaleRecordValidation } from "@/schema/sale-record.schema"
 import { Validation } from "@/schema/validation"
 import { CreateSaleRecordRequest } from "@/types/sale-record"
-import { Product } from "@prisma/client"
+import { getSearchParams } from "@/utils/get-search-params"
+import { Prisma } from "@prisma/client"
 import { NextRequest, NextResponse } from "next/server"
 import * as z from "zod"
 
@@ -83,41 +84,79 @@ export const GET = async (
     const page = parseInt(req.nextUrl.searchParams.get("page") ?? "1")
     const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "20")
     const skip = (page - 1) * limit
-    const category = req.nextUrl.searchParams.get("category") ?? ""
-    const date = req.nextUrl.searchParams.get("date") ?? new Date()
+    // const category = req.nextUrl.searchParams.get("category") ?? ""
     const searchQuery = req.nextUrl.searchParams
       .get("search")
       ?.replace(/-/g, " ")
+    const from = getSearchParams(req, "from") // createdAt
+    const to = getSearchParams(req, "to") // createdAt
+    const category = getSearchParams(req, "category") // category
+    const quantity = getSearchParams(req, "quantity") // desc
+    const sortBy = getSearchParams(req, "sortBy") // if new
+
+    let filters = []
+    let orderBy = {}
+
+    /*
+    if (searchQuery) {
+      filters.push({
+        title: {
+          contains: searchQuery,
+          mode: "insensitive" as Prisma.QueryMode,
+        },
+      })
+      orderBy = { createdAt: "desc" }
+    }
+
+    if (category) {
+      filters.push({
+        title: {
+          contains: category,
+          mode: "insensitive" as Prisma.QueryMode,
+        },
+      })
+      orderBy = { createdAt: "desc" }
+    }
+ */
+
+    if (from && to) {
+      filters.push({
+        createdAt: {
+          lte: new Date(from),
+          gte: new Date(to),
+        },
+      })
+      orderBy = { quantity: "desc" }
+    }
+
+    const saleRecords = await prisma.saleRecord.findMany({
+      where: {
+        userId,
+        AND: filters,
+        // OR: [
+        //   {
+        //     title: {
+        //       contains: searchQuery,
+        //       mode: "insensitive",
+        //     },
+        //   },
+        //   {
+        //     category: {
+        //       contains: category,
+        //       mode: "insensitive",
+        //     },
+        //   },
+        // ],
+      },
+      orderBy,
+      skip: skip,
+      take: limit,
+    })
 
     const totalSaleRecords = await prisma.product.count({
       where: {
         userId,
       },
-    })
-
-    const saleRecords = await prisma.saleRecord.findMany({
-      where: {
-        userId,
-        OR: [
-          {
-            title: {
-              contains: searchQuery,
-              mode: "insensitive",
-            },
-          },
-          {
-            category: {
-              contains: category,
-              mode: "insensitive",
-            },
-          },
-        ],
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      skip: skip,
-      take: limit,
     })
 
     const productNotFound = saleRecords.length === 0
