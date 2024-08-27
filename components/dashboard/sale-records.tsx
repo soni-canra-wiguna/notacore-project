@@ -146,8 +146,9 @@ export const SaleRecords = ({ token }: { token: string }) => {
             <div className="flex items-center gap-2.5">
               <ResetListsProductsButton disabledButton={disabledButton} />
               <AddProductToRecord
-                disabledButton={disabledButton}
                 token={token}
+                closeDrawer={() => setIsOpen(!isOpen)}
+                disabledButton={disabledButton}
               />
             </div>
           </div>
@@ -341,11 +342,13 @@ const ResetListsProductsButton = ({
 }
 
 const AddProductToRecord = ({
-  disabledButton,
   token,
+  closeDrawer,
+  disabledButton,
 }: {
-  disabledButton: boolean
   token: string
+  closeDrawer: () => void
+  disabledButton: boolean
 }) => {
   const { userId } = useAuth()
   const dispatch = useDispatch()
@@ -387,6 +390,7 @@ const AddProductToRecord = ({
       queryClient.invalidateQueries({ queryKey: ["lists_products"] })
       queryClient.invalidateQueries({ queryKey: ["sale_records"] })
       dispatch(resetProduct())
+      closeDrawer()
       toast({
         description: "catatan di tambahkan",
         variant: "success",
