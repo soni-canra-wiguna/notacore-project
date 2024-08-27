@@ -81,19 +81,26 @@ export const GET = async (
       )
     }
 
-    const page = parseInt(req.nextUrl.searchParams.get("page") ?? "1")
-    const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "20")
+    const page = parseInt(getSearchParams(req, "page") ?? "1")
+    const limit = parseInt(getSearchParams(req, "limit") ?? "20")
     const skip = (page - 1) * limit
-    const searchQuery = req.nextUrl.searchParams
-      .get("search")
-      ?.replace(/-/g, " ")
+    const searchQuery = getSearchParams(req, "search")
     const from = getSearchParams(req, "from") ?? "" // createdAt
     const to = getSearchParams(req, "to") ?? "" // createdAt
     const category = getSearchParams(req, "category") // category
-    const sortBy = getSearchParams(req, "sortBy") // if new
+    const sortBy = getSearchParams(req, "sortBy")
 
     let filters = []
     let orderBy = {}
+
+    if (searchQuery) {
+      filters.push({
+        title: {
+          contains: searchQuery,
+          mode: "insensitive" as Prisma.QueryMode,
+        },
+      })
+    }
 
     if (category) {
       filters.push({
