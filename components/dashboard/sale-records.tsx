@@ -405,7 +405,7 @@ const AddProductToRecord = ({
     try {
       const records: CreateSaleRecordRequest[] = products.map((product) => ({
         userId: product.userId,
-        title: product.image,
+        title: product.title,
         image: product.image,
         category: product.category,
         price: product.unitPrice,
