@@ -2,24 +2,22 @@
 
 import { Button } from "@/components/ui/button"
 import { useQueryState } from "nuqs"
-import {
-  format,
-  startOfDay,
-  endOfDay,
-  startOfWeek,
-  endOfWeek,
-  startOfMonth,
-  endOfMonth,
-  startOfYear,
-  endOfYear,
-  addWeeks,
-  subDays,
-  subWeeks,
-  subMonths,
-  subYears,
-} from "date-fns"
+import { format, subWeeks, subMonths, subYears } from "date-fns"
 import { useState } from "react"
 import { getCategoryProducts } from "@/services/get-category-products"
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import { X } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
+import { Skeleton } from "@/components/ui/skeleton"
 
 type TimeProps =
   | "today"
@@ -29,7 +27,19 @@ type TimeProps =
   | "sixMonthsAgo"
   | "oneYearAgo"
 
-type SortByProps = "low" | "high"
+type SortByProps = "quantity-low" | "quantity-high"
+
+interface ListTimeProps {
+  title: string
+  label: TimeProps
+  value: string
+}
+
+interface ListQuantityProps {
+  title: string
+  label: SortByProps
+  value: string
+}
 
 export const FilterStatistic = () => {
   const [from, setFrom] = useQueryState("from")
@@ -41,6 +51,7 @@ export const FilterStatistic = () => {
   const [hasTo, setHasTo] = useState("")
   const [hasSortBy, setHasSortBy] = useState("")
   const [hasCategory, setHasCategory] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
 
   const { data: categories, isPending, isError } = getCategoryProducts()
 
@@ -85,10 +96,10 @@ export const FilterStatistic = () => {
 
   const handleSelectSortBy = (sortBy: SortByProps) => {
     switch (sortBy) {
-      case "low":
+      case "quantity-low":
         setHasSortBy("quantity-low")
         break
-      case "high":
+      case "quantity-high":
         setHasSortBy("quantity-high")
         break
       default:
@@ -97,13 +108,11 @@ export const FilterStatistic = () => {
   }
 
   const handleSelectFilter = () => {
-    // date
     setFrom(hasFrom ? hasFrom : null)
     setTo(hasTo ? hasTo : null)
-    // category
     setCategory(hasCategory ? hasCategory : null)
-    // sortBy
     setSortBy(hasSortBy ? hasSortBy : null)
+    setIsOpen(!isOpen)
   }
 
   const resetSearchParams = () => {
@@ -111,90 +120,164 @@ export const FilterStatistic = () => {
     setTo(null)
     setSortBy(null)
     setCategory(null)
+    setIsOpen(!isOpen)
+  }
+
+  const list = {
+    times: [
+      {
+        title: "hari ini",
+        label: "today",
+        value: today,
+      },
+      {
+        title: "minggu lalu",
+        label: "oneWeekAgo",
+        value: oneWeekAgo,
+      },
+      {
+        title: "bulan lalu",
+        label: "oneMonthAgo",
+        value: oneMonthAgo,
+      },
+      {
+        title: "3 bulan lalu",
+        label: "threeMonthsAgo",
+        value: threeMonthsAgo,
+      },
+      {
+        title: "6 bulan lalu",
+        label: "sixMonthsAgo",
+        value: sixMonthsAgo,
+      },
+      {
+        title: "tahun lalu",
+        label: "oneYearAgo",
+        value: oneYearAgo,
+      },
+    ] as ListTimeProps[],
+    quantities: [
+      {
+        title: "Jumlah Terbanyak",
+        label: "quantity-high",
+        value: "quantity-high",
+      },
+      {
+        title: "jumlah tersedikit",
+        label: "quantity-low",
+        value: "quantity-low",
+      },
+    ] as ListQuantityProps[],
+  }
+
+  const LoadingCategories = () => {
+    const loading = Array.from({ length: 3 }, (_, i) => (
+      <Skeleton key={i} className="rounded-full px-3 py-2" />
+    ))
+
+    return <>{loading}</>
   }
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">tanggal</h1>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            variant={hasFrom === today ? "default" : "secondary"}
-            onClick={() => handleSelectTime("today")}
-          >
-            today
-          </Button>
-          <Button
-            variant={hasFrom === oneWeekAgo ? "default" : "secondary"}
-            onClick={() => handleSelectTime("oneWeekAgo")}
-          >
-            week
-          </Button>
-          <Button
-            variant={hasFrom === oneMonthAgo ? "default" : "secondary"}
-            onClick={() => handleSelectTime("oneMonthAgo")}
-          >
-            1 month
-          </Button>
-          <Button
-            variant={hasFrom === threeMonthsAgo ? "default" : "secondary"}
-            onClick={() => handleSelectTime("threeMonthsAgo")}
-          >
-            3 months
-          </Button>
-          <Button
-            variant={hasFrom === sixMonthsAgo ? "default" : "secondary"}
-            onClick={() => handleSelectTime("sixMonthsAgo")}
-          >
-            6 months
-          </Button>
-          <Button
-            variant={hasFrom === oneYearAgo ? "default" : "secondary"}
-            onClick={() => handleSelectTime("oneYearAgo")}
-          >
-            1 year
-          </Button>
-        </div>
-      </div>
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">urutkan</h1>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            variant={hasSortBy === "quantity-high" ? "default" : "secondary"}
-            onClick={() => handleSelectSortBy("high")}
-          >
-            Jumlah : Terbanyak
-          </Button>
-          <Button
-            variant={hasSortBy === "quantity-low" ? "default" : "secondary"}
-            onClick={() => handleSelectSortBy("low")}
-          >
-            Jumlah : Tersedikit
-          </Button>
-        </div>
-      </div>
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">kategori</h1>
-        <div className="flex flex-wrap items-center gap-2">
-          {isPending
-            ? "loading categories"
-            : categories?.map(({ category }, i) => (
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
+      <DrawerTrigger asChild>
+        <Button>filter data</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader className="flex items-center justify-between border-b">
+          <DrawerTitle className="sr-only">filter catatan</DrawerTitle>
+          <DrawerDescription className="sr-only">
+            kamu bisa filter catatan dengan berbagai kombinasi
+          </DrawerDescription>
+          <div className="flex items-center gap-3">
+            <h3 className="font-semibold capitalize">filter</h3>
+          </div>
+          <DrawerClose asChild>
+            <Button
+              onClick={() => setIsOpen(!isOpen)}
+              className=""
+              variant="ghost"
+              size="icon"
+            >
+              <X className="size-6 stroke-[1.5]" />
+              <p className="sr-only">close</p>
+            </Button>
+          </DrawerClose>
+        </DrawerHeader>
+        <div className="scrollbar-hide h-full max-h-[450px] w-full overflow-y-auto p-4">
+          <div className="space-y-3">
+            <h3 className="text-sm font-bold capitalize">Tanggal</h3>
+            <div className="flex flex-wrap items-center gap-2.5">
+              {list.times.map((time, i) => (
                 <Button
-                  variant={hasCategory === "category" ? "default" : "secondary"}
                   key={i}
-                  onClick={() => setHasCategory(category)}
+                  onClick={() => handleSelectTime(time.label)}
+                  variant={hasFrom === time.value ? "default" : "outline"}
+                  size="xs"
+                  className="capitalize"
                 >
-                  {category}
+                  {time.title}
                 </Button>
               ))}
+            </div>
+          </div>
+          <Separator className="my-5" />
+          <div className="space-y-3">
+            <h3 className="text-sm font-bold capitalize">jumlah terjual</h3>
+            <div className="flex flex-wrap items-center gap-2.5">
+              {list.quantities.map((qty, i) => (
+                <Button
+                  key={i}
+                  variant={hasSortBy === qty.value ? "default" : "outline"}
+                  onClick={() => handleSelectSortBy(qty.label)}
+                  size="xs"
+                  className="capitalize"
+                >
+                  {qty.title}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <Separator className="my-5" />
+          <div className="space-y-3">
+            <h3 className="text-sm font-bold capitalize">kategori</h3>
+            <div className="flex flex-wrap items-center gap-2.5">
+              {isPending ? (
+                <LoadingCategories />
+              ) : (
+                categories?.map(({ category }, i) => (
+                  <Button
+                    variant={hasCategory === category ? "default" : "outline"}
+                    key={i}
+                    onClick={() => setHasCategory(category)}
+                    size="xs"
+                    className="capitalize"
+                  >
+                    {category}
+                  </Button>
+                ))
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="my-5 flex items-center justify-center gap-4">
-        <Button onClick={resetSearchParams} variant="outline">
-          batalkan
-        </Button>
-        <Button onClick={handleSelectFilter}>terapkan</Button>
-      </div>
-    </div>
+        <DrawerFooter className="w-full flex-row border-t">
+          <Button
+            className="w-full rounded-full"
+            size="lg"
+            onClick={resetSearchParams}
+            variant="secondary"
+          >
+            batalkan
+          </Button>
+          <Button
+            className="w-full rounded-full"
+            size="lg"
+            onClick={handleSelectFilter}
+          >
+            terapkan
+          </Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   )
 }
