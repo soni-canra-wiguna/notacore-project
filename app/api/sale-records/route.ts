@@ -2,7 +2,8 @@ import prisma from "@/lib/prisma"
 import { SaleRecordValidation } from "@/schema/sale-record.schema"
 import { Validation } from "@/schema/validation"
 import { CreateSaleRecordRequest } from "@/types/sale-record"
-import { Product } from "@prisma/client"
+import { getSearchParams } from "@/utils/get-search-params"
+import { Prisma } from "@prisma/client"
 import { NextRequest, NextResponse } from "next/server"
 import * as z from "zod"
 
@@ -80,43 +81,89 @@ export const GET = async (
       )
     }
 
-    const page = parseInt(req.nextUrl.searchParams.get("page") ?? "1")
-    const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "20")
+    const page = parseInt(getSearchParams(req, "page") ?? "1")
+    const limit = parseInt(getSearchParams(req, "limit") ?? "20")
     const skip = (page - 1) * limit
-    const category = req.nextUrl.searchParams.get("category") ?? ""
-    const searchQuery = req.nextUrl.searchParams
-      .get("search")
-      ?.replace(/-/g, " ")
+    const searchQuery = getSearchParams(req, "search")
+    const from = getSearchParams(req, "from") ?? "" // createdAt
+    const to = getSearchParams(req, "to") ?? "" // createdAt
+    const category = getSearchParams(req, "category") // category
+    const sortBy = getSearchParams(req, "sortBy")
+
+    let filters = []
+    let orderBy = {}
+
+    if (searchQuery) {
+      filters.push({
+        title: {
+          contains: searchQuery,
+          mode: "insensitive" as Prisma.QueryMode,
+        },
+      })
+    }
+
+    if (category) {
+      filters.push({
+        category: {
+          contains: category,
+          mode: "insensitive" as Prisma.QueryMode,
+        },
+      })
+    }
+
+    if (from && to) {
+      const fromDate = new Date(from)
+      const toDate = new Date(to)
+      toDate.setUTCHours(23, 59, 59, 999)
+      filters.push({
+        createdAt: {
+          gte: new Date(fromDate),
+          lte: new Date(toDate),
+        },
+      })
+    }
+
+    if (from && to && category) {
+      const fromDate = new Date(from)
+      const toDate = new Date(to)
+      toDate.setUTCHours(23, 59, 59, 999)
+      filters.push({
+        createdAt: {
+          gte: new Date(fromDate),
+          lte: new Date(toDate),
+        },
+        category: {
+          contains: category,
+          mode: "insensitive" as Prisma.QueryMode,
+        },
+      })
+    }
+
+    switch (sortBy) {
+      case "quantity-low":
+        orderBy = { quantity: "asc" }
+        break
+      case "quantity-high":
+        orderBy = { quantity: "desc" }
+        break
+      default:
+        orderBy = { quantity: "desc" }
+    }
+
+    const saleRecords = await prisma.saleRecord.findMany({
+      where: {
+        userId,
+        AND: filters,
+      },
+      orderBy: orderBy || { createdAt: "desc" },
+      skip: skip,
+      take: limit,
+    })
 
     const totalSaleRecords = await prisma.product.count({
       where: {
         userId,
       },
-    })
-
-    const saleRecords = await prisma.saleRecord.findMany({
-      where: {
-        userId,
-        OR: [
-          {
-            title: {
-              contains: searchQuery,
-              mode: "insensitive",
-            },
-          },
-          {
-            title: {
-              contains: category!,
-              mode: "insensitive",
-            },
-          },
-        ],
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      skip: skip,
-      take: limit,
     })
 
     const productNotFound = saleRecords.length === 0
@@ -156,13 +203,6 @@ export const GET = async (
       totalSaleRecordsPerPage: saleRecords.length,
       totalSaleRecords,
     }
-
-    // await redis.set(
-    //   redisCacheKey,
-    //   JSON.stringify(response),
-    //   "EX",
-    //   REDIS_EXPIRATION_TIME,
-    // )
 
     return NextResponse.json(response, { status: 200 })
   } catch (error) {
