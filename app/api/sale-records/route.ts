@@ -84,7 +84,6 @@ export const GET = async (
     const page = parseInt(getSearchParams(req, "page") ?? "1")
     const limit = parseInt(getSearchParams(req, "limit") ?? "20")
     const skip = (page - 1) * limit
-    const searchQuery = getSearchParams(req, "search")
     const from = getSearchParams(req, "from") ?? "" // createdAt
     const to = getSearchParams(req, "to") ?? "" // createdAt
     const category = getSearchParams(req, "category") // category
@@ -92,15 +91,6 @@ export const GET = async (
 
     let filters = []
     let orderBy = {}
-
-    if (searchQuery) {
-      filters.push({
-        title: {
-          contains: searchQuery,
-          mode: "insensitive" as Prisma.QueryMode,
-        },
-      })
-    }
 
     if (category) {
       filters.push({
@@ -168,16 +158,6 @@ export const GET = async (
 
     const productNotFound = saleRecords.length === 0
 
-    if (searchQuery && productNotFound) {
-      return NextResponse.json(
-        {
-          message: "search result not found",
-          data: [],
-        },
-        { status: 200 },
-      )
-    }
-
     if (!totalSaleRecords || productNotFound) {
       return NextResponse.json(
         {
@@ -188,18 +168,11 @@ export const GET = async (
       )
     }
 
-    const responseMessage = searchQuery
-      ? "Search results successfully retrieved"
-      : "records successfully retrieved"
-    const responseTotalPages = Math.ceil(
-      searchQuery ? saleRecords.length : totalSaleRecords / limit,
-    )
-
     const response = {
-      message: responseMessage,
+      message: "records successfully retrieved",
       data: saleRecords,
       currentPage: page,
-      totalPages: responseTotalPages,
+      totalPages: Math.ceil(totalSaleRecords / limit),
       totalSaleRecordsPerPage: saleRecords.length,
       totalSaleRecords,
     }
