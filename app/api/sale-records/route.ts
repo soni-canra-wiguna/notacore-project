@@ -81,9 +81,6 @@ export const GET = async (
       )
     }
 
-    const page = parseInt(getSearchParams(req, "page") ?? "1")
-    const limit = parseInt(getSearchParams(req, "limit") ?? "20")
-    const skip = (page - 1) * limit
     const from = getSearchParams(req, "from") ?? "" // createdAt
     const to = getSearchParams(req, "to") ?? "" // createdAt
     const category = getSearchParams(req, "category") // category
@@ -146,8 +143,6 @@ export const GET = async (
         AND: filters,
       },
       orderBy: orderBy || { createdAt: "desc" },
-      skip: skip,
-      take: limit,
     })
 
     const totalSaleRecords = await prisma.saleRecord.count({
@@ -252,7 +247,7 @@ export const GET = async (
     const statisticResponse = {
       totalSales,
       totalRevenue,
-      totalTransactions, // length records
+      totalTransactions,
       averageSalePerTransaction,
       averageRevenuePerTransaction,
       salesByCategory,
@@ -267,11 +262,7 @@ export const GET = async (
     const response = {
       message: "records successfully retrieved",
       data: saleRecords,
-      statistics: statisticResponse,
-      currentPage: page,
-      totalPages: Math.ceil(totalSaleRecords / limit),
-      totalSaleRecordsPerPage: saleRecords.length,
-      totalSaleRecords,
+      statistic: statisticResponse,
     }
 
     return NextResponse.json(response, { status: 200 })
