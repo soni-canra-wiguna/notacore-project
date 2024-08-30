@@ -6,6 +6,7 @@ import {
   ChartDemo5,
 } from "@/components/dashboard/statistic/demo-chart"
 import { FilterStatistic } from "@/components/dashboard/statistic/filter"
+import Amount from "@/components/dashboard/statistic/amount"
 import { Container } from "@/components/layout/container"
 import React, { Suspense } from "react"
 import { Separator } from "@/components/ui/separator"
@@ -14,6 +15,7 @@ const StatisticsPage = () => {
   return (
     <main className="min-h-screen w-full">
       <Container className="py-20">
+        <Amount/>
         <ChartDemo />
         <Separator className="my-5" />
         <ChartDemo2 />
