@@ -81,10 +81,6 @@ export const GET = async (
       )
     }
 
-    const page = parseInt(getSearchParams(req, "page") ?? "1")
-    const limit = parseInt(getSearchParams(req, "limit") ?? "20")
-    const skip = (page - 1) * limit
-    const searchQuery = getSearchParams(req, "search")
     const from = getSearchParams(req, "from") ?? "" // createdAt
     const to = getSearchParams(req, "to") ?? "" // createdAt
     const category = getSearchParams(req, "category") // category
@@ -92,15 +88,6 @@ export const GET = async (
 
     let filters = []
     let orderBy = {}
-
-    if (searchQuery) {
-      filters.push({
-        title: {
-          contains: searchQuery,
-          mode: "insensitive" as Prisma.QueryMode,
-        },
-      })
-    }
 
     if (category) {
       filters.push({
@@ -156,27 +143,15 @@ export const GET = async (
         AND: filters,
       },
       orderBy: orderBy || { createdAt: "desc" },
-      skip: skip,
-      take: limit,
     })
 
-    const totalSaleRecords = await prisma.product.count({
+    const totalSaleRecords = await prisma.saleRecord.count({
       where: {
         userId,
       },
     })
 
     const productNotFound = saleRecords.length === 0
-
-    if (searchQuery && productNotFound) {
-      return NextResponse.json(
-        {
-          message: "search result not found",
-          data: [],
-        },
-        { status: 200 },
-      )
-    }
 
     if (!totalSaleRecords || productNotFound) {
       return NextResponse.json(
@@ -188,20 +163,106 @@ export const GET = async (
       )
     }
 
-    const responseMessage = searchQuery
-      ? "Search results successfully retrieved"
-      : "records successfully retrieved"
-    const responseTotalPages = Math.ceil(
-      searchQuery ? saleRecords.length : totalSaleRecords / limit,
+    // statistic response start
+
+    const totalSales = saleRecords.reduce((acc, curr) => {
+      return acc + curr.quantity
+    }, 0)
+    const totalRevenue = saleRecords.reduce((acc, curr) => {
+      return acc + curr.totalPrice
+    }, 0)
+    const totalTransactions = totalSaleRecords
+    const averageSalePerTransaction = totalSales / totalTransactions
+    const averageRevenuePerTransaction = totalRevenue / totalTransactions
+    // Calculate sales and revenue by category
+    const salesByCategory = saleRecords.reduce(
+      (acc, curr) => {
+        const category = curr.category || "Uncategorized"
+        if (!acc[category]) {
+          acc[category] = 0
+        }
+        acc[category] += curr.quantity
+        return acc
+      },
+      {} as Record<string, number>,
     )
 
+    const revenueByCategory = saleRecords.reduce(
+      (acc, curr) => {
+        const category = curr.category || "Uncategorized"
+        if (!acc[category]) {
+          acc[category] = 0
+        }
+        acc[category] += curr.totalPrice
+        return acc
+      },
+      {} as Record<string, number>,
+    )
+
+    // Calculate sales and revenue by month
+    const salesByMonth = saleRecords.reduce(
+      (acc, curr) => {
+        const month = curr.createdAt.toLocaleString("default", {
+          month: "long",
+        })
+        if (!acc[month]) {
+          acc[month] = 0
+        }
+        acc[month] += curr.quantity
+        return acc
+      },
+      {} as Record<string, number>,
+    )
+
+    const revenueByMonth = saleRecords.reduce(
+      (acc, curr) => {
+        const month = curr.createdAt.toLocaleString("default", {
+          month: "long",
+        })
+        if (!acc[month]) {
+          acc[month] = 0
+        }
+        acc[month] += curr.totalPrice
+        return acc
+      },
+      {} as Record<string, number>,
+    )
+
+    // Get top selling products
+    const topSellingProducts = saleRecords
+      .reduce(
+        (acc, curr) => {
+          const product = acc.find((p) => p.product === curr.title)
+          if (product) {
+            product.quantity += curr.quantity
+          } else {
+            acc.push({ product: curr.title, quantity: curr.quantity })
+          }
+          return acc
+        },
+        [] as { product: string; quantity: number }[],
+      )
+      .sort((a, b) => b.quantity - a.quantity)
+
+    const statisticResponse = {
+      totalSales,
+      totalRevenue,
+      totalTransactions,
+      averageSalePerTransaction,
+      averageRevenuePerTransaction,
+      salesByCategory,
+      revenueByCategory,
+      salesByMonth,
+      revenueByMonth,
+      topSellingProducts,
+    }
+
+    // statistic response end
+
     const response = {
-      message: responseMessage,
+      message: "records successfully retrieved",
       data: saleRecords,
-      currentPage: page,
-      totalPages: responseTotalPages,
-      totalSaleRecordsPerPage: saleRecords.length,
-      totalSaleRecords,
+      statistic: statisticResponse,
     }
 
     return NextResponse.json(response, { status: 200 })

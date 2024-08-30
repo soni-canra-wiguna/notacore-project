@@ -18,6 +18,7 @@ import {
 import { X } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Filter } from 'lucide-react';
 
 type TimeProps =
   | "today"
@@ -181,7 +182,9 @@ export const FilterStatistic = () => {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-        <Button>filter data</Button>
+      <Button variant="outline" size="icon" className="size-9">
+          <Filter className="size-4 stroke-[1.5]" />
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="flex items-center justify-between border-b">
