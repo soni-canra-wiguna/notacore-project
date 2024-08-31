@@ -119,5 +119,9 @@
   .prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
     margin: 0.75em 0;
   }
+
+  .gradientCard {
+    @apply bg-gradient-to-bl from-secondary;
+  }
 }
 
