@@ -10,12 +10,14 @@ import Amount from "@/components/dashboard/statistic/amount"
 import { Container } from "@/components/layout/container"
 import React, { Suspense } from "react"
 import { Separator } from "@/components/ui/separator"
+import TableRecords from "@/components/dashboard/statistic/table-records"
 
 const StatisticsPage = () => {
   return (
     <main className="min-h-screen w-full">
       <Container className="py-20">
-        <Amount/>
+        <Amount />
+        <TableRecords />
         <ChartDemo />
         <Separator className="my-5" />
         <ChartDemo2 />
