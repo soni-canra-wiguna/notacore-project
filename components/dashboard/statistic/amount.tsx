@@ -25,13 +25,13 @@ const Amount = () => {
           <span className="text-xs capitalize text-muted-foreground">
             total penjualan
           </span>
-          <span className="text-lg font-bold leading-none sm:text-3xl">30</span>
+          <span className="text-lg font-bold leading-none">30</span>
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
           <span className="text-xs capitalize text-muted-foreground">
             total pendapatan
           </span>
-          <span className="text-lg font-bold leading-none sm:text-3xl">
+          <span className="text-lg font-bold leading-none">
             {formatToIDR(300000)}
           </span>
         </Card>
@@ -39,13 +39,13 @@ const Amount = () => {
           <span className="text-xs text-muted-foreground">
             Avg Penjualan per Transaksi
           </span>
-          <span className="text-lg font-bold leading-none sm:text-3xl">4</span>
+          <span className="text-lg font-bold leading-none">4</span>
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
           <span className="text-xs text-muted-foreground">
             Avg Pendapatan per Transaksi
           </span>
-          <span className="text-lg font-bold leading-none sm:text-3xl">
+          <span className="text-lg font-bold leading-none">
             {formatToIDR(40000)}
           </span>
         </Card>
@@ -120,12 +120,12 @@ export const AmountByCategory = () => {
                   <span className="mb-1 text-xs capitalize text-muted-foreground">
                     total terjual
                   </span>
-                  <span className="text-lg font-bold leading-none sm:text-3xl">
+                  <span className="text-lg font-bold leading-none">
                     {item.quantity}
                   </span>
                 </div>
                 <div className="flex items-center justify-center">
-                  <span className="text-lg font-bold leading-none sm:text-3xl">
+                  <span className="text-lg font-bold leading-none">
                     {formatToIDR(item.price)}
                   </span>
                 </div>
@@ -137,7 +137,7 @@ export const AmountByCategory = () => {
                 <span className="mb-1 text-xs capitalize text-muted-foreground">
                   total terjual {item.quantity} buah
                 </span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
+                <span className="text-lg font-bold leading-none">
                   {formatToIDR(item.price)}
                 </span>
               </Card> */}
