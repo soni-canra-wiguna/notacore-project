@@ -144,7 +144,10 @@ export const SaleRecords = ({ token }: { token: string }) => {
               <p className="text-sm font-semibold">{formatToIDR(totalPrice)}</p>
             </div>
             <div className="flex items-center gap-2.5">
-              <ResetListsProductsButton disabledButton={disabledButton} />
+              <ResetListsProductsButton
+                disabledButton={disabledButton}
+                closeDrawer={() => setIsOpen(!isOpen)}
+              />
               <AddProductToRecord
                 token={token}
                 closeDrawer={() => setIsOpen(!isOpen)}
@@ -283,8 +286,10 @@ const LayoutSwitcher = ({
 
 const ResetListsProductsButton = ({
   disabledButton,
+  closeDrawer,
 }: {
   disabledButton: boolean
+  closeDrawer: () => void
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const dispatch = useDispatch()
@@ -292,6 +297,7 @@ const ResetListsProductsButton = ({
   const handleResetProduct = () => {
     dispatch(resetProduct())
     setIsOpen(!isOpen)
+    closeDrawer()
     toast({
       title: "semua produk telah di hapus",
       variant: "destructive",
