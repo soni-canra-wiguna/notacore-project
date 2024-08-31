@@ -36,14 +36,14 @@ const Amount = () => {
           </span>
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            rata-rata penjulan<span className="block">/ transaksi</span>
+          <span className="text-xs text-muted-foreground">
+            Avg Penjualan per Transaksi
           </span>
           <span className="text-lg font-bold leading-none sm:text-3xl">4</span>
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            rata-rata pendapatan<span className="block">/ transaksi</span>
+          <span className="text-xs text-muted-foreground">
+            Avg Pendapatan per Transaksi
           </span>
           <span className="text-lg font-bold leading-none sm:text-3xl">
             {formatToIDR(40000)}
