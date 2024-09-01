@@ -7,47 +7,45 @@ import {
   CarouselApi,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel"
 import { useEffect, useState } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import { Badge } from "@/components/ui/badge"
-import {FilterStatistic} from "./filter"
+import { FilterStatistic } from "./filter"
 
 const Amount = () => {
   return (
     <section className="mb-6 space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold capitalize">Hari ini</h1>
-        <FilterStatistic/>
+        <FilterStatistic />
       </div>
       <div className="grid grid-cols-2 gap-2">
-        <Card className="flex flex-col gap-1 rounded-xl p-4">
+        <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
           <span className="text-xs capitalize text-muted-foreground">
             total penjualan
           </span>
-          <span className="text-lg font-bold leading-none sm:text-3xl">30</span>
+          <span className="text-lg font-bold leading-none">30</span>
         </Card>
-        <Card className="flex flex-col gap-1 rounded-xl p-4">
+        <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
           <span className="text-xs capitalize text-muted-foreground">
             total pendapatan
           </span>
-          <span className="text-lg font-bold leading-none sm:text-3xl">
+          <span className="text-lg font-bold leading-none">
             {formatToIDR(300000)}
           </span>
         </Card>
-        <Card className="flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            rata-rata penjulan<span className="block">/ transaksi</span>
+        <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
+          <span className="text-xs text-muted-foreground">
+            Avg Penjualan per Transaksi
           </span>
-          <span className="text-lg font-bold leading-none sm:text-3xl">4</span>
+          <span className="text-lg font-bold leading-none">4</span>
         </Card>
-        <Card className="flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            rata-rata pendapatan<span className="block">/ transaksi</span>
+        <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
+          <span className="text-xs text-muted-foreground">
+            Avg Pendapatan per Transaksi
           </span>
-          <span className="text-lg font-bold leading-none sm:text-3xl">
+          <span className="text-lg font-bold leading-none">
             {formatToIDR(40000)}
           </span>
         </Card>
@@ -114,18 +112,22 @@ export const AmountByCategory = () => {
         <CarouselContent>
           {carouselItems.map((item, i) => (
             <CarouselItem key={i}>
-              <Card className="h-[130px] w-full overflow-hidden rounded-xl bg-gradient-to-bl from-secondary grid grid-cols-2 selection:bg-transparent">
+              <Card className="gradientCard grid h-[130px] w-full grid-cols-2 overflow-hidden rounded-xl selection:bg-transparent">
                 <div className="flex flex-col gap-1 p-4">
-                <Badge variant="secondary" className="w-max mb-3">{item.category}</Badge>
-                <span className='text-xs capitalize text-muted-foreground mb-1'>total terjual</span>
-              <span className="text-lg font-bold leading-none sm:text-3xl">
-            {item.quantity}
-          </span>
+                  <Badge variant="secondary" className="mb-3 w-max">
+                    {item.category}
+                  </Badge>
+                  <span className="mb-1 text-xs capitalize text-muted-foreground">
+                    total terjual
+                  </span>
+                  <span className="text-lg font-bold leading-none">
+                    {item.quantity}
+                  </span>
                 </div>
-                <div className='flex items-center justify-center'>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
-            {formatToIDR(item.price)}
-          </span>
+                <div className="flex items-center justify-center">
+                  <span className="text-lg font-bold leading-none">
+                    {formatToIDR(item.price)}
+                  </span>
                 </div>
               </Card>
               {/* <Card className="flex h-[130px] w-full flex-col gap-1 overflow-hidden rounded-xl bg-gradient-to-bl from-secondary p-4">
@@ -135,7 +137,7 @@ export const AmountByCategory = () => {
                 <span className="mb-1 text-xs capitalize text-muted-foreground">
                   total terjual {item.quantity} buah
                 </span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
+                <span className="text-lg font-bold leading-none">
                   {formatToIDR(item.price)}
                 </span>
               </Card> */}
