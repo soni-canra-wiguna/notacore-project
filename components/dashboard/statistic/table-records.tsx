@@ -1,46 +1,141 @@
-import { Card } from "@/components/ui/card"
-import { ChevronsUpDown } from 'lucide-react'
-import React from "react"
+"use client"
+
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+import { formatToIDR } from "@/utils/format-to-idr"
+import { useAuth } from "@clerk/nextjs"
+import { SaleRecord } from "@prisma/client"
+import { useQuery } from "@tanstack/react-query"
+import axios from "axios"
+import { format } from "date-fns"
+import { ChevronLeft, ChevronRight, ChevronsUpDown } from "lucide-react"
+import React, { useState } from "react"
+import {useMounted} from "@/hook/use-mounted"
+
+export interface GetSalesRecordWithPaggingProps {
+  message: string
+  data: SaleRecord[]
+  currentPage: number
+  totalPages: number
+  totalSaleRecordsPerPage: number
+  totalSaleRecords: number
+}
 
 const TableRecords = () => {
+  const [page, setPage] = useState(1)
+  const { userId, getToken } = useAuth()
+  const {isMounted} = useMounted()
+
+  const { data, isPending, isError } = useQuery<GetSalesRecordWithPaggingProps>(
+    {
+      queryKey: ["pagging data", page],
+      queryFn: async () => {
+        const token = await getToken()
+        const { data } = await axios.get(
+          `/api/sale-records/pagination?page=${page}`,
+          {
+            headers: {
+              Authorization: token,
+              userId: userId!,
+            },
+          },
+        )
+
+        return data
+      },
+    },
+  )
+
+  if(!isMounted) return <Card className="gradientCard aspect-square max-w-[480px] overflow-hidden rounded-xl" />
+
   return (
-    <Card className="gradientCard mt-20 aspect-square max-w-[480px] overflow-hidden rounded-xl p-4">
-      <div className="h-full w-full overflow-y-auto scrollbar-hide">
-        <div className="w-[900px] overflow-x-auto">
+    <Card className="gradientCard h-full max-w-[480px] overflow-hidden rounded-xl">
+      <CardHeader className="p-4 space-y-1">
+        <CardTitle className="text-lg capitalize">tabel penjualan</CardTitle>
+        <CardDescription className="text-xs">
+          List produk yang terjual
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="scrollbar-hide h-full max-h-[350px] w-full overflow-y-auto pb-0 px-4">
+        <div className="w-[844px] overflow-x-auto">
           <table className="min-w-full border-collapse text-sm">
             <thead>
               <tr>
-                <th className="border p-2 capitalize w-14">No</th>
-                <th className=" border p-2 capitalize w-64">Nama Produk</th>
-                <th className="border p-2 capitalize w-36">harga</th>
-                <th className="border p-2 capitalize w-24 flex items-center gap-2 justify-center">
+                <th className="w-64 border p-2 capitalize">Nama Produk</th>
+                <th className="w-36 border p-2 capitalize">harga</th>
+                <th className="flex w-24 items-center justify-center gap-2 border p-2 capitalize">
                   jumlah <ChevronsUpDown className="size-3" />
                 </th>
-                <th className="border p-2  w-40">total harga</th>
-                <th className="border p-2 capitalize flex items-center gap-2 justify-center">
+                <th className="w-40 border p-2 capitalize">total harga</th>
+                <th className="flex items-center justify-center gap-2 border p-2 capitalize">
                   tanggal <ChevronsUpDown className="size-3" />
                 </th>
               </tr>
             </thead>
             <tbody>
-              {Array.from({ length: 20 }, (_, i) => {
-                return (
-                  <tr key={i} className="selection:bg-transparent">
-                    <td className="border p-2 text-center w-14">{i + 1}</td>
-                    <td className="max-w-64 border p-2 truncate">
-                      Data 1 dan data 2 is real dkdflasksd sdfsd sdkf s
-                    </td>
-                    <td className="border p-2 text-center w-36">Rp. 100.000</td>
-                    <td className="border p-2 w-24 text-center">4</td>
-                    <td className="border p-2 w-40 text-center">Rp. 400.000</td>
-                    <td className="border p-2 text-center">2024-05-11</td>
-                  </tr>
-                )
-              })}
+              {isPending ? (
+                <div className="">loading...</div>
+              ) : (
+                data?.data.map((p, i) => {
+                  const formattedDate = format(p.createdAt, "yyyy-MM-dd")
+                  return (
+                    <tr key={i} className="selection:bg-transparent">
+                      <td className="max-w-64 truncate border p-2">
+                        {p.title}
+                      </td>
+                      <td className="w-36 border p-2 text-left">
+                        {formatToIDR(p.price)}
+                      </td>
+                      <td className="w-24 border p-2 text-center">
+                        {p.quantity}
+                      </td>
+                      <td className="w-40 border p-2 text-left">
+                        {formatToIDR(p.totalPrice)}
+                      </td>
+                      <td className="border p-2 text-center">
+                        {formattedDate}
+                      </td>
+                    </tr>
+                  )
+                })
+              )}
             </tbody>
           </table>
         </div>
-      </div>
+      </CardContent>
+      <CardFooter className="justify-end p-4">
+        <div className="flex items-center justify-center gap-4">
+          <Button
+            size="xs"
+            className="rounded-xl p-2"
+            variant="outline"
+            onClick={() => setPage(page - 1)}
+            disabled={page <= 1}
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
+          <p className="text-sm">
+            {data?.currentPage} / {data?.totalPages}
+          </p>
+          <Button
+            size="xs"
+            className="rounded-xl p-2"
+            variant="outline"
+            onClick={() => setPage(page + 1)}
+            disabled={page === data?.totalPages}
+          >
+            <ChevronRight className="size-4" />
+          </Button>
+        </div>
+      </CardFooter>
     </Card>
   )
 }
