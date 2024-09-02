@@ -108,7 +108,7 @@ const LoadingAmount = () => {
       </div>
       <Card className="gradientCard grid h-[130px] w-full grid-cols-2 overflow-hidden rounded-xl selection:bg-transparent">
         <div className="flex flex-col gap-1 p-4">
-          <Skeleton variant="shimmer" className="h-7 w-20" />
+          <Skeleton variant="shimmer" className="mb-3 h-5 w-20 rounded-full" />
           <span className="mb-1 text-xs capitalize text-muted-foreground">
             total terjual
           </span>
