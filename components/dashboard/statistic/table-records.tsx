@@ -36,7 +36,7 @@ const TableRecords = () => {
 
   const { data, isPending, isError } = useQuery<GetSalesRecordWithPaggingProps>(
     {
-      queryKey: ["pagging data", page],
+      queryKey: ["pagging-data", page],
       queryFn: async () => {
         const token = await getToken()
         const { data } = await axios.get(
