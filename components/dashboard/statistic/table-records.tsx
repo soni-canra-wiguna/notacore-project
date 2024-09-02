@@ -54,6 +54,19 @@ const TableRecords = () => {
     },
   )
 
+  if (!isMounted)
+    return (
+      <Card className="gradientCard h-[130px] w-full rounded-xl">
+        <div className="space-y-1 p-4">
+          <Skeleton variant="shimmer" className="h-7 w-40 rounded-full" />
+          <Skeleton variant="shimmer" className="h-4 w-52 rounded-full" />
+        </div>
+        <div className="p-4">
+          <Skeleton variant="shimmer" className="h-[100px] w-full rounded-xl" />
+        </div>
+      </Card>
+    )
+
   return (
     <Card className="gradientCard h-full max-w-[480px] overflow-hidden rounded-xl">
       <CardHeader className="space-y-1 p-4">
