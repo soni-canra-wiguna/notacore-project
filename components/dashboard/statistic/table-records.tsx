@@ -18,7 +18,7 @@ import axios from "axios"
 import { format } from "date-fns"
 import { ChevronLeft, ChevronRight, ChevronsUpDown } from "lucide-react"
 import React, { useState } from "react"
-import {useMounted} from "@/hook/use-mounted"
+import { useMounted } from "@/hook/use-mounted"
 
 export interface GetSalesRecordWithPaggingProps {
   message: string
@@ -32,11 +32,11 @@ export interface GetSalesRecordWithPaggingProps {
 const TableRecords = () => {
   const [page, setPage] = useState(1)
   const { userId, getToken } = useAuth()
-  const {isMounted} = useMounted()
+  const { isMounted } = useMounted()
 
   const { data, isPending, isError } = useQuery<GetSalesRecordWithPaggingProps>(
     {
-      queryKey: ["pagging data", page],
+      queryKey: ["pagging_salesrecord", page],
       queryFn: async () => {
         const token = await getToken()
         const { data } = await axios.get(
@@ -54,17 +54,15 @@ const TableRecords = () => {
     },
   )
 
-  if(!isMounted) return <Card className="gradientCard aspect-square max-w-[480px] overflow-hidden rounded-xl" />
-
   return (
     <Card className="gradientCard h-full max-w-[480px] overflow-hidden rounded-xl">
-      <CardHeader className="p-4 space-y-1">
+      <CardHeader className="space-y-1 p-4">
         <CardTitle className="text-lg capitalize">tabel penjualan</CardTitle>
         <CardDescription className="text-xs">
           List produk yang terjual
         </CardDescription>
       </CardHeader>
-      <CardContent className="scrollbar-hide h-full max-h-[350px] w-full overflow-y-auto pb-0 px-4">
+      <CardContent className="scrollbar-hide h-full max-h-[350px] w-full overflow-y-auto px-4 pb-0">
         <div className="w-[844px] overflow-x-auto">
           <table className="min-w-full border-collapse text-sm">
             <thead>
@@ -82,7 +80,7 @@ const TableRecords = () => {
             </thead>
             <tbody>
               {isPending ? (
-                <div className="">loading...</div>
+                <tr className="">loading...</tr>
               ) : (
                 data?.data.map((p, i) => {
                   const formattedDate = format(p.createdAt, "yyyy-MM-dd")

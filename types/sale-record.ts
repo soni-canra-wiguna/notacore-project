@@ -26,3 +26,26 @@ export interface ProductResponse {
   totalProductsPerPage: number
   totalProducts: number
 }
+
+export interface SalesAndRevenueByCategoryResponse {
+  label: string
+  quantity: number
+  totalPrice: number
+}
+
+export interface StatisticResponse {
+  totalSales: number
+  totalRevenue: number
+  totalTransactions: number
+  averageSalePerTransaction: number
+  averageRevenuePerTransaction: number
+  salesByCategory: Record<string, number>
+  salesAndRevenueByCategory: SalesAndRevenueByCategoryResponse[]
+  revenueByCategory: Record<string, number>
+  salesByMonth: Record<string, number>
+  revenueByMonth: Record<string, number>
+  topSellingProducts: {
+    product: string
+    quantity: number
+  }[]
+}

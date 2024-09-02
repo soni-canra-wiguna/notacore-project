@@ -123,5 +123,28 @@
   .gradientCard {
     @apply bg-gradient-to-bl from-secondary;
   }
+
+  .shimmer {
+    position: relative;
+    overflow: hidden
+  }
+  
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateX(-100%);
+    background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1), transparent);
+    animation: loading 2s infinite;
+  }
+  
+  @keyframes loading {
+    100% {
+      transform: translateX(100%)
+    }
+  }
 }
 

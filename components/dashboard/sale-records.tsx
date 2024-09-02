@@ -394,7 +394,8 @@ const AddProductToRecord = ({
         ),
       )
       queryClient.invalidateQueries({ queryKey: ["lists_products"] })
-      queryClient.invalidateQueries({ queryKey: ["sale_records"] })
+      queryClient.invalidateQueries({ queryKey: ["pagging_salesrecord"] })
+      queryClient.invalidateQueries({ queryKey: ["sales_record"] })
       dispatch(resetProduct())
       closeDrawer()
       toast({

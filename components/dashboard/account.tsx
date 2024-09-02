@@ -16,7 +16,8 @@ const Account = () => {
   const lastName = user?.externalAccounts[0].lastName
   const fullName = `${firstName!} ${lastName!}`
 
-  if (!isLoaded) return <Skeleton className="size-9 rounded-full" />
+  if (!isLoaded)
+    return <Skeleton variant="shimmer" className="size-9 rounded-full" />
 
   return (
     <Popover>
