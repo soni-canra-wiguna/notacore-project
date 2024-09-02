@@ -54,8 +54,6 @@ const TableRecords = () => {
     },
   )
 
-  if(!isMounted) return <Card className="gradientCard aspect-square max-w-[480px] overflow-hidden rounded-xl" />
-
   return (
     <Card className="gradientCard h-full max-w-[480px] overflow-hidden rounded-xl">
       <CardHeader className="p-4 space-y-1">
@@ -82,7 +80,7 @@ const TableRecords = () => {
             </thead>
             <tbody>
               {isPending ? (
-                <div className="">loading...</div>
+                <tr className="">loading...</tr>
               ) : (
                 data?.data.map((p, i) => {
                   const formattedDate = format(p.createdAt, "yyyy-MM-dd")
