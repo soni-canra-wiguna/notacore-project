@@ -14,7 +14,7 @@ export const getSalesRecord = () => {
   const { userId, getToken } = useAuth()
 
   const { data, isPending, isError } = useQuery<GetSalesRecordProps>({
-    queryKey: ["sales-record"],
+    queryKey: ["sales_record"],
     queryFn: async () => {
       const token = await getToken()
       const { data } = await axios.get(`/api/sale-records`, {
