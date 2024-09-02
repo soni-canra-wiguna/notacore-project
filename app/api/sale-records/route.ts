@@ -134,7 +134,7 @@ export const GET = async (
         orderBy = { quantity: "desc" }
         break
       default:
-        orderBy = { quantity: "desc" }
+        orderBy = { createdAt: "desc" }
     }
 
     const saleRecords = await prisma.saleRecord.findMany({
@@ -172,7 +172,7 @@ export const GET = async (
       return acc + curr.totalPrice
     }, 0)
     const totalTransactions = totalSaleRecords
-    const averageSalePerTransaction = totalSales / totalTransactions
+    const averageSalePerTransaction = Math.round(totalSales / totalTransactions)
     const averageRevenuePerTransaction = totalRevenue / totalTransactions
     // Calculate sales and revenue by category
     const salesByCategory = saleRecords.reduce(
@@ -198,6 +198,30 @@ export const GET = async (
       },
       {} as Record<string, number>,
     )
+
+    const salesAndRevenueByCategory = saleRecords.reduce(
+      (acc, curr) => {
+        const category = curr.category || "Uncategorized"
+        if (!acc[category]) {
+          acc[category] = {
+            label: category,
+            quantity: 0,
+            totalPrice: 0,
+          }
+        }
+        acc[category].quantity += curr.quantity
+        acc[category].totalPrice += curr.totalPrice
+
+        return acc
+      },
+      {} as Record<
+        string,
+        { label: string; quantity: number; totalPrice: number }
+      >,
+    )
+    const salesAndRevenueByCategoryArray = Object.values(
+      salesAndRevenueByCategory,
+    ).sort((a, b) => b.quantity - a.quantity)
 
     // Calculate sales and revenue by month
     const salesByMonth = saleRecords.reduce(
@@ -251,6 +275,7 @@ export const GET = async (
       averageSalePerTransaction,
       averageRevenuePerTransaction,
       salesByCategory,
+      salesAndRevenueByCategory: salesAndRevenueByCategoryArray,
       revenueByCategory,
       salesByMonth,
       revenueByMonth,
