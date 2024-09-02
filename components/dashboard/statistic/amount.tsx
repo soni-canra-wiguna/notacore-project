@@ -20,51 +20,53 @@ const Amount = () => {
   const { data, isPending, isError } = getSalesRecord()
   const statistic = data?.statistic
 
-  if (isPending || !statistic) {
-    return <LoadingAmount />
-  }
-
   return (
     <section className="mb-4 space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold capitalize">Hari ini</h1>
         <FilterStatistic />
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            total penjualan
-          </span>
-          <span className="text-lg font-bold leading-none">
-            {statistic?.totalSales}
-          </span>
-        </Card>
-        <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            total pendapatan
-          </span>
-          <span className="text-lg font-bold leading-none">
-            {formatToIDR(statistic?.totalRevenue)}
-          </span>
-        </Card>
-        <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs text-muted-foreground">
-            Avg Penjualan per Transaksi
-          </span>
-          <span className="text-lg font-bold leading-none">
-            {statistic?.averageSalePerTransaction}
-          </span>
-        </Card>
-        <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs text-muted-foreground">
-            Avg Pendapatan per Transaksi
-          </span>
-          <span className="text-lg font-bold leading-none">
-            {formatToIDR(statistic?.averageRevenuePerTransaction)}
-          </span>
-        </Card>
-      </div>
-      <AmountByCategory categories={statistic?.salesAndRevenueByCategory} />
+      {isPending || !statistic ? (
+        <LoadingAmount />
+      ) : (
+        <>
+          <div className="grid grid-cols-2 gap-2">
+            <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
+              <span className="text-xs capitalize text-muted-foreground">
+                total penjualan
+              </span>
+              <span className="text-lg font-bold leading-none">
+                {statistic?.totalSales}
+              </span>
+            </Card>
+            <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
+              <span className="text-xs capitalize text-muted-foreground">
+                total pendapatan
+              </span>
+              <span className="text-lg font-bold leading-none">
+                {formatToIDR(statistic?.totalRevenue)}
+              </span>
+            </Card>
+            <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
+              <span className="text-xs text-muted-foreground">
+                Avg Penjualan per Transaksi
+              </span>
+              <span className="text-lg font-bold leading-none">
+                {statistic?.averageSalePerTransaction}
+              </span>
+            </Card>
+            <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
+              <span className="text-xs text-muted-foreground">
+                Avg Pendapatan per Transaksi
+              </span>
+              <span className="text-lg font-bold leading-none">
+                {formatToIDR(statistic?.averageRevenuePerTransaction)}
+              </span>
+            </Card>
+          </div>
+          <AmountByCategory categories={statistic?.salesAndRevenueByCategory} />
+        </>
+      )}
     </section>
   )
 }
@@ -72,10 +74,6 @@ const Amount = () => {
 const LoadingAmount = () => {
   return (
     <section className="mb-4 space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold capitalize">Hari ini</h1>
-        <FilterStatistic />
-      </div>
       <div className="grid grid-cols-2 gap-2">
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
           <span className="text-xs capitalize text-muted-foreground">
