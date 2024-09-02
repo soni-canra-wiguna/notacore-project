@@ -83,7 +83,7 @@ export const GET = async (
         orderBy = { createdAt: "asc" }
         break
       default:
-        orderBy = { quantity: "desc" }
+        orderBy = { createdAt: "desc" }
     }
 
     const saleRecords = await prisma.saleRecord.findMany({

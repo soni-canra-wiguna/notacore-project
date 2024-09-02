@@ -41,6 +41,14 @@ const Amount = () => {
             </Card>
             <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
               <span className="text-xs capitalize text-muted-foreground">
+                total Transaksi
+              </span>
+              <span className="text-lg font-bold leading-none">
+                {statistic?.totalTransactions}
+              </span>
+            </Card>
+            <Card className="gradientCard col-span-2 flex flex-col gap-1 rounded-xl p-4">
+              <span className="text-xs capitalize text-muted-foreground">
                 total pendapatan
               </span>
               <span className="text-lg font-bold leading-none">
@@ -83,11 +91,17 @@ const LoadingAmount = () => {
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
           <span className="text-xs capitalize text-muted-foreground">
-            total pendapatan
+            total Transaksi
           </span>
           <span className="text-lg font-bold leading-none">
-            <Skeleton variant="shimmer" className="h-7 w-20" />
+            <Skeleton variant="shimmer" className="size-7" />
           </span>
+        </Card>
+        <Card className="gradientCard col-span-2 flex flex-col gap-1 rounded-xl p-4">
+          <span className="text-xs capitalize text-muted-foreground">
+            Total Pendapatan
+          </span>
+          <Skeleton variant="shimmer" className="h-7 w-24" />
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
           <span className="text-xs text-muted-foreground">
