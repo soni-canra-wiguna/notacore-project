@@ -130,7 +130,9 @@ export const LoadingListProducts = ({
   lengthLoading?: number
 }) => {
   const loadings = Array.from({ length: lengthLoading }, (_, i) => {
-    return <Skeleton className="h-24 w-full rounded-xl" key={i} />
+    return (
+      <Skeleton variant="shimmer" className="h-24 w-full rounded-xl" key={i} />
+    )
   })
 
   if (type === "loading") {
