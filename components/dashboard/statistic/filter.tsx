@@ -18,7 +18,7 @@ import {
 import { X } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Filter } from 'lucide-react';
+import { Filter } from "lucide-react"
 
 type TimeProps =
   | "today"
@@ -173,7 +173,7 @@ export const FilterStatistic = () => {
 
   const LoadingCategories = () => {
     const loading = Array.from({ length: 3 }, (_, i) => (
-      <Skeleton key={i} className="rounded-full px-3 py-2" />
+      <Skeleton variant="shimmer" key={i} className="h-8 w-20 rounded-full" />
     ))
 
     return <>{loading}</>
@@ -182,7 +182,7 @@ export const FilterStatistic = () => {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-      <Button variant="outline" size="icon" className="size-9">
+        <Button variant="outline" size="icon" className="size-9">
           <Filter className="size-4 stroke-[1.5]" />
         </Button>
       </DrawerTrigger>
