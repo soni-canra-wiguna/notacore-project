@@ -90,23 +90,29 @@ const TableRecords = () => {
                 <tr>
                   <th className="w-60 border p-2 capitalize">Nama Produk</th>
                   <th
-                    className="flex w-36 items-center justify-center gap-2 border p-2 capitalize"
+                    className="w-36 border p-2 capitalize"
                     onClick={() => handleSortBy("price")}
                   >
-                    harga <ChevronsUpDown className="size-3" />
+                    <div className="flex items-center justify-center gap-2">
+                      harga <ChevronsUpDown className="size-3" />
+                    </div>
                   </th>
                   <th
-                    className="flex w-24 items-center justify-center gap-2 border p-2 capitalize"
+                    className="w-24 border p-2 capitalize"
                     onClick={() => handleSortBy("qty")}
                   >
-                    jumlah <ChevronsUpDown className="size-3" />
+                    <div className="flex items-center justify-center gap-2">
+                      jumlah <ChevronsUpDown className="size-3" />
+                    </div>
                   </th>
                   <th className="w-40 border p-2 capitalize">total harga</th>
                   <th
-                    className="flex items-center justify-center gap-2 border p-2 capitalize"
+                    className="border p-2 capitalize"
                     onClick={() => handleSortBy("date")}
                   >
-                    tanggal <ChevronsUpDown className="size-3" />
+                    <div className="flex items-center justify-center gap-2">
+                      tanggal <ChevronsUpDown className="size-3" />
+                    </div>
                   </th>
                 </tr>
               </thead>
