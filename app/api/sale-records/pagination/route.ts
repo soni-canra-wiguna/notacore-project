@@ -41,35 +41,13 @@ export const GET = async (
       })
     }
 
-    if (from && to) {
-      const fromDate = new Date(from)
-      const toDate = new Date(to)
-      toDate.setUTCHours(23, 59, 59, 999)
-      filters.push({
-        createdAt: {
-          gte: new Date(fromDate),
-          lte: new Date(toDate),
-        },
-      })
-    }
-
-    if (from && to && category) {
-      const fromDate = new Date(from)
-      const toDate = new Date(to)
-      toDate.setUTCHours(23, 59, 59, 999)
-      filters.push({
-        createdAt: {
-          gte: new Date(fromDate),
-          lte: new Date(toDate),
-        },
-        category: {
-          contains: category,
-          mode: "insensitive" as Prisma.QueryMode,
-        },
-      })
-    }
-
     switch (sortBy) {
+      case "price-low":
+        orderBy = { price: "asc" }
+        break
+      case "price-high":
+        orderBy = { price: "desc" }
+        break
       case "quantity-low":
         orderBy = { quantity: "asc" }
         break

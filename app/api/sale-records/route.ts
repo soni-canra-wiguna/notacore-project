@@ -133,6 +133,12 @@ export const GET = async (
       case "quantity-high":
         orderBy = { quantity: "desc" }
         break
+      case "date-desc":
+        orderBy = { createdAt: "desc" }
+        break
+      case "date-asc":
+        orderBy = { createdAt: "asc" }
+        break
       default:
         orderBy = { createdAt: "desc" }
     }
@@ -148,6 +154,7 @@ export const GET = async (
     const totalSaleRecords = await prisma.saleRecord.count({
       where: {
         userId,
+        AND: filters,
       },
     })
 
