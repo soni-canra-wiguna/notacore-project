@@ -21,7 +21,7 @@ const Amount = () => {
   const statistic = data?.statistic
 
   return (
-    <section className="mb-4 space-y-4">
+    <section className="mb-8 space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold capitalize">Hari ini</h1>
         <FilterStatistic />
