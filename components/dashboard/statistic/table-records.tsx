@@ -9,6 +9,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
 import { formatToIDR } from "@/utils/format-to-idr"
 import { useAuth } from "@clerk/nextjs"
@@ -34,7 +43,7 @@ const TableRecords = () => {
   const { userId, getToken } = useAuth()
   const [page, setPage] = useState(1)
   const [sortBy, setSortBy] = useState("date-asc")
-  const [limit, setLimit] = useState(20)
+  const [limit, setLimit] = useState("20")
 
   const { data, isPending, isError } = useQuery<GetSalesRecordWithPaggingProps>(
     {
@@ -68,12 +77,12 @@ const TableRecords = () => {
   }
 
   return (
-    <section className="my-4 mb-4">
+    <section className="mb-4 space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold capitalize">riwayat transaksi</h1>
       </div>
       <Card className="gradientCard h-full max-w-[480px] overflow-hidden rounded-xl">
-        <CardContent className="scrollbar-hide h-full max-h-[350px] w-full overflow-y-auto px-4 pb-0">
+        <CardContent className="scrollbar-hide h-full max-h-[350px] w-full overflow-y-auto px-4 pb-0 pt-4">
           <div className="w-[844px] overflow-x-auto">
             <table className="min-w-full border-collapse text-sm">
               <thead>
@@ -103,7 +112,7 @@ const TableRecords = () => {
               {isPending ? (
                 <LoadingTableProduct />
               ) : isError ? (
-                <tbody>something wen wrong</tbody>
+                <tbody>something went wrong</tbody>
               ) : (
                 <tbody>
                   <TableContent data={data} />
@@ -112,7 +121,35 @@ const TableRecords = () => {
             </table>
           </div>
         </CardContent>
-        <CardFooter className="justify-end p-4">
+        <CardFooter className="justify-between gap-6 p-4">
+          <Select onValueChange={setLimit} defaultValue={limit}>
+            <SelectTrigger>
+              <SelectValue
+                placeholder="pilih"
+                className="w-max gap-1.5 text-sm"
+              />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup className="text-sm">
+                <SelectLabel className="capitalize">baris halaman</SelectLabel>
+                <SelectItem className="text-sm" value="10">
+                  10
+                </SelectItem>
+                <SelectItem className="text-sm" value="20">
+                  20
+                </SelectItem>
+                <SelectItem className="text-sm" value="30">
+                  30
+                </SelectItem>
+                <SelectItem className="text-sm" value="40">
+                  40
+                </SelectItem>
+                <SelectItem className="text-sm" value="50">
+                  50
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           <div className="flex items-center justify-center gap-4">
             <Button
               size="xs"
@@ -124,7 +161,7 @@ const TableRecords = () => {
               <ChevronLeft className="size-4" />
             </Button>
             <p className="text-sm">
-              {data?.currentPage} / {data?.totalPages}
+              halaman {data?.currentPage} dari {data?.totalPages}
             </p>
             <Button
               size="xs"
@@ -146,7 +183,7 @@ export default TableRecords
 
 export const LoadingTableProduct = () => {
   return (
-    <tbody className="gradientCard shimmer h-[50px] w-full rounded-xl bg-card text-card-foreground shadow-sm"></tbody>
+    <tbody className="gradientCard shimmer scrollbar-hide h-[50px] w-full rounded-xl bg-secondary text-card-foreground shadow-sm"></tbody>
     // <Card className="gradientCard h-[130px] w-full rounded-xl">
     //   <div className="space-y-1 p-4">
     //     <Skeleton variant="shimmer" className="h-7 w-40 rounded-full" />
