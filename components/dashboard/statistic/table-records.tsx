@@ -27,6 +27,7 @@ import axios from "axios"
 import { format } from "date-fns"
 import { ChevronLeft, ChevronRight, ChevronsUpDown } from "lucide-react"
 import React, { useState } from "react"
+import { id } from "date-fns/locale"
 
 export interface GetSalesRecordWithPaggingProps {
   message: string
@@ -87,12 +88,12 @@ const TableRecords = () => {
             <table className="min-w-full border-collapse text-sm">
               <thead>
                 <tr>
-                  <th className="w-64 border p-2 capitalize">Nama Produk</th>
+                  <th className="w-60 border p-2 capitalize">Nama Produk</th>
                   <th
-                    className="w-36 border p-2 capitalize"
+                    className="flex w-36 items-center justify-center gap-2 border p-2 capitalize"
                     onClick={() => handleSortBy("price")}
                   >
-                    harga
+                    harga <ChevronsUpDown className="size-3" />
                   </th>
                   <th
                     className="flex w-24 items-center justify-center gap-2 border p-2 capitalize"
@@ -181,15 +182,6 @@ export default TableRecords
 export const LoadingTableProduct = () => {
   return (
     <tbody className="gradientCard shimmer scrollbar-hide h-[50px] w-full rounded-xl bg-secondary text-card-foreground shadow-sm"></tbody>
-    // <Card className="gradientCard h-[130px] w-full rounded-xl">
-    //   <div className="space-y-1 p-4">
-    //     <Skeleton variant="shimmer" className="h-7 w-40 rounded-full" />
-    //     <Skeleton variant="shimmer" className="h-4 w-52 rounded-full" />
-    //   </div>
-    //   <div className="p-4">
-    //     <Skeleton variant="shimmer" className="h-[100px] w-full rounded-xl" />
-    //   </div>
-    // </Card>
   )
 }
 
@@ -201,10 +193,12 @@ const TableContent = ({
   return (
     <>
       {data?.data.map((p) => {
-        const formattedDate = format(p.createdAt, "yyyy-MM-dd")
+        const formattedDate = format(p.createdAt, "dd MMMM yyyy", {
+          locale: id,
+        })
         return (
           <tr key={p.id} className="selection:bg-transparent">
-            <td className="max-w-64 truncate border p-2">{p.title}</td>
+            <td className="max-w-60 truncate border p-2">{p.title}</td>
             <td className="w-36 border p-2 text-left">
               {formatToIDR(p.price)}
             </td>
@@ -212,7 +206,9 @@ const TableContent = ({
             <td className="w-40 border p-2 text-left">
               {formatToIDR(p.totalPrice)}
             </td>
-            <td className="border p-2 text-center">{formattedDate}</td>
+            <td className="border p-2 text-left tracking-wide">
+              {formattedDate}
+            </td>
           </tr>
         )
       })}
