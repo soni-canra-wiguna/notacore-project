@@ -123,11 +123,8 @@ const TableRecords = () => {
         </CardContent>
         <CardFooter className="justify-between gap-6 p-4">
           <Select onValueChange={setLimit} defaultValue={limit}>
-            <SelectTrigger>
-              <SelectValue
-                placeholder="pilih"
-                className="w-max gap-1.5 text-sm"
-              />
+            <SelectTrigger className="w-max gap-2">
+              <SelectValue placeholder="pilih" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup className="text-sm">
