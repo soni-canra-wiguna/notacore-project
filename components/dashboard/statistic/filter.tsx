@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { useQueryState } from "nuqs"
 import { format, subWeeks, subMonths, subYears } from "date-fns"
 import { useState } from "react"
-import { getCategoryProducts } from "@/services/get-category-products"
 import {
   Drawer,
   DrawerClose,
@@ -16,9 +15,10 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { X } from "lucide-react"
-import { Separator } from "@/components/ui/separator"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Filter } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { id } from "date-fns/locale"
+import { Separator } from "@/components/ui/separator"
 
 type TimeProps =
   | "today"
@@ -28,99 +28,89 @@ type TimeProps =
   | "sixMonthsAgo"
   | "oneYearAgo"
 
-type SortByProps = "quantity-low" | "quantity-high"
-
 interface ListTimeProps {
   title: string
-  label: TimeProps
-  value: string
-}
-
-interface ListQuantityProps {
-  title: string
-  label: SortByProps
-  value: string
+  description: string
+  onClick: () => void
+  active: boolean
 }
 
 export const FilterStatistic = () => {
   const [from, setFrom] = useQueryState("from")
   const [to, setTo] = useQueryState("to")
-  const [sortBy, setSortBy] = useQueryState("sortBy")
-  const [category, setCategory] = useQueryState("category")
 
   const [hasFrom, setHasFrom] = useState("")
   const [hasTo, setHasTo] = useState("")
-  const [hasSortBy, setHasSortBy] = useState("")
-  const [hasCategory, setHasCategory] = useState("")
   const [isOpen, setIsOpen] = useState(false)
 
-  const { data: categories, isPending, isError } = getCategoryProducts()
-
-  const today = format(new Date(), "yyyy-MM-dd")
-  const oneWeekAgo = format(subWeeks(today, 1), "yyyy-MM-dd")
-  const oneMonthAgo = format(subMonths(today, 1), "yyyy-MM-dd")
-  const threeMonthsAgo = format(subMonths(today, 3), "yyyy-MM-dd")
-  const sixMonthsAgo = format(subMonths(today, 6), "yyyy-MM-dd")
-  const oneYearAgo = format(subYears(today, 1), "yyyy-MM-dd")
+  const today = new Date()
+  const formatToday = {
+    format1: format(today, "yyyy-MM-dd"),
+    format2: format(today, "EEE, d MMM yyyy", { locale: id }),
+  }
+  const oneWeekAgo = {
+    format1: format(subWeeks(today, 1), "yyyy-MM-dd"),
+    format2: format(subWeeks(today, 1), "EEE, d MMM yyyy", { locale: id }),
+  }
+  const oneMonthAgo = {
+    format1: format(subMonths(today, 1), "yyyy-MM-dd"),
+    format2: format(subMonths(today, 1), "EEE, d MMM yyyy", { locale: id }),
+  }
+  const threeMonthsAgo = {
+    format1: format(subMonths(today, 3), "yyyy-MM-dd"),
+    format2: format(subMonths(today, 3), "EEE, d MMM yyyy", { locale: id }),
+  }
+  const sixMonthsAgo = {
+    format1: format(subMonths(today, 6), "yyyy-MM-dd"),
+    format2: format(subMonths(today, 6), "EEE, d MMM yyyy", { locale: id }),
+  }
+  const oneYearAgo = {
+    format1: format(subYears(today, 1), "yyyy-MM-dd"),
+    format2: format(subYears(today, 1), "EEE, d MMM yyyy", { locale: id }),
+  }
 
   const handleSelectTime = (time: TimeProps) => {
     switch (time) {
       case "today":
-        setHasFrom(today)
-        setHasTo(today)
+        setHasFrom(formatToday.format1)
+        setHasTo(formatToday.format1)
         break
       case "oneWeekAgo":
-        setHasFrom(oneWeekAgo)
-        setHasTo(today)
+        setHasFrom(oneWeekAgo.format1)
+        setHasTo(formatToday.format1)
         break
       case "oneMonthAgo":
-        setHasFrom(oneMonthAgo)
-        setHasTo(today)
+        setHasFrom(oneMonthAgo.format1)
+        setHasTo(formatToday.format1)
         break
       case "threeMonthsAgo":
-        setHasFrom(threeMonthsAgo)
-        setHasTo(today)
+        setHasFrom(threeMonthsAgo.format1)
+        setHasTo(formatToday.format1)
         break
       case "sixMonthsAgo":
-        setHasFrom(sixMonthsAgo)
-        setHasTo(today)
+        setHasFrom(sixMonthsAgo.format1)
+        setHasTo(formatToday.format1)
         break
       case "oneYearAgo":
-        setHasFrom(oneYearAgo)
-        setHasTo(today)
+        setHasFrom(oneYearAgo.format1)
+        setHasTo(formatToday.format1)
         break
       default:
-        setHasFrom(today)
-        setHasTo(today)
-    }
-  }
-
-  const handleSelectSortBy = (sortBy: SortByProps) => {
-    switch (sortBy) {
-      case "quantity-low":
-        setHasSortBy("quantity-low")
-        break
-      case "quantity-high":
-        setHasSortBy("quantity-high")
-        break
-      default:
-        setHasSortBy("quantity-high")
+        setHasFrom(formatToday.format1)
+        setHasTo(formatToday.format1)
     }
   }
 
   const handleSelectFilter = () => {
     setFrom(hasFrom ? hasFrom : null)
     setTo(hasTo ? hasTo : null)
-    setCategory(hasCategory ? hasCategory : null)
-    setSortBy(hasSortBy ? hasSortBy : null)
     setIsOpen(!isOpen)
   }
 
   const resetSearchParams = () => {
     setFrom(null)
     setTo(null)
-    setSortBy(null)
-    setCategory(null)
+    setHasFrom("")
     setIsOpen(!isOpen)
   }
 
@@ -128,55 +118,41 @@ export const FilterStatistic = () => {
     times: [
       {
         title: "hari ini",
-        label: "today",
-        value: today,
+        description: `${formatToday.format2}`,
+        onClick: () => handleSelectTime("today"),
+        active: hasFrom === formatToday.format1,
       },
       {
-        title: "minggu lalu",
-        label: "oneWeekAgo",
-        value: oneWeekAgo,
+        title: "1 minggu terakhir",
+        description: `${oneWeekAgo.format2} - ${formatToday.format2}`,
+        onClick: () => handleSelectTime("oneWeekAgo"),
+        active: hasFrom === oneWeekAgo.format1,
       },
       {
-        title: "bulan lalu",
-        label: "oneMonthAgo",
-        value: oneMonthAgo,
+        title: "1 bulan terakhir",
+        description: `${oneMonthAgo.format2} - ${formatToday.format2}`,
+        onClick: () => handleSelectTime("oneMonthAgo"),
+        active: hasFrom === oneMonthAgo.format1,
       },
       {
-        title: "3 bulan lalu",
-        label: "threeMonthsAgo",
-        value: threeMonthsAgo,
+        title: "3 bulan terakhir",
+        description: `${threeMonthsAgo.format2} - ${formatToday.format2}`,
+        onClick: () => handleSelectTime("threeMonthsAgo"),
+        active: hasFrom === threeMonthsAgo.format1,
       },
       {
-        title: "6 bulan lalu",
-        label: "sixMonthsAgo",
-        value: sixMonthsAgo,
+        title: "6 bulan terakhir",
+        description: `${sixMonthsAgo.format2} - ${formatToday.format2}`,
+        onClick: () => handleSelectTime("sixMonthsAgo"),
+        active: hasFrom === sixMonthsAgo.format1,
       },
       {
-        title: "tahun lalu",
-        label: "oneYearAgo",
-        value: oneYearAgo,
+        title: "1 tahun terakhir",
+        description: `${oneYearAgo.format2} - ${formatToday.format2}`,
+        onClick: () => handleSelectTime("oneYearAgo"),
+        active: hasFrom === oneYearAgo.format1,
       },
     ] as ListTimeProps[],
-    quantities: [
-      {
-        title: "Jumlah Terbanyak",
-        label: "quantity-high",
-        value: "quantity-high",
-      },
-      {
-        title: "jumlah tersedikit",
-        label: "quantity-low",
-        value: "quantity-low",
-      },
-    ] as ListQuantityProps[],
-  }
-
-  const LoadingCategories = () => {
-    const loading = Array.from({ length: 3 }, (_, i) => (
-      <Skeleton variant="shimmer" key={i} className="h-8 w-20 rounded-full" />
-    ))
-
-    return <>{loading}</>
   }
 
   return (
@@ -198,7 +174,6 @@ export const FilterStatistic = () => {
           <DrawerClose asChild>
             <Button
               onClick={() => setIsOpen(!isOpen)}
-              className=""
               variant="ghost"
               size="icon"
             >
@@ -208,64 +183,20 @@ export const FilterStatistic = () => {
           </DrawerClose>
         </DrawerHeader>
         <div className="scrollbar-hide h-full max-h-[450px] w-full overflow-y-auto p-4">
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold capitalize">Tanggal</h3>
-            <div className="flex flex-wrap items-center gap-2.5">
-              {list.times.map((time, i) => (
-                <Button
-                  key={i}
-                  onClick={() => handleSelectTime(time.label)}
-                  variant={hasFrom === time.value ? "default" : "outline"}
-                  size="xs"
-                  className="capitalize"
-                >
-                  {time.title}
-                </Button>
-              ))}
-            </div>
-          </div>
-          <Separator className="my-5" />
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold capitalize">jumlah terjual</h3>
-            <div className="flex flex-wrap items-center gap-2.5">
-              {list.quantities.map((qty, i) => (
-                <Button
-                  key={i}
-                  variant={hasSortBy === qty.value ? "default" : "outline"}
-                  onClick={() => handleSelectSortBy(qty.label)}
-                  size="xs"
-                  className="capitalize"
-                >
-                  {qty.title}
-                </Button>
-              ))}
-            </div>
-          </div>
-          <Separator className="my-5" />
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold capitalize">kategori</h3>
-            <div className="flex flex-wrap items-center gap-2.5">
-              {isPending ? (
-                <LoadingCategories />
-              ) : (
-                categories?.map(({ category }, i) => (
-                  <Button
-                    variant={hasCategory === category ? "default" : "outline"}
-                    key={i}
-                    onClick={() => setHasCategory(category)}
-                    size="xs"
-                    className="capitalize"
-                  >
-                    {category}
-                  </Button>
-                ))
-              )}
-            </div>
-          </div>
+          {list.times.map((time, i) => (
+            <FilterItem
+              key={i}
+              title={time.title}
+              description={time.description}
+              onClick={time.onClick}
+              active={time.active}
+              index={i}
+            />
+          ))}
         </div>
         <DrawerFooter className="w-full flex-row border-t">
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-xl capitalize"
             size="lg"
             onClick={resetSearchParams}
             variant="secondary"
@@ -273,7 +204,7 @@ export const FilterStatistic = () => {
             batalkan
           </Button>
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-xl capitalize"
             size="lg"
             onClick={handleSelectFilter}
           >
@@ -282,5 +213,44 @@ export const FilterStatistic = () => {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
+  )
+}
+
+interface FilterItemProps extends ListTimeProps {
+  index: number | undefined
+}
+
+const FilterItem = ({
+  title,
+  description,
+  active,
+  onClick,
+  index,
+}: FilterItemProps) => {
+  return (
+    <>
+      <div
+        className={"justfiy-between flex w-full items-center py-4"}
+        onClick={onClick}
+      >
+        <div className="flex flex-1 flex-col gap-0.5">
+          <h4 className="font-semibold capitalize">{title}</h4>
+          <p className="text-xs capitalize text-muted-foreground">
+            {description}
+          </p>
+        </div>
+        <div className="">
+          <div
+            className={cn(
+              "flex size-5 items-center justify-center rounded-full border-2 border-primary",
+              active && "border-main",
+            )}
+          >
+            {active && <span className="size-3 rounded-full bg-main" />}
+          </div>
+        </div>
+      </div>
+      {index !== 5 && <Separator />}
+    </>
   )
 }
