@@ -5,20 +5,39 @@ import {
   ChartDemo4,
   ChartDemo5,
 } from "@/components/dashboard/statistic/demo-chart"
-import { FilterStatistic } from "@/components/dashboard/statistic/filter"
-import Amount from "@/components/dashboard/statistic/amount"
+import {
+  FilterButton,
+  FilterStatistic,
+} from "@/components/dashboard/statistic/filter"
+import Amount, { LoadingAmount } from "@/components/dashboard/statistic/amount"
 import { Container } from "@/components/layout/container"
 import React, { Suspense } from "react"
-import { Separator } from "@/components/ui/separator"
 import TableRecords from "@/components/dashboard/statistic/table-records"
 
 const StatisticsPage = () => {
   return (
     <main className="min-h-screen w-full">
       <Container className="py-20">
-        <Amount />
-        <TableRecords />
-        <ChartDemo />
+        <section className="mb-8 space-y-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-lg font-bold capitalize">
+              statistik penjualan
+            </h1>
+            <Suspense fallback={<FilterButton />}>
+              <FilterStatistic />
+            </Suspense>
+          </div>
+          <Suspense fallback={<LoadingAmount />}>
+            <Amount />
+          </Suspense>
+        </section>
+        <section className="mb-8 space-y-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-lg font-bold capitalize">riwayat transaksi</h1>
+          </div>
+          <TableRecords />
+        </section>
+        {/* <ChartDemo />
         <Separator className="my-5" />
         <ChartDemo2 />
         <Separator className="my-5" />
@@ -29,7 +48,7 @@ const StatisticsPage = () => {
         <ChartDemo5 />
         <Suspense fallback={"loading"}>
           <FilterStatistic />
-        </Suspense>
+        </Suspense> */}
       </Container>
     </main>
   )
