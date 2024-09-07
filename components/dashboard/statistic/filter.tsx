@@ -35,6 +35,14 @@ interface ListTimeProps {
   active: boolean
 }
 
+export const FilterButton = () => {
+  return (
+    <Button variant="outline" size="icon" className="size-9">
+      <Filter className="size-4 stroke-[1.5]" />
+    </Button>
+  )
+}
+
 export const FilterStatistic = () => {
   const [from, setFrom] = useQueryState("from")
   const [to, setTo] = useQueryState("to")
