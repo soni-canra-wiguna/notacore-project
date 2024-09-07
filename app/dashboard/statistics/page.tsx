@@ -31,7 +31,12 @@ const StatisticsPage = () => {
             <Amount />
           </Suspense>
         </section>
-        <TableRecords />
+        <section className="mb-8 space-y-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-lg font-bold capitalize">riwayat transaksi</h1>
+          </div>
+          <TableRecords />
+        </section>
         {/* <ChartDemo />
         <Separator className="my-5" />
         <ChartDemo2 />

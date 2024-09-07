@@ -43,7 +43,7 @@ type handleSortByType = "price" | "date" | "qty"
 const TableRecords = () => {
   const { userId, getToken } = useAuth()
   const [page, setPage] = useState(1)
-  const [sortBy, setSortBy] = useState("date-asc")
+  const [sortBy, setSortBy] = useState("date-desc")
   const [limit, setLimit] = useState("20")
 
   const { data, isPending, isError } = useQuery<GetSalesRecordWithPaggingProps>(
@@ -76,110 +76,114 @@ const TableRecords = () => {
       )
     }
   }
+  // @ts-ignore
+  if (data?.data?.length <= 0)
+    return (
+      <Card className="gradientCard flex h-40 items-center justify-center rounded-xl p-4">
+        <p className="text-sm text-muted-foreground">
+          Belum ada yang terjual nih
+        </p>
+      </Card>
+    )
 
   return (
-    <section className="mb-8 space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold capitalize">riwayat transaksi</h1>
-      </div>
-      <Card className="gradientCard h-full max-w-[480px] overflow-hidden rounded-xl">
-        <CardContent className="scrollbar-hide h-full max-h-[350px] w-full overflow-y-auto px-4 pb-0 pt-4">
-          <div className="w-[844px] overflow-x-auto">
-            <table className="min-w-full border-collapse text-sm">
-              <thead>
-                <tr>
-                  <th className="w-60 border p-2 capitalize">Nama Produk</th>
-                  <th
-                    className="w-36 border p-2 capitalize"
-                    onClick={() => handleSortBy("price")}
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      harga <ChevronsUpDown className="size-3" />
-                    </div>
-                  </th>
-                  <th
-                    className="w-24 border p-2 capitalize"
-                    onClick={() => handleSortBy("qty")}
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      jumlah <ChevronsUpDown className="size-3" />
-                    </div>
-                  </th>
-                  <th className="w-40 border p-2 capitalize">total harga</th>
-                  <th
-                    className="border p-2 capitalize"
-                    onClick={() => handleSortBy("date")}
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      tanggal <ChevronsUpDown className="size-3" />
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              {isPending ? (
-                <LoadingTableProduct />
-              ) : isError ? (
-                <tbody>something went wrong</tbody>
-              ) : (
-                <tbody>
-                  <TableContent data={data} />
-                </tbody>
-              )}
-            </table>
-          </div>
-        </CardContent>
-        <CardFooter className="justify-between gap-6 p-4">
-          <Select onValueChange={setLimit} defaultValue={limit}>
-            <SelectTrigger className="w-max gap-2">
-              <SelectValue placeholder="pilih" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup className="text-sm">
-                <SelectLabel className="capitalize">baris halaman</SelectLabel>
-                <SelectItem className="text-sm" value="10">
-                  10
-                </SelectItem>
-                <SelectItem className="text-sm" value="20">
-                  20
-                </SelectItem>
-                <SelectItem className="text-sm" value="30">
-                  30
-                </SelectItem>
-                <SelectItem className="text-sm" value="40">
-                  40
-                </SelectItem>
-                <SelectItem className="text-sm" value="50">
-                  50
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <div className="flex items-center justify-center gap-4">
-            <Button
-              size="xs"
-              className="rounded-xl p-2"
-              variant="outline"
-              onClick={() => setPage(page - 1)}
-              disabled={page <= 1}
-            >
-              <ChevronLeft className="size-4" />
-            </Button>
-            <p className="text-sm">
-              halaman {data?.currentPage} dari {data?.totalPages}
-            </p>
-            <Button
-              size="xs"
-              className="rounded-xl p-2"
-              variant="outline"
-              onClick={() => setPage(page + 1)}
-              disabled={page === data?.totalPages}
-            >
-              <ChevronRight className="size-4" />
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
-    </section>
+    <Card className="gradientCard h-full max-w-[480px] overflow-hidden rounded-xl">
+      <CardContent className="scrollbar-hide h-full max-h-[350px] w-full overflow-y-auto px-4 pb-0 pt-4">
+        <div className="w-[844px] overflow-x-auto">
+          <table className="min-w-full border-collapse text-sm">
+            <thead>
+              <tr>
+                <th className="w-60 border p-2 capitalize">Nama Produk</th>
+                <th
+                  className="w-36 border p-2 capitalize"
+                  onClick={() => handleSortBy("price")}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    harga <ChevronsUpDown className="size-3" />
+                  </div>
+                </th>
+                <th
+                  className="w-24 border p-2 capitalize"
+                  onClick={() => handleSortBy("qty")}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    jumlah <ChevronsUpDown className="size-3" />
+                  </div>
+                </th>
+                <th className="w-40 border p-2 capitalize">total harga</th>
+                <th
+                  className="border p-2 capitalize"
+                  onClick={() => handleSortBy("date")}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    tanggal <ChevronsUpDown className="size-3" />
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            {isPending ? (
+              <LoadingTableProduct />
+            ) : isError ? (
+              <tbody>something went wrong</tbody>
+            ) : (
+              <tbody>
+                <TableContent data={data} />
+              </tbody>
+            )}
+          </table>
+        </div>
+      </CardContent>
+      <CardFooter className="justify-between gap-6 p-4">
+        <Select onValueChange={setLimit} defaultValue={limit}>
+          <SelectTrigger className="w-max gap-2">
+            <SelectValue placeholder="pilih" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup className="text-sm">
+              <SelectLabel className="capitalize">baris halaman</SelectLabel>
+              <SelectItem className="text-sm" value="10">
+                10
+              </SelectItem>
+              <SelectItem className="text-sm" value="20">
+                20
+              </SelectItem>
+              <SelectItem className="text-sm" value="30">
+                30
+              </SelectItem>
+              <SelectItem className="text-sm" value="40">
+                40
+              </SelectItem>
+              <SelectItem className="text-sm" value="50">
+                50
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <div className="flex items-center justify-center gap-4">
+          <Button
+            size="xs"
+            className="rounded-xl p-2"
+            variant="outline"
+            onClick={() => setPage(page - 1)}
+            disabled={page <= 1}
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
+          <p className="text-sm">
+            halaman {data?.currentPage} dari {data?.totalPages}
+          </p>
+          <Button
+            size="xs"
+            className="rounded-xl p-2"
+            variant="outline"
+            onClick={() => setPage(page + 1)}
+            disabled={page === data?.totalPages}
+          >
+            <ChevronRight className="size-4" />
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
   )
 }
 
