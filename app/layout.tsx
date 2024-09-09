@@ -59,9 +59,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  metadataBase: new URL("https://notacore.vercel.app/"),
+  metadataBase: new URL(process.env.PRODUCTION_URL as string),
   alternates: {
-    canonical: "https://notacore.vercel.app/",
+    canonical: process.env.PRODUCTION_URL,
     // languages: {
     //   "id-ID": "https://notacore.vercel.app/id",
     //   "en-US": "https://notacore.vercel.app/en",
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     },
     description:
       "Kelola dan catat transaksi penjualan bisnis Anda dengan Notacore. Mudah digunakan, cepat, dan efisien.",
-    url: "https://notacore.vercel.app/",
+    url: process.env.PRODUCTION_URL,
     images: [
       {
         url: "https://utfs.io/f/5e90efc6-f787-4db9-84b0-56a6ee939e02-jn3obm.png",
