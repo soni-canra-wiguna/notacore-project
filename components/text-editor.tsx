@@ -1,10 +1,10 @@
 "use client"
 
 import { EditorContent, useEditor } from "@tiptap/react"
-import { useMounted } from '@/hook/use-mounted'
+import { useMounted } from "@/hook/use-mounted"
 import StarterKit from "@tiptap/starter-kit"
 import { cn } from "@/lib/utils"
-import { Input } from './ui/input'
+import { Input } from "./ui/input"
 
 interface TextEditorProps {
   className?: string
@@ -13,7 +13,7 @@ interface TextEditorProps {
 }
 
 export const TextEditor = ({ className, value, onChange }: TextEditorProps) => {
-  const {isMounted} = useMounted()
+  const { isMounted } = useMounted()
   const editor = useEditor({
     content: value,
     editorProps: {
@@ -33,9 +33,10 @@ export const TextEditor = ({ className, value, onChange }: TextEditorProps) => {
     onUpdate({ editor }) {
       onChange(editor.getHTML())
     },
+    immediatelyRender: false, // to avoid hydration
   })
 
-  if(!isMounted) {
+  if (!isMounted) {
     return <Input placeholder="masukkan deskripsi produk" />
   }
 
