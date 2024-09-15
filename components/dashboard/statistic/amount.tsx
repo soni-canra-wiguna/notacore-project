@@ -28,8 +28,10 @@ const Amount = () => {
   const statistic = data?.statistic
 
   if (isPending) return <LoadingAmount />
+
   if (!statistic || data?.data.length <= 0)
     return <ErrorAmount title="Belum ada yang terjual nih" />
+
   if (isError) return <ErrorAmount title="Internet kamu lemot :/" />
 
   return (
@@ -85,7 +87,7 @@ export default Amount
 
 export const LoadingAmount = () => {
   return (
-    <section className="mb-4 space-y-4">
+    <section className="space-y-2">
       <div className="grid grid-cols-2 gap-2">
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
           <span className="text-xs capitalize text-muted-foreground">
@@ -176,7 +178,7 @@ export const AmountByCategory = ({
     }
   }
   return (
-    <div className="mt-6">
+    <div className="mt-2">
       <Carousel
         opts={{ align: "center", loop: true }}
         setApi={setApi}
