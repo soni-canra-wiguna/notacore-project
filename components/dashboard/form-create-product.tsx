@@ -145,7 +145,7 @@ export const FormCreateProduct = ({
                     onChange={field.onChange}
                   />
                 </FormControl>
-                {/* <FormMessage /> */}
+                <FormMessage />
               </FormItem>
             )
           }}
