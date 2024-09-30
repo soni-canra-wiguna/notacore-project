@@ -89,15 +89,15 @@ export const FormCreateProduct = ({
       })
       toast({
         title: "Produk di buat",
-        description: "Product berhasil di buat",
+        description: "Produk berhasil di buat",
       })
       router.push("/dashboard")
       queryClient.invalidateQueries({ queryKey: ["lists_products"] })
     },
     onError: () => {
       toast({
-        title: "Gagal membuat product",
-        description: "Gagal membuat product, pastikan koneksimu lancar",
+        title: "Gagal menambahkan produk",
+        description: "Gagal menambahkan produk, pastikan koneksimu lancar",
         variant: "destructive",
       })
     },
@@ -145,7 +145,7 @@ export const FormCreateProduct = ({
                     onChange={field.onChange}
                   />
                 </FormControl>
-                {/* <FormMessage /> */}
+                <FormMessage />
               </FormItem>
             )
           }}

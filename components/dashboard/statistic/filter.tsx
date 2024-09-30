@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button"
 import { useQueryState } from "nuqs"
-import { format, subWeeks, subMonths, subYears } from "date-fns"
 import { useState } from "react"
 import {
   Drawer,
@@ -17,8 +16,8 @@ import {
 import { X } from "lucide-react"
 import { Filter } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { id } from "date-fns/locale"
 import { Separator } from "@/components/ui/separator"
+import { dateTime } from "@/utils/date-time"
 
 type TimeProps =
   | "today"
@@ -47,35 +46,17 @@ export const FilterStatistic = () => {
   const [from, setFrom] = useQueryState("from")
   const [to, setTo] = useQueryState("to")
 
-  const [hasFrom, setHasFrom] = useState("")
+  const [hasFrom, setHasFrom] = useState(from)
   const [hasTo, setHasTo] = useState("")
   const [isOpen, setIsOpen] = useState(false)
-
-  const today = new Date()
-  const formatToday = {
-    format1: format(today, "yyyy-MM-dd"),
-    format2: format(today, "EEE, d MMM yyyy", { locale: id }),
-  }
-  const oneWeekAgo = {
-    format1: format(subWeeks(today, 1), "yyyy-MM-dd"),
-    format2: format(subWeeks(today, 1), "EEE, d MMM yyyy", { locale: id }),
-  }
-  const oneMonthAgo = {
-    format1: format(subMonths(today, 1), "yyyy-MM-dd"),
-    format2: format(subMonths(today, 1), "EEE, d MMM yyyy", { locale: id }),
-  }
-  const threeMonthsAgo = {
-    format1: format(subMonths(today, 3), "yyyy-MM-dd"),
-    format2: format(subMonths(today, 3), "EEE, d MMM yyyy", { locale: id }),
-  }
-  const sixMonthsAgo = {
-    format1: format(subMonths(today, 6), "yyyy-MM-dd"),
-    format2: format(subMonths(today, 6), "EEE, d MMM yyyy", { locale: id }),
-  }
-  const oneYearAgo = {
-    format1: format(subYears(today, 1), "yyyy-MM-dd"),
-    format2: format(subYears(today, 1), "EEE, d MMM yyyy", { locale: id }),
-  }
+  const {
+    formatToday,
+    oneWeekAgo,
+    oneMonthAgo,
+    threeMonthsAgo,
+    sixMonthsAgo,
+    oneYearAgo,
+  } = dateTime()
 
   const handleSelectTime = (time: TimeProps) => {
     switch (time) {

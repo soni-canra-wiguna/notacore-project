@@ -2,16 +2,6 @@ import { SaleRecordValidation } from "@/schema/sale-record.schema"
 import { SaleRecord } from "@prisma/client"
 import { z } from "zod"
 
-// export type CreateSaleRecordRequest = {
-//   userId: string
-//   title: string
-//   image: string
-//   price: number
-//   category: string
-//   totalPrice: number
-//   quantity: number
-// }
-
 export type CreateSaleRecordRequest = z.infer<
   typeof SaleRecordValidation.CREATE
 >
