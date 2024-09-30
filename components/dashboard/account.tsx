@@ -1,14 +1,15 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { SignOutButton, useUser } from "@clerk/nextjs"
-import { ArrowRight } from "lucide-react"
+import { ArrowLeft, Sun } from "lucide-react"
 import { Skeleton } from "../ui/skeleton"
-import { Button } from "../ui/button"
+import { ThemeSwitcher } from "../theme-switcher"
 
 const Account = () => {
   const { user, isLoaded } = useUser()
+  const [isOpen, setIsOpen] = useState(false)
 
   const image = user?.externalAccounts[0].imageUrl
   const email = user?.externalAccounts[0].emailAddress
@@ -20,7 +21,7 @@ const Account = () => {
     return <Skeleton variant="shimmer" className="size-9 rounded-full" />
 
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <div className="size-9 cursor-pointer overflow-hidden rounded-full">
           <img src={image} alt={fullName} className="size-full object-cover" />
@@ -28,19 +29,19 @@ const Account = () => {
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        className="flex w-72 flex-col items-center justify-center gap-2 py-6"
+        className="gradientCard flex w-72 flex-col gap-4 p-0"
       >
-        <div className="size-16 overflow-hidden rounded-full">
-          <img src={image} alt={fullName} className="size-full object-cover" />
+        <div className="flex flex-col gap-1 p-4">
+          <h6 className="text-base font-semibold">{fullName}</h6>
+          <p className="text-xs font-medium text-muted-foreground">{email}</p>
         </div>
-        <h1 className="text-lg font-semibold">{fullName}</h1>
-        <p className="text-sm font-medium">{email}</p>
-        <div className="mt-3">
+        <div className="flex h-10 items-center border-t">
           <SignOutButton redirectUrl="/">
-            <Button className="capitalize">
-              logout <ArrowRight className="mt-1 size-4" />
-            </Button>
+            <div className="flex flex-1 cursor-pointer items-center justify-center gap-2 p-4 text-sm capitalize">
+              <ArrowLeft className="size-4" /> Keluar
+            </div>
           </SignOutButton>
+          <ThemeSwitcher openClosePopover={() => setIsOpen(!isOpen)} />
         </div>
       </PopoverContent>
     </Popover>

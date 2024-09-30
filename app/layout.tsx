@@ -8,6 +8,7 @@ import {
 } from "@/lib/provider"
 import NextTopLoader from "nextjs-toploader"
 import { Toaster } from "@/components/ui/toaster"
+import { ThemeProvider } from "@/lib/provider/theme-provider"
 
 export const metadata: Metadata = {
   title: {
@@ -122,7 +123,14 @@ export default function RootLayout({
           <html lang="en">
             <body className={plusJakartaSans.className}>
               <NextTopLoader color="#84ff00" height={3} showSpinner={false} />
-              {children}
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+              </ThemeProvider>
               <Toaster />
             </body>
           </html>
