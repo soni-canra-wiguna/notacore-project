@@ -122,7 +122,7 @@ export default function RootLayout({
         <ReduxProvider>
           <html lang="en">
             <body className={plusJakartaSans.className}>
-              <NextTopLoader color="#84ff00" height={3} showSpinner={false} />
+              <NextTopLoader color="#00C897" height={3} showSpinner={false} />
               <ThemeProvider
                 attribute="class"
                 defaultTheme="system"
