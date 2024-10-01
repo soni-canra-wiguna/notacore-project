@@ -9,9 +9,9 @@ import { Github } from "lucide-react"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 
 export default function Home() {
-  // const { userId } = auth()
+  const { userId } = auth()
 
-  // if (userId) redirect("/dashboard")
+  if (userId) redirect("/dashboard")
 
   return (
     <main className="h-screen w-full overflow-hidden">
