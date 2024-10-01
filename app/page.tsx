@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <main className="h-screen w-full overflow-hidden">
-      <Container className="relative flex h-full flex-col items-center justify-between overflow-hidden pb-8 pt-32">
+      <Container className="relative flex h-full flex-col items-center justify-between overflow-hidden pb-8 pt-48">
         <div className="flex w-full flex-col items-center justify-center">
           <div className="relative mb-6 size-16">
             <Image alt="logo" className="grayscale" src="/notacore.png" fill />
@@ -49,9 +49,11 @@ export default function Home() {
 
 const SocialMedia = () => {
   return (
-    <div className="absolute right-4 top-8 flex items-center gap-3">
+    <div className="absolute right-8 top-8 flex items-center gap-3">
+      <a className="" href="https://github.com/soni-canra-wiguna" target="_blank">
       <Github className="size-6" />
-      <ThemeSwitcher sizeIcon="6" className="border-l-none p-0" />
+      </a>
+      <ThemeSwitcher sizeIcon="6" className="border-none p-0 w-0" />
     </div>
   )
 }
