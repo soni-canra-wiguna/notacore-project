@@ -3,32 +3,43 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id          String       @id @default(uuid())
+  userId      String       @unique
+  products    Product[]
+  salesRecord SaleRecord[]
+
+  @@map("users")
+}
+
 enum Unit {
-  PCS // Pieces / buah
-  PACK // Pack
-  KG // Kilogram
-  GRAM // Gram
-  L // Liter
-  ML // Milliliter
-  SACHET // Sachet
-  BOX // Box / kardus
-  DOZEN // Dozen/ lusin
+  PCS
+  PACK
+  KG
+  GRAM
+  L
+  ML
+  SACHET
+  BOX
+  DOZEN
 }
 
 model Product {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String // generate with clerk
-  title       String
+  id          String  @id @default(uuid())
+  userId      String
+  title       String  @db.VarChar(255)
   description String?
   image       String
   price       Int
-  category    String
+  category    String  @db.VarChar(50)
   stock       Int
   unit        Unit?   @default(PCS)
+
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -38,14 +49,16 @@ model Product {
 }
 
 model SaleRecord {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  id         String @id @default(uuid())
   userId     String
-  title      String
-  category   String
+  title      String @db.VarChar(255)
+  category   String @db.VarChar(50)
   image      String
   price      Int
   quantity   Int // total product sales
   totalPrice Int // price * quantity
+
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
