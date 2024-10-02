@@ -7,6 +7,14 @@ export const GET = async (
 ) => {
   try {
     const { userId } = params
+    const token = req.headers.get("authorization")
+
+    if (!token) {
+      return NextResponse.json(
+        { message: "Unauthorized. No token provided." },
+        { status: 401 },
+      )
+    }
 
     const user = await prisma.user.findUnique({
       where: {
