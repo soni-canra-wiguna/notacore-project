@@ -1,24 +1,32 @@
 "use client"
 
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 interface ThemeSwitcherProps extends React.HTMLAttributes<HTMLDivElement> {
-  openClosePopover?: () => void,
+  togglePopover?: () => void
   sizeIcon?: string
 }
 
-export const ThemeSwitcher = ({ openClosePopover, className, sizeIcon = "4", ...props }: ThemeSwitcherProps) => {
+export const ThemeSwitcher = ({
+  togglePopover,
+  className,
+  sizeIcon = "4",
+  ...props
+}: ThemeSwitcherProps) => {
   const { theme, setTheme } = useTheme()
 
   return (
     <div
       onClick={() => {
         setTheme(theme === "light" ? "dark" : "light")
-        openClosePopover?.()
+        togglePopover?.()
       }}
-      className={cn("flex h-full w-16 cursor-pointer items-center justify-center border-l p-4", className)}
+      className={cn(
+        "flex h-full w-16 cursor-pointer items-center justify-center border-l p-4",
+        className,
+      )}
       {...props}
     >
       {theme === "light" ? (

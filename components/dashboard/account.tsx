@@ -1,13 +1,18 @@
 "use client"
 
 import React, { useState } from "react"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { SignOutButton, useUser } from "@clerk/nextjs"
-import { ArrowLeft, Sun } from "lucide-react"
-import { Skeleton } from "../ui/skeleton"
-import { ThemeSwitcher } from "../theme-switcher"
+import { ArrowLeft, Settings } from "lucide-react"
+import { Skeleton } from "@/components/ui/skeleton"
+import { ThemeSwitcher } from "@/components/theme-switcher"
+import Link from "next/link"
 
-const Account = () => {
+export default function Account() {
   const { user, isLoaded } = useUser()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -16,6 +21,10 @@ const Account = () => {
   const firstName = user?.externalAccounts[0].firstName
   const lastName = user?.externalAccounts[0].lastName
   const fullName = `${firstName!} ${lastName!}`
+
+  function togglePopover() {
+    setIsOpen(!isOpen)
+  }
 
   if (!isLoaded)
     return <Skeleton variant="shimmer" className="size-9 rounded-full" />
@@ -29,8 +38,9 @@ const Account = () => {
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        className="gradientCard flex w-72 flex-col gap-4 p-0"
+        className="gradientCard relative flex w-72 flex-col gap-4 p-0"
       >
+        <AccountSettings togglePopover={togglePopover} />
         <div className="flex flex-col gap-1 p-4">
           <h6 className="text-base font-semibold">{fullName}</h6>
           <p className="text-xs font-medium text-muted-foreground">{email}</p>
@@ -41,11 +51,25 @@ const Account = () => {
               <ArrowLeft className="size-4" /> Keluar
             </div>
           </SignOutButton>
-          <ThemeSwitcher openClosePopover={() => setIsOpen(!isOpen)} />
+          <ThemeSwitcher togglePopover={togglePopover} />
         </div>
       </PopoverContent>
     </Popover>
   )
 }
 
-export default Account
+export const AccountSettings = ({
+  togglePopover,
+}: {
+  togglePopover: () => void
+}) => {
+  return (
+    <Link
+      onClick={togglePopover}
+      href="/dashboard/settings"
+      className="absolute right-3 top-3"
+    >
+      <Settings className="size-4" />
+    </Link>
+  )
+}
