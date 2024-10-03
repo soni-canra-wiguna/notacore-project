@@ -14,9 +14,12 @@ export class ProductValidation {
     }),
     description: z.string().optional(),
     price: z.coerce.number().positive(),
-    category: z.string().min(1, {
-      message: "category product is required",
-    }),
+    category: z
+      .string()
+      .min(1, {
+        message: "category product is required",
+      })
+      .transform((val) => val.toLowerCase()),
     stock: z.coerce.number().nonnegative(),
     unit: z.nativeEnum(Unit).optional(),
   })
@@ -27,7 +30,10 @@ export class ProductValidation {
     title: z.string().optional(),
     description: z.string().optional(),
     price: z.coerce.number().positive().optional(),
-    category: z.string().optional(),
+    category: z
+      .string()
+      .transform((val) => val.toLowerCase())
+      .optional(),
     stock: z.coerce.number().nonnegative(),
     unit: z.nativeEnum(Unit).optional(),
   })
