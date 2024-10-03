@@ -193,7 +193,7 @@ export const AmountByCategory = ({
           <CarouselItem key={i}>
             <Card className="gradientCard grid h-[130px] w-full grid-cols-2 overflow-hidden rounded-xl selection:bg-transparent">
               <div className="flex flex-col gap-1 p-4">
-                <Badge variant="secondary" className="mb-3 w-max">
+                <Badge variant="secondary" className="mb-3 w-max capitalize">
                   {category.label}
                 </Badge>
                 <span className="mb-1 text-xs capitalize text-muted-foreground">
