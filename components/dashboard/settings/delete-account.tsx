@@ -53,7 +53,7 @@ export const DeteleAccount = ({
 
   const trigger = (
     <Button
-      className="border border-destructive bg-destructive/20 capitalize hover:bg-destructive/25"
+      className="border border-destructive bg-destructive/20 capitalize text-destructive hover:bg-destructive/25"
       variant="destructive"
     >
       <TriangleAlert className="mr-2 size-4" /> Hapus Akun
