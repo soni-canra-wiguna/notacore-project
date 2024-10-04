@@ -2,7 +2,6 @@
 
 import { InferProductType, ProductValidation } from "@/schema/product.schema"
 import React from "react"
-import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import axios from "axios"
@@ -45,7 +44,7 @@ export const FormEditProduct = ({
     isError,
   } = useMutation({
     mutationFn: async (data: InferProductType) => {
-      await axios.patch(`/api/products/${product.id}`, data, {
+      await axios.put(`/api/products/${product.id}`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
