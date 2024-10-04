@@ -35,21 +35,12 @@ import {
 import { formatToIDR } from "@/utils/format-to-idr"
 import { useMounted } from "@/hook/use-mounted"
 import { toast } from "@/components/ui/use-toast"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 import LoadingButton from "../loading-button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useAuth } from "@clerk/nextjs"
 import { CreateSaleRecordRequest } from "@/types/sale-record"
+import { DeleteModal } from "../delete-modal"
 
 export const SaleRecords = ({ token }: { token: string }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -304,46 +295,37 @@ const ResetListsProductsButton = ({
     })
   }
 
+  const trigger = (
+    <Button
+      disabled={disabledButton}
+      className=""
+      variant="secondary"
+      size="icon"
+    >
+      <Trash className="size-5 stroke-[1.5]" />
+      <p className="sr-only">reset produk</p>
+    </Button>
+  )
+
+  const action = (
+    <Button
+      onClick={handleResetProduct}
+      className="capitalize"
+      variant="destructive"
+    >
+      ya, hapus produk
+    </Button>
+  )
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          disabled={disabledButton}
-          className=""
-          variant="secondary"
-          size="icon"
-        >
-          <Trash className="size-5 stroke-[1.5]" />
-          <p className="sr-only">reset produk</p>
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-[90vw]">
-        <DialogHeader>
-          <DialogTitle className="capitalize">Hapus semua produk</DialogTitle>
-          <DialogDescription>
-            Apakah kamu yakin ingin menghapus semua produk ?
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="gap-2.5">
-          <DialogClose asChild>
-            <Button
-              onClick={() => setIsOpen(!isOpen)}
-              className="capitalize"
-              variant="outline"
-            >
-              batal
-            </Button>
-          </DialogClose>
-          <Button
-            onClick={handleResetProduct}
-            className="capitalize"
-            variant="destructive"
-          >
-            ya, hapus produk
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <DeleteModal
+      title="Hapus semua produk"
+      description="Apakah kamu yakin ingin menghapus semua produk"
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      trigger={trigger}
+      action={action}
+    />
   )
 }
 

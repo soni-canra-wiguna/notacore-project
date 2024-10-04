@@ -38,3 +38,5 @@ export class ProductValidation {
     unit: z.nativeEnum(Unit).optional(),
   })
 }
+
+export type InferProductType = z.infer<typeof ProductValidation.CREATE>

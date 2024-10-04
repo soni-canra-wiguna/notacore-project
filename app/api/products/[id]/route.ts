@@ -5,6 +5,61 @@ import { ProductValidation } from "@/schema/product.schema"
 import { Validation } from "@/schema/validation"
 import { CreateProductRequest } from "@/types/product"
 
+export const PUT = async (
+  req: NextRequest,
+  { params }: { params: { id: string } },
+) => {
+  try {
+    const { id } = params
+    const idUser = req.headers.get("userId") ?? ""
+    const token = req.headers.get("authorization")
+    if (!token) {
+      return NextResponse.json(
+        { message: "Unauthorized. No token provided." },
+        { status: 401 },
+      )
+    }
+
+    const request: CreateProductRequest = await req.json()
+    const response = Validation.validate(ProductValidation.CREATE, request)
+
+    await prisma.product.update({
+      where: {
+        id,
+        userId: idUser,
+      },
+      data: response,
+    })
+
+    return NextResponse.json(
+      {
+        message: "Successfully updated Product",
+      },
+      { status: 201 },
+    )
+  } catch (error) {
+    console.log(error)
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        {
+          message: "Validation error",
+          errors: error.errors,
+        },
+        { status: 400 },
+      )
+    }
+    return NextResponse.json(
+      {
+        message: "internal server error",
+      },
+      {
+        status: 500,
+      },
+    )
+  }
+}
+
+// to update gold
 export const PATCH = async (
   req: NextRequest,
   { params }: { params: { id: string } },
