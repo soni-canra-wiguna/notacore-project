@@ -39,4 +39,4 @@ export class ProductValidation {
   })
 }
 
-export type InferProductType = z.infer<typeof CREATE>
+export type InferProductType = z.infer<typeof ProductValidation.CREATE>
