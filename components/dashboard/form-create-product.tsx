@@ -102,7 +102,7 @@ export const FormCreateProduct = ({
       previewProduct={previewProduct}
       isPending={isPending}
       onSubmit={onSubmit}
-      label="update"
+      label="create"
     />
   )
 }
