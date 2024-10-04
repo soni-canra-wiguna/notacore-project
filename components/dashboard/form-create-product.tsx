@@ -22,20 +22,18 @@ export const FormCreateProduct = ({
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const defaultValues = {
-    userId: userId!,
-    title: "",
-    description: "",
-    image: "",
-    price: 0,
-    category: "",
-    stock: 0,
-    unit: "PCS",
-  }
-
   const form = useForm<InferProductType>({
     resolver: zodResolver(ProductValidation.CREATE),
-    defaultValues,
+    defaultValues: {
+      userId: userId!,
+      title: "",
+      description: "",
+      image: "",
+      price: 0,
+      category: "",
+      stock: 0,
+      unit: "PCS",
+    },
   })
 
   const {
