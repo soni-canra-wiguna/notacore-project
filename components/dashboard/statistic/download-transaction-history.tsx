@@ -44,7 +44,7 @@ export const DownloadTransactionHistory = () => {
   }
 
   return (
-    <Drawer open>
+    <Drawer>
       <DrawerTrigger asChild>
         <Button variant="outline" size="icon">
           <Download className="size-4 stroke-[1.5]" />
