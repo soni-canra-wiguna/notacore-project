@@ -1,9 +1,10 @@
+import React, { Suspense } from "react"
 import { FilterButton, FilterStatistic } from "@/components/dashboard/statistic/filter"
 import Amount, { LoadingAmount } from "@/components/dashboard/statistic/amount"
 import { Container } from "@/components/layout/container"
-import React, { Suspense } from "react"
 import TableRecords from "@/components/dashboard/statistic/table-records"
 import { SectionHeader, SectionLayout } from "@/components/section"
+import { DownloadTransactionHistory } from "@/components/dashboard/statistic/download-transaction-history"
 
 const StatisticsPage = () => {
   const actionButtonStatistic = (
@@ -11,8 +12,6 @@ const StatisticsPage = () => {
       <FilterStatistic />
     </Suspense>
   )
-
-  const actionButtonTransaction = <></>
 
   return (
     <main className="min-h-screen w-full">
@@ -22,10 +21,11 @@ const StatisticsPage = () => {
           <Suspense fallback={<LoadingAmount />}>
             <Amount />
           </Suspense>
-          <TableRecords />
         </SectionLayout>
         <SectionLayout>
-          <SectionHeader actionButton={actionButtonTransaction}>riwayat transaksi</SectionHeader>
+          <SectionHeader actionButton={<DownloadTransactionHistory />}>
+            riwayat transaksi
+          </SectionHeader>
           <TableRecords />
         </SectionLayout>
       </Container>
