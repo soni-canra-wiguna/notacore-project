@@ -1,12 +1,22 @@
 import prisma from "@/lib/prisma"
 import { NextRequest, NextResponse } from "next/server"
 import { format } from "date-fns"
+import { getSearchParams } from "@/utils/get-search-params"
+import ExcelJS from "exceljs"
+import { Buffer } from "buffer"
 
 export const dynamic = "force-dynamic"
+
+export type FileType = "xlsx" | "csv"
 
 export const GET = async (req: NextRequest, { params }: { params: { userId: string } }) => {
   try {
     const { userId } = params
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
+    }
+
+    const fileType: "xlsx" | "csv" = (getSearchParams(req, "fileType") as FileType) ?? "csv"
 
     const salesRecord = await prisma.saleRecord.findMany({
       where: {
@@ -17,19 +27,53 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
       },
     })
 
-    const csvData = salesRecord.map(
+    const workbook = new ExcelJS.Workbook()
+    const worksheet = workbook.addWorksheet("Riwayat Penjualan")
+
+    worksheet.columns = [
+      { header: "No", key: "no" },
+      { header: "Nama Produk", key: "title" },
+      { header: "Kategori", key: "category" },
+      { header: "Gambar", key: "image" },
+      { header: "Harga", key: "price" },
+      { header: "QTY", key: "quantity" },
+      { header: "Total Harga", key: "totalPrice" },
+      { header: "Tanggal Pembelian", key: "createdAt" },
+    ]
+
+    salesRecord.forEach(
       ({ title, category, image, price, quantity, totalPrice, createdAt }, index) => {
-        const formattedDate = format(createdAt, "dd-MM-yyyy")
-        return `"${index + 1}",${title}","${category}","${image}","${price}","${quantity}","${totalPrice}","${formattedDate}"\n`
+        worksheet.addRow({
+          no: index + 1,
+          title,
+          category,
+          image: fileType === "xlsx" ? { text: image, hyperlink: image } : image, // Hyperlink image
+          price,
+          quantity,
+          totalPrice,
+          createdAt: format(createdAt, "dd-MM-yyyy"),
+        })
       },
     )
 
-    const csvContent = `"No","Nama Produk","Kategori","Url Gambar","Harga","QTY","Total Harga","Tanggal Pembelian"\n${csvData.join("")}`
+    let buffer: Buffer
+    let contentType: string
+    let fileName: string
 
-    return new NextResponse(csvContent, {
+    if (fileType === "csv") {
+      buffer = Buffer.from(await workbook.csv.writeBuffer())
+      contentType = "text/csv"
+      fileName = "sales-record.csv"
+    } else {
+      buffer = Buffer.from(await workbook.xlsx.writeBuffer())
+      contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      fileName = "sales-record.xlsx"
+    }
+
+    return new NextResponse(buffer, {
       headers: {
-        "Content-Type": "text/csv",
-        "Content-Disposition": 'attachment; filename="sales-record.csv"',
+        "Content-Type": contentType,
+        "Content-Disposition": `attachment; filename=${fileName}`,
       },
     })
   } catch (error) {
