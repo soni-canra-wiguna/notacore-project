@@ -5,19 +5,13 @@ import { ProductValidation } from "@/schema/product.schema"
 import { Validation } from "@/schema/validation"
 import { CreateProductRequest } from "@/types/product"
 
-export const PUT = async (
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) => {
+export const PUT = async (req: NextRequest, { params }: { params: { id: string } }) => {
   try {
     const { id } = params
     const idUser = req.headers.get("userId") ?? ""
     const token = req.headers.get("authorization")
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     const request: CreateProductRequest = await req.json()
@@ -59,20 +53,14 @@ export const PUT = async (
   }
 }
 
-// to update gold
-export const PATCH = async (
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) => {
+// to update stock
+export const PATCH = async (req: NextRequest, { params }: { params: { id: string } }) => {
   try {
     const { id } = params
     const idUser = req.headers.get("userId") ?? ""
     const token = req.headers.get("authorization")
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     const request: CreateProductRequest = await req.json()
@@ -114,19 +102,13 @@ export const PATCH = async (
   }
 }
 
-export const GET = async (
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) => {
+export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
   try {
     const { id } = params
     const userId = req.headers.get("userId") ?? ""
     const token = req.headers.get("authorization")
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     const product = await prisma.product.findUnique({
@@ -168,19 +150,13 @@ export const GET = async (
   }
 }
 
-export const DELETE = async (
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) => {
+export const DELETE = async (req: NextRequest, { params }: { params: { id: string } }) => {
   try {
     const { id } = params
     const userId = req.headers.get("userId") ?? ""
     const token = req.headers.get("authorization")
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     await prisma.product.delete({
@@ -190,10 +166,7 @@ export const DELETE = async (
       },
     })
 
-    return NextResponse.json(
-      { message: "product was deleted" },
-      { status: 200 },
-    )
+    return NextResponse.json({ message: "product was deleted" }, { status: 200 })
   } catch (error) {
     console.log(error)
     return NextResponse.json(

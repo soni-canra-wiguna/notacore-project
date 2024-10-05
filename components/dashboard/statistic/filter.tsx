@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { Button } from "@/components/ui/button"
 import { useQueryState } from "nuqs"
 import { useState } from "react"
@@ -49,14 +50,8 @@ export const FilterStatistic = () => {
   const [hasFrom, setHasFrom] = useState(from)
   const [hasTo, setHasTo] = useState("")
   const [isOpen, setIsOpen] = useState(false)
-  const {
-    formatToday,
-    oneWeekAgo,
-    oneMonthAgo,
-    threeMonthsAgo,
-    sixMonthsAgo,
-    oneYearAgo,
-  } = dateTime()
+  const { formatToday, oneWeekAgo, oneMonthAgo, threeMonthsAgo, sixMonthsAgo, oneYearAgo } =
+    dateTime()
 
   const handleSelectTime = (time: TimeProps) => {
     switch (time) {
@@ -161,11 +156,7 @@ export const FilterStatistic = () => {
             <h3 className="font-semibold capitalize">filter</h3>
           </div>
           <DrawerClose asChild>
-            <Button
-              onClick={() => setIsOpen(!isOpen)}
-              variant="ghost"
-              size="icon"
-            >
+            <Button onClick={() => setIsOpen(!isOpen)} variant="ghost" size="icon">
               <X className="size-6 stroke-[1.5]" />
               <p className="sr-only">close</p>
             </Button>
@@ -192,11 +183,7 @@ export const FilterStatistic = () => {
           >
             batalkan
           </Button>
-          <Button
-            className="w-full rounded-xl capitalize"
-            size="lg"
-            onClick={handleSelectFilter}
-          >
+          <Button className="w-full rounded-xl capitalize" size="lg" onClick={handleSelectFilter}>
             terapkan
           </Button>
         </DrawerFooter>
@@ -209,24 +196,13 @@ interface FilterItemProps extends ListTimeProps {
   index: number | undefined
 }
 
-const FilterItem = ({
-  title,
-  description,
-  active,
-  onClick,
-  index,
-}: FilterItemProps) => {
+const FilterItem = ({ title, description, active, onClick, index }: FilterItemProps) => {
   return (
     <>
-      <div
-        className={"justfiy-between flex w-full items-center py-4"}
-        onClick={onClick}
-      >
+      <div className={"justfiy-between flex w-full items-center py-4"} onClick={onClick}>
         <div className="flex flex-1 flex-col gap-0.5">
           <h4 className="font-semibold capitalize">{title}</h4>
-          <p className="text-xs capitalize text-muted-foreground">
-            {description}
-          </p>
+          <p className="text-xs capitalize text-muted-foreground">{description}</p>
         </div>
         <div className="">
           <div

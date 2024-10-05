@@ -9,10 +9,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
     const token = req.headers.get("authorization")
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     const request: CreateProductRequest = await req.json()
@@ -50,28 +47,20 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   }
 }
 
-export const GET = async (
-  req: NextRequest,
-  res: NextResponse,
-): Promise<any> => {
+export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => {
   try {
     const token = req.headers.get("authorization")
     const userId = req.headers.get("userId") ?? ""
 
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     const page = parseInt(req.nextUrl.searchParams.get("page") ?? "1")
     const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "20")
     const skip = (page - 1) * limit
     const sortBy = req.nextUrl.searchParams.get("sortBy")
-    const searchQuery = req.nextUrl.searchParams
-      .get("search")
-      ?.replace(/-/g, " ")
+    const searchQuery = req.nextUrl.searchParams.get("search")?.replace(/-/g, " ")
 
     let orderBy = {}
     switch (sortBy) {
@@ -149,9 +138,7 @@ export const GET = async (
     const responseMessage = searchQuery
       ? "Search results successfully retrieved"
       : "Products successfully retrieved"
-    const responseTotalPages = Math.ceil(
-      searchQuery ? products.length : totalProducts / limit,
-    )
+    const responseTotalPages = Math.ceil(searchQuery ? products.length : totalProducts / limit)
 
     const response = {
       message: responseMessage,

@@ -15,6 +15,38 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       console.log("file url", file.url)
     }),
+
+  productsCsv: f({
+    "text/csv": {
+      maxFileCount: 5,
+      maxFileSize: "16MB",
+      minFileCount: 1,
+    },
+  })
+    .middleware(async () => {
+      const user = auth()
+      if (!user || !user.userId) throw new Error("Unauthorized")
+      return { userId: user.userId }
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("file url", file.url)
+    }),
+
+  // productsClsx: f({
+  //   "text/csv": {
+  //     maxFileCount: 5,
+  //     maxFileSize: "16MB",
+  //     minFileCount: 1,
+  //   },
+
+  // }).middleware(async () => {
+  //   const user = auth()
+  //   if (!user || !user.userId) throw new Error("Unauthorized")
+  //   return { userId: user.userId }
+  // })
+  // .onUploadComplete(async ({ metadata, file }) => {
+  //   console.log("file url", file.url)
+  // })
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter

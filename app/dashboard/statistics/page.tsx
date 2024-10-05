@@ -1,54 +1,33 @@
-import {
-  ChartDemo,
-  ChartDemo2,
-  ChartDemo3,
-  ChartDemo4,
-  ChartDemo5,
-} from "@/components/dashboard/statistic/demo-chart"
-import {
-  FilterButton,
-  FilterStatistic,
-} from "@/components/dashboard/statistic/filter"
+import React, { Suspense } from "react"
+import { FilterButton, FilterStatistic } from "@/components/dashboard/statistic/filter"
 import Amount, { LoadingAmount } from "@/components/dashboard/statistic/amount"
 import { Container } from "@/components/layout/container"
-import React, { Suspense } from "react"
 import TableRecords from "@/components/dashboard/statistic/table-records"
+import { SectionHeader, SectionLayout } from "@/components/section"
+import { DownloadTransactionHistory } from "@/components/dashboard/statistic/download-transaction-history"
 
 const StatisticsPage = () => {
+  const actionButtonStatistic = (
+    <Suspense fallback={<FilterButton />}>
+      <FilterStatistic />
+    </Suspense>
+  )
+
   return (
     <main className="min-h-screen w-full">
       <Container className="py-20">
-        <section className="mb-8 space-y-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-lg font-bold capitalize">
-              statistik penjualan
-            </h1>
-            <Suspense fallback={<FilterButton />}>
-              <FilterStatistic />
-            </Suspense>
-          </div>
+        <SectionLayout>
+          <SectionHeader actionButton={actionButtonStatistic}>statistik penjualan</SectionHeader>
           <Suspense fallback={<LoadingAmount />}>
             <Amount />
           </Suspense>
-        </section>
-        <section className="mb-8 space-y-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-lg font-bold capitalize">riwayat transaksi</h1>
-          </div>
+        </SectionLayout>
+        <SectionLayout>
+          <SectionHeader actionButton={<DownloadTransactionHistory />}>
+            riwayat transaksi
+          </SectionHeader>
           <TableRecords />
-        </section>
-        {/* <ChartDemo />
-        <Separator className="my-5" />
-        <ChartDemo2 />
-        <Separator className="my-5" />
-        <ChartDemo3 />
-        <Separator className="my-5" />
-        <ChartDemo4 />
-        <Separator className="my-5" />
-        <ChartDemo5 />
-        <Suspense fallback={"loading"}>
-          <FilterStatistic />
-        </Suspense> */}
+        </SectionLayout>
       </Container>
     </main>
   )
