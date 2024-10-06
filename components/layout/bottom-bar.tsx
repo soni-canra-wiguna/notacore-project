@@ -1,5 +1,3 @@
-"use client"
-
 import React from "react"
 import { Wrapper } from "./wrapper"
 import { BottomBarNavigation } from "./bottom-bar-navigation"
