@@ -6,7 +6,7 @@ import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/componen
 import { useEffect, useState } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import { Badge } from "@/components/ui/badge"
-import { getSalesRecord } from "@/services/get-sales-record"
+import { getSalesRecords } from "@/services/get-sales-records"
 import { SalesAndRevenueByCategoryResponse } from "@/types/sales-record"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useQueryState } from "nuqs"
@@ -19,7 +19,7 @@ const Amount = () => {
   const [to] = useQueryState("to", {
     defaultValue: format(new Date(), "yyyy-MM-dd"),
   })
-  const { data, isPending, isError } = getSalesRecord(from, to)
+  const { data, isPending, isError } = getSalesRecords(from, to)
   const statistic = data?.statistic
 
   if (isPending) return <LoadingAmount />

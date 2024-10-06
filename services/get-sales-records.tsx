@@ -10,11 +10,11 @@ export interface GetSalesRecordProps {
   statistic: StatisticResponse
 }
 
-export const getSalesRecord = (from: string | null, to: string | null) => {
+export const getSalesRecords = (from: string | null, to: string | null) => {
   const { userId, getToken } = useAuth()
 
   const { data, isPending, isError } = useQuery<GetSalesRecordProps>({
-    queryKey: ["sales_record", from, to],
+    queryKey: ["sales_records", from, to],
     queryFn: async () => {
       const token = await getToken()
       const { data } = await axios.get(`/api/sales-records?from=${from}&to=${to}`, {
