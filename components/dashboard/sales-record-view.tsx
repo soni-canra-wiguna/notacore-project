@@ -15,11 +15,7 @@ import {
 } from "@/components/ui/drawer"
 import { X, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover"
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { useState } from "react"
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
 import { useDispatch } from "react-redux"
@@ -39,14 +35,13 @@ import LoadingButton from "../loading-button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useAuth } from "@clerk/nextjs"
-import { CreateSaleRecordRequest } from "@/types/sale-record"
+import { CreateSalesRecordRequest } from "@/types/sales-record"
 import { DeleteModal } from "../delete-modal"
 
-export const SaleRecords = ({ token }: { token: string }) => {
+export const SalesRecordView = ({ token }: { token: string }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [layoutSwitcher, setLayoutSwitcher] = useState<"list" | "slider">(
-    "list",
-  )
+  const [layoutSwitcher, setLayoutSwitcher] = useState<"list" | "slider">("list")
+
   const { products } = useSelector((state: RootState) => state.products)
   const totalProducts = products.length
   const totalPrice = products.reduce((acc, product) => {
@@ -54,11 +49,7 @@ export const SaleRecords = ({ token }: { token: string }) => {
   }, 0)
   const disabledButton: boolean = totalProducts <= 0
 
-  const SaleRecordsButton = ({
-    totalProducts = 0,
-  }: {
-    totalProducts: number
-  }) => {
+  const SaleRecordsButton = ({ totalProducts = 0 }: { totalProducts: number }) => {
     return (
       <div
         onClick={() => setIsOpen(!isOpen)}
@@ -176,17 +167,11 @@ const CardDrawer = ({ product }: { product: ProductSliceType }) => {
       <DeleteButton id={product.id} />
       <div className="flex w-full items-start gap-2">
         <div className="aspect-square h-20 overflow-hidden rounded-xl">
-          <img
-            alt="image"
-            src={product.image}
-            className="size-full object-cover"
-          />
+          <img alt="image" src={product.image} className="size-full object-cover" />
         </div>
         <div className="">
           <h4 className="text-sm font-semibold capitalize">{product.title}</h4>
-          <p className="text-xs font-medium">
-            {formatToIDR(product.unitPrice)}
-          </p>
+          <p className="text-xs font-medium">{formatToIDR(product.unitPrice)}</p>
           <p className="text-xs">
             stock: {product.stock} {product.unit}
           </p>
@@ -296,23 +281,14 @@ const ResetListsProductsButton = ({
   }
 
   const trigger = (
-    <Button
-      disabled={disabledButton}
-      className=""
-      variant="secondary"
-      size="icon"
-    >
+    <Button disabled={disabledButton} className="" variant="secondary" size="icon">
       <Trash className="size-5 stroke-[1.5]" />
       <p className="sr-only">reset produk</p>
     </Button>
   )
 
   const action = (
-    <Button
-      onClick={handleResetProduct}
-      className="capitalize"
-      variant="destructive"
-    >
+    <Button onClick={handleResetProduct} className="capitalize" variant="destructive">
       ya, hapus produk
     </Button>
   )
@@ -349,8 +325,8 @@ const AddProductToRecord = ({
     isPending,
     isError,
   } = useMutation({
-    mutationFn: async (data: CreateSaleRecordRequest[]) => {
-      await axios.post(`/api/sale-records`, data, {
+    mutationFn: async (data: CreateSalesRecordRequest[]) => {
+      await axios.post(`/api/sales-records`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           userId: userId!,
@@ -394,9 +370,9 @@ const AddProductToRecord = ({
     },
   })
 
-  const handleAddSaleRecords = () => {
+  const handleAddSalesRecord = () => {
     try {
-      const records: CreateSaleRecordRequest[] = products.map((product) => ({
+      const records: CreateSalesRecordRequest[] = products.map((product) => ({
         userId: product.userId,
         title: product.title,
         image: product.image,
@@ -426,7 +402,7 @@ const AddProductToRecord = ({
 
   return (
     <LoadingButton
-      onClick={handleAddSaleRecords}
+      onClick={handleAddSalesRecord}
       loading={isPending}
       disabled={isPending || disabledButton}
     >

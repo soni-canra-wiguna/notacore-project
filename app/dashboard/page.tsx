@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/container"
 import ListsProducts, { LoadingListProducts } from "@/components/dashboard/lists-products"
 import { FallbackFilterButton, FilterProducts } from "@/components/dashboard/filter-products"
 import { Suspense } from "react"
-import { SaleRecords } from "@/components/dashboard/sale-records"
+import { SalesRecordView } from "@/components/dashboard/sales-record-view"
 import { SectionHeader, SectionLayout } from "@/components/section"
 
 const DashboardPage = async () => {
@@ -26,7 +26,7 @@ const DashboardPage = async () => {
           </Suspense>
         </SectionLayout>
       </Container>
-      <SaleRecords token={token!} /> {/* checkout button ~ absolute position */}
+      <SalesRecordView token={token!} /> {/* checkout button ~ absolute position */}
     </main>
   )
 }

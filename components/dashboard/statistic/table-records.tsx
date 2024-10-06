@@ -21,7 +21,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { formatToIDR } from "@/utils/format-to-idr"
 import { useAuth } from "@clerk/nextjs"
-import { SaleRecord } from "@prisma/client"
+import { SalesRecord } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { format } from "date-fns"
@@ -31,7 +31,7 @@ import { id } from "date-fns/locale"
 
 export interface GetSalesRecordWithPaggingProps {
   message: string
-  data: SaleRecord[]
+  data: SalesRecord[]
   currentPage: number
   totalPages: number
   totalSaleRecordsPerPage: number
@@ -46,24 +46,22 @@ const TableRecords = () => {
   const [sortBy, setSortBy] = useState("date-desc")
   const [limit, setLimit] = useState("20")
 
-  const { data, isPending, isError } = useQuery<GetSalesRecordWithPaggingProps>(
-    {
-      queryKey: ["pagging_salesrecord", sortBy, page, limit],
-      queryFn: async () => {
-        const token = await getToken()
-        const { data } = await axios.get(
-          `/api/sale-records/pagination?sortBy=${sortBy}&page=${page}&limit=${limit}`,
-          {
-            headers: {
-              Authorization: token,
-              userId: userId,
-            },
+  const { data, isPending, isError } = useQuery<GetSalesRecordWithPaggingProps>({
+    queryKey: ["pagging_salesrecord", sortBy, page, limit],
+    queryFn: async () => {
+      const token = await getToken()
+      const { data } = await axios.get(
+        `/api/sales-records/pagination?sortBy=${sortBy}&page=${page}&limit=${limit}`,
+        {
+          headers: {
+            Authorization: token,
+            userId: userId,
           },
-        )
-        return data
-      },
+        },
+      )
+      return data
     },
-  )
+  })
 
   const handleSortBy = (type: handleSortByType) => {
     if (type === "price") {
@@ -71,27 +69,21 @@ const TableRecords = () => {
     } else if (type === "date") {
       setSortBy((prev) => (prev === "date-desc" ? "date-asc" : "date-desc"))
     } else if (type === "qty") {
-      setSortBy((prev) =>
-        prev === "quantity-high" ? "quantity-low" : "quantity-high",
-      )
+      setSortBy((prev) => (prev === "quantity-high" ? "quantity-low" : "quantity-high"))
     }
   }
   // @ts-ignore
   if (data?.data?.length <= 0)
     return (
       <Card className="gradientCard flex h-40 items-center justify-center rounded-xl p-4">
-        <p className="text-sm text-muted-foreground">
-          Belum ada yang terjual nih
-        </p>
+        <p className="text-sm text-muted-foreground">Belum ada yang terjual nih</p>
       </Card>
     )
 
   if (isError)
     return (
       <Card className="gradientCard flex h-40 items-center justify-center rounded-xl p-4">
-        <p className="text-sm text-muted-foreground">
-          Ada yang salah nih, coba refresh lagi deh
-        </p>
+        <p className="text-sm text-muted-foreground">Ada yang salah nih, coba refresh lagi deh</p>
       </Card>
     )
 
@@ -106,27 +98,18 @@ const TableRecords = () => {
               <thead>
                 <tr>
                   <th className="w-60 border p-2 capitalize">Nama Produk</th>
-                  <th
-                    className="w-36 border p-2 capitalize"
-                    onClick={() => handleSortBy("price")}
-                  >
+                  <th className="w-36 border p-2 capitalize" onClick={() => handleSortBy("price")}>
                     <div className="flex items-center justify-center gap-2">
                       harga <ChevronsUpDown className="size-3" />
                     </div>
                   </th>
-                  <th
-                    className="w-24 border p-2 capitalize"
-                    onClick={() => handleSortBy("qty")}
-                  >
+                  <th className="w-24 border p-2 capitalize" onClick={() => handleSortBy("qty")}>
                     <div className="flex items-center justify-center gap-2">
                       jumlah <ChevronsUpDown className="size-3" />
                     </div>
                   </th>
                   <th className="w-40 border p-2 capitalize">total harga</th>
-                  <th
-                    className="border p-2 capitalize"
-                    onClick={() => handleSortBy("date")}
-                  >
+                  <th className="border p-2 capitalize" onClick={() => handleSortBy("date")}>
                     <div className="flex items-center justify-center gap-2">
                       tanggal <ChevronsUpDown className="size-3" />
                     </div>
@@ -184,7 +167,7 @@ const TableRecords = () => {
             className="rounded-xl p-2"
             variant="outline"
             onClick={() => setPage(page + 1)}
-            disabled={(page === data?.totalPages) || isPending}
+            disabled={page === data?.totalPages || isPending}
           >
             <ChevronRight className="size-4" />
           </Button>
@@ -197,22 +180,17 @@ const TableRecords = () => {
 export default TableRecords
 
 export const LoadingTableProduct = () => {
-  const loading = Array.from({length: 4}, (_, i) => (
-    <Skeleton key={i} className="gradientCard shimmer scrollbar-hide h-8 w-full rounded-md bg-secondary text-card-foreground shadow-sm" />
+  const loading = Array.from({ length: 4 }, (_, i) => (
+    <Skeleton
+      key={i}
+      className="gradientCard shimmer scrollbar-hide h-8 w-full rounded-md bg-secondary text-card-foreground shadow-sm"
+    />
   ))
 
-  return (
-    <div className="flex flex-col gap-2">
-    {loading}
-    </div>
-  )
+  return <div className="flex flex-col gap-2">{loading}</div>
 }
 
-const TableList = ({
-  data,
-}: {
-  data: GetSalesRecordWithPaggingProps | undefined
-}) => {
+const TableList = ({ data }: { data: GetSalesRecordWithPaggingProps | undefined }) => {
   const tableItem = data?.data.map((p) => {
     const formattedDate = format(p.createdAt, "dd MMMM yyyy", {
       locale: id,
@@ -222,9 +200,7 @@ const TableList = ({
         <td className="max-w-60 truncate border p-2">{p.title}</td>
         <td className="w-36 border p-2 text-left">{formatToIDR(p.price)}</td>
         <td className="w-24 border p-2 text-center">{p.quantity}</td>
-        <td className="w-40 border p-2 text-left">
-          {formatToIDR(p.totalPrice)}
-        </td>
+        <td className="w-40 border p-2 text-left">{formatToIDR(p.totalPrice)}</td>
         <td className="border p-2 text-left tracking-wide">{formattedDate}</td>
       </tr>
     )

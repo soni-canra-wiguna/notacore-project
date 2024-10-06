@@ -6,19 +6,13 @@ import { NextRequest, NextResponse } from "next/server"
 
 export const dynamic = "force-dynamic"
 
-export const GET = async (
-  req: NextRequest,
-  res: NextResponse,
-): Promise<any> => {
+export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => {
   try {
     const token = req.headers.get("authorization")
     const userId = req.headers.get("userId") ?? ""
 
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     const page = parseInt(getSearchParams(req, "page") ?? "1")
@@ -64,7 +58,7 @@ export const GET = async (
         orderBy = { createdAt: "desc" }
     }
 
-    const saleRecords = await prisma.saleRecord.findMany({
+    const salesRecords = await prisma.salesRecord.findMany({
       where: {
         userId,
         AND: filters,
@@ -74,15 +68,15 @@ export const GET = async (
       take: limit,
     })
 
-    const totalSaleRecords = await prisma.saleRecord.count({
+    const totalSalesRecords = await prisma.salesRecord.count({
       where: {
         userId,
       },
     })
 
-    const productNotFound = saleRecords.length === 0
+    const productNotFound = salesRecords.length === 0
 
-    if (!totalSaleRecords || productNotFound) {
+    if (!totalSalesRecords || productNotFound) {
       return NextResponse.json(
         {
           message: "data not found",
@@ -94,11 +88,11 @@ export const GET = async (
 
     const response = {
       message: "records successfully retrieved",
-      data: saleRecords,
+      data: salesRecords,
       currentPage: page,
-      totalPages: Math.ceil(totalSaleRecords / limit),
-      totalSaleRecordsPerPage: saleRecords.length,
-      totalSaleRecords,
+      totalPages: Math.ceil(totalSalesRecords / limit),
+      totalSalesRecordsPerPage: salesRecords.length,
+      totalSalesRecords,
     }
 
     return NextResponse.json(response, { status: 200 })

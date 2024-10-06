@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma"
-import { SaleRecordValidation } from "@/schema/sale-record.schema"
+import { SalesRecordValidation } from "@/schema/sales-record.schema"
 import { Validation } from "@/schema/validation"
-import { CreateSaleRecordRequest } from "@/types/sale-record"
+import { CreateSalesRecordRequest } from "@/types/sales-record"
 import { getSearchParams } from "@/utils/get-search-params"
 import { Prisma } from "@prisma/client"
 import { NextRequest, NextResponse } from "next/server"
@@ -11,17 +11,11 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
     const token = req.headers.get("authorization")
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
-    const request: CreateSaleRecordRequest[] = await req.json()
-    const response = Validation.validate(
-      SaleRecordValidation.ARRAY_CREATE,
-      request,
-    )
+    const request: CreateSalesRecordRequest[] = await req.json()
+    const response = Validation.validate(SalesRecordValidation.ARRAY_CREATE, request)
 
     if (!Array.isArray(response) || response.length === 0) {
       return NextResponse.json(
@@ -34,7 +28,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       )
     }
 
-    await prisma.saleRecord.createMany({
+    await prisma.salesRecord.createMany({
       data: response,
     })
 
@@ -66,19 +60,13 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   }
 }
 
-export const GET = async (
-  req: NextRequest,
-  res: NextResponse,
-): Promise<any> => {
+export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => {
   try {
     const token = req.headers.get("authorization")
     const userId = req.headers.get("userId") ?? ""
 
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     const from = getSearchParams(req, "from") ?? "" // createdAt
@@ -143,7 +131,7 @@ export const GET = async (
         orderBy = { createdAt: "desc" }
     }
 
-    const saleRecords = await prisma.saleRecord.findMany({
+    const salesRecords = await prisma.salesRecord.findMany({
       where: {
         userId,
         AND: filters,
@@ -151,16 +139,16 @@ export const GET = async (
       orderBy: orderBy || { createdAt: "desc" },
     })
 
-    const totalSaleRecords = await prisma.saleRecord.count({
+    const totalSalesRecords = await prisma.salesRecord.count({
       where: {
         userId,
         AND: filters,
       },
     })
 
-    const productNotFound = saleRecords.length === 0
+    const productNotFound = salesRecords.length === 0
 
-    if (!totalSaleRecords || productNotFound) {
+    if (!totalSalesRecords || productNotFound) {
       return NextResponse.json(
         {
           message: "data not found",
@@ -172,17 +160,17 @@ export const GET = async (
 
     // statistic response start
 
-    const totalSales = saleRecords.reduce((acc, curr) => {
+    const totalSales = salesRecords.reduce((acc, curr) => {
       return acc + curr.quantity
     }, 0)
-    const totalRevenue = saleRecords.reduce((acc, curr) => {
+    const totalRevenue = salesRecords.reduce((acc, curr) => {
       return acc + curr.totalPrice
     }, 0)
-    const totalTransactions = totalSaleRecords
+    const totalTransactions = totalSalesRecords
     const averageSalePerTransaction = Math.round(totalSales / totalTransactions)
     const averageRevenuePerTransaction = totalRevenue / totalTransactions
     // Calculate sales and revenue by category
-    const salesByCategory = saleRecords.reduce(
+    const salesByCategory = salesRecords.reduce(
       (acc, curr) => {
         const category = curr.category || "Uncategorized"
         if (!acc[category]) {
@@ -194,7 +182,7 @@ export const GET = async (
       {} as Record<string, number>,
     )
 
-    const revenueByCategory = saleRecords.reduce(
+    const revenueByCategory = salesRecords.reduce(
       (acc, curr) => {
         const category = curr.category || "Uncategorized"
         if (!acc[category]) {
@@ -206,7 +194,7 @@ export const GET = async (
       {} as Record<string, number>,
     )
 
-    const salesAndRevenueByCategory = saleRecords.reduce(
+    const salesAndRevenueByCategory = salesRecords.reduce(
       (acc, curr) => {
         const category = curr.category || "Uncategorized"
         if (!acc[category]) {
@@ -221,17 +209,14 @@ export const GET = async (
 
         return acc
       },
-      {} as Record<
-        string,
-        { label: string; quantity: number; totalPrice: number }
-      >,
+      {} as Record<string, { label: string; quantity: number; totalPrice: number }>,
     )
-    const salesAndRevenueByCategoryArray = Object.values(
-      salesAndRevenueByCategory,
-    ).sort((a, b) => b.quantity - a.quantity)
+    const salesAndRevenueByCategoryArray = Object.values(salesAndRevenueByCategory).sort(
+      (a, b) => b.quantity - a.quantity,
+    )
 
     // Calculate sales and revenue by month
-    const salesByMonth = saleRecords.reduce(
+    const salesByMonth = salesRecords.reduce(
       (acc, curr) => {
         const month = curr.createdAt.toLocaleString("default", {
           month: "long",
@@ -245,7 +230,7 @@ export const GET = async (
       {} as Record<string, number>,
     )
 
-    const revenueByMonth = saleRecords.reduce(
+    const revenueByMonth = salesRecords.reduce(
       (acc, curr) => {
         const month = curr.createdAt.toLocaleString("default", {
           month: "long",
@@ -260,7 +245,7 @@ export const GET = async (
     )
 
     // Get top selling products
-    const topSellingProducts = saleRecords
+    const topSellingProducts = salesRecords
       .reduce(
         (acc, curr) => {
           const product = acc.find((p) => p.product === curr.title)
@@ -293,7 +278,7 @@ export const GET = async (
 
     const response = {
       message: "records successfully retrieved",
-      data: saleRecords,
+      data: salesRecords,
       statistic: statisticResponse,
     }
 
@@ -326,13 +311,10 @@ export const DELETE = async (req: NextRequest, res: NextResponse) => {
     const userId = req.headers.get("userId") ?? ""
 
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
-    await prisma.saleRecord.deleteMany({
+    await prisma.salesRecord.deleteMany({
       where: {
         userId: userId,
       },
