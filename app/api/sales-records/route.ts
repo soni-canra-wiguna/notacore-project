@@ -39,7 +39,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       { status: 201 },
     )
   } catch (error) {
-    console.log(error)
+    console.log("[ERROR POST SALES RECORDS] : ", error)
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
@@ -284,16 +284,7 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
 
     return NextResponse.json(response, { status: 200 })
   } catch (error) {
-    console.log(error)
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        {
-          message: "Validation error",
-          errors: error.errors,
-        },
-        { status: 400 },
-      )
-    }
+    console.log("[ERROR GET SALES RECORDS] : ", error)
     return NextResponse.json(
       {
         message: "internal server error",
@@ -324,15 +315,7 @@ export const DELETE = async (req: NextRequest, res: NextResponse) => {
       status: 200,
     })
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        {
-          message: "Validation error",
-          errors: error.errors,
-        },
-        { status: 400 },
-      )
-    }
+    console.log("[ERROR DELETE SALES RECORDS] : ", error)
     return NextResponse.json(
       {
         message: "internal server error",

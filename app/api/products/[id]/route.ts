@@ -32,7 +32,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { id: string }
       { status: 201 },
     )
   } catch (error) {
-    console.log(error)
+    console.log("[ERROR PUT PRODUCTS] : ", error)
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
@@ -81,7 +81,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: { id: string
       { status: 201 },
     )
   } catch (error) {
-    console.log(error)
+    console.log("[ERROR PATCH PRODUCTS] : ", error)
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
@@ -139,6 +139,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
       },
     )
   } catch (error) {
+    console.log("[ERROR GET PRODUCTS] : ", error)
     return NextResponse.json(
       {
         message: "Internal server error",
@@ -168,7 +169,7 @@ export const DELETE = async (req: NextRequest, { params }: { params: { id: strin
 
     return NextResponse.json({ message: "product was deleted" }, { status: 200 })
   } catch (error) {
-    console.log(error)
+    console.log("[ERROR DELETE PRODUCTS] : ", error)
     return NextResponse.json(
       {
         message: "Internal server error",

@@ -97,16 +97,7 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
 
     return NextResponse.json(response, { status: 200 })
   } catch (error) {
-    console.log(error)
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        {
-          message: "Validation error",
-          errors: error.errors,
-        },
-        { status: 400 },
-      )
-    }
+    console.log("[ERROR GET SALES RECORDS PAGINATION] : ", error)
     return NextResponse.json(
       {
         message: "internal server error",

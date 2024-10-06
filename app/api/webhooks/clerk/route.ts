@@ -39,11 +39,7 @@ export async function POST(req: NextRequest) {
     } 
 */
     const { id: clerkUserId } = payload.data
-    if (!clerkUserId)
-      return NextResponse.json(
-        { error: "No user ID provided" },
-        { status: 400 },
-      )
+    if (!clerkUserId) return NextResponse.json({ error: "No user ID provided" }, { status: 400 })
 
     // Create or delete a user in the database based on the Clerk Webhook event
     let user = null
@@ -76,6 +72,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ user })
   } catch (error) {
+    console.log("[ERROR POST USER(WEBHOOK USER)] : ", error)
     return NextResponse.json({ error }, { status: 500 })
   }
 }
