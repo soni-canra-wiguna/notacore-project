@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { auth } from "@clerk/nextjs/server"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { Container } from "@/components/layout/container"
+import { Wrapper } from "@/components/layout/wrapper"
 import Image from "next/image"
 import FlickeringGrid from "@/components/ui/flickering-grid"
 import { Github } from "lucide-react"
@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <MainContainer className="overflow-hidden">
-      <Container className="relative flex h-full flex-col items-center justify-between overflow-hidden pb-8 pt-48">
+      <Wrapper className="relative flex h-full flex-col items-center justify-between overflow-hidden pb-8 pt-48">
         <div className="flex w-full flex-col items-center justify-center">
           <div className="relative mb-6 size-16">
             <Image alt="logo" className="grayscale" src="/notacore.png" fill />
@@ -41,7 +41,7 @@ export default function Home() {
         />
         {/* overlay bottom */}
         <div className="absolute bottom-0 left-0 -z-10 h-[400px] w-full bg-gradient-to-t from-background" />
-      </Container>
+      </Wrapper>
     </MainContainer>
   )
 }

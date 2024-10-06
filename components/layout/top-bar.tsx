@@ -1,6 +1,6 @@
 "use client"
 
-import { Container } from "./container"
+import { Wrapper } from "./wrapper"
 import useVisibleNavbar from "@/hook/use-visible-navbar"
 import { cn } from "@/lib/utils"
 import Account from "../dashboard/account"
@@ -35,13 +35,13 @@ export const TopBar = ({ token }: { token: string }) => {
         isBorderVisible ? "border-b" : "border-none",
       )}
     >
-      <Container className="flex items-center gap-6 py-3">
+      <Wrapper className="flex items-center gap-6 py-3">
         <SearchBar token={token} />
         <div className="flex items-center gap-6">
           <Bell className="size-5 stroke-[1.5]" />
           <Account />
         </div>
-      </Container>
+      </Wrapper>
     </nav>
   )
 }

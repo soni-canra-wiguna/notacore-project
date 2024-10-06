@@ -16,16 +16,13 @@ import { Product } from "@prisma/client"
 import { useAuth } from "@clerk/nextjs"
 import { Loader2, SearchIcon, XIcon, ArrowUpFromLine } from "lucide-react"
 import { ProductCard } from "./product-card"
-import { Container } from "../layout/container"
+import { Wrapper } from "../layout/wrapper"
 
 export const SearchBar = ({ token }: { token: string }) => {
   const { userId } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [searchInput, setSeachInput] = useState("")
-  const [debounceSearchInput] = useDebounce(
-    searchInput.replace(/\s+/g, "-"),
-    500,
-  )
+  const [debounceSearchInput] = useDebounce(searchInput.replace(/\s+/g, "-"), 500)
 
   const {
     data: searchResults,
@@ -34,15 +31,12 @@ export const SearchBar = ({ token }: { token: string }) => {
   } = useQuery<Product[]>({
     queryKey: ["search_input", debounceSearchInput],
     queryFn: async () => {
-      const { data } = await axios.get(
-        `/api/products?search=${debounceSearchInput}`,
-        {
-          headers: {
-            Authorization: token,
-            userId,
-          },
+      const { data } = await axios.get(`/api/products?search=${debounceSearchInput}`, {
+        headers: {
+          Authorization: token,
+          userId,
         },
-      )
+      })
       return data.data
     },
     enabled: !!debounceSearchInput,
@@ -63,7 +57,7 @@ export const SearchBar = ({ token }: { token: string }) => {
           <SheetTitle>cari produk</SheetTitle>
           <SheetDescription>cari produk yang kamu suka</SheetDescription>
         </SheetHeader>
-        <Container className="flex w-full flex-col gap-6">
+        <Wrapper className="flex w-full flex-col gap-6">
           <div className="relative h-max w-full">
             <Input
               className="h-8 rounded-lg border-none bg-secondary px-4 text-sm placeholder:text-sm placeholder:capitalize focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
@@ -90,16 +84,11 @@ export const SearchBar = ({ token }: { token: string }) => {
           ) : (
             <div className="flex max-h-[500px] w-full flex-col gap-4 overflow-y-auto transition-all">
               {searchResults.map((result) => (
-                <ProductCard
-                  product={result}
-                  key={result.id}
-                  userId={userId!}
-                  token={token}
-                />
+                <ProductCard product={result} key={result.id} userId={userId!} token={token} />
               ))}
             </div>
           )}
-        </Container>
+        </Wrapper>
         <Button
           onClick={() => setIsOpen(!isOpen)}
           variant="link"

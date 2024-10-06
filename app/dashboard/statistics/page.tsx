@@ -1,7 +1,7 @@
 import React, { Suspense } from "react"
 import { FilterButton, FilterStatistic } from "@/components/dashboard/statistic/filter"
 import Amount, { LoadingAmount } from "@/components/dashboard/statistic/amount"
-import { Container } from "@/components/layout/container"
+import { Wrapper } from "@/components/layout/wrapper"
 import TableRecords from "@/components/dashboard/statistic/table-records"
 import { SectionHeader, SectionLayout } from "@/components/section"
 import { DownloadTransactionHistory } from "@/components/dashboard/statistic/download-transaction-history"
@@ -16,7 +16,7 @@ const StatisticsPage = () => {
 
   return (
     <MainContainer>
-      <Container className="py-20">
+      <Wrapper className="py-20">
         <SectionLayout>
           <SectionHeader actionButton={actionButtonStatistic}>statistik penjualan</SectionHeader>
           <Suspense fallback={<LoadingAmount />}>
@@ -29,7 +29,7 @@ const StatisticsPage = () => {
           </SectionHeader>
           <TableRecords />
         </SectionLayout>
-      </Container>
+      </Wrapper>
     </MainContainer>
   )
 }
