@@ -1,10 +1,10 @@
 "use client"
 
-import { Container } from "../layout/container"
+import { Container } from "./container"
 import useVisibleNavbar from "@/hook/use-visible-navbar"
 import { cn } from "@/lib/utils"
-import Account from "./account"
-import { SearchBar } from "./search"
+import Account from "../dashboard/account"
+import { SearchBar } from "../dashboard/search"
 import { Bell } from "lucide-react"
 import { useEffect, useState } from "react"
 
