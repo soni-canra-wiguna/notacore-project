@@ -9,6 +9,9 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     const token = req.headers.get("authorization")
     const userId = req.headers.get("userId") ?? ""
 
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
+    }
     if (!token) {
       return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }

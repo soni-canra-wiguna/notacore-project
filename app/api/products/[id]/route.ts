@@ -8,8 +8,12 @@ import { CreateProductRequest } from "@/types/product"
 export const PUT = async (req: NextRequest, { params }: { params: { id: string } }) => {
   try {
     const { id } = params
-    const idUser = req.headers.get("userId") ?? ""
+    const userId = req.headers.get("userId") ?? ""
     const token = req.headers.get("authorization")
+
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
+    }
     if (!token) {
       return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
@@ -20,7 +24,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { id: string }
     await prisma.product.update({
       where: {
         id,
-        userId: idUser,
+        userId: userId,
       },
       data: response,
     })
@@ -57,8 +61,12 @@ export const PUT = async (req: NextRequest, { params }: { params: { id: string }
 export const PATCH = async (req: NextRequest, { params }: { params: { id: string } }) => {
   try {
     const { id } = params
-    const idUser = req.headers.get("userId") ?? ""
+    const userId = req.headers.get("userId") ?? ""
     const token = req.headers.get("authorization")
+
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
+    }
     if (!token) {
       return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
@@ -69,7 +77,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: { id: string
     await prisma.product.update({
       where: {
         id,
-        userId: idUser,
+        userId: userId,
       },
       data: response,
     })
@@ -107,6 +115,10 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
     const { id } = params
     const userId = req.headers.get("userId") ?? ""
     const token = req.headers.get("authorization")
+
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
+    }
     if (!token) {
       return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
@@ -156,6 +168,10 @@ export const DELETE = async (req: NextRequest, { params }: { params: { id: strin
     const { id } = params
     const userId = req.headers.get("userId") ?? ""
     const token = req.headers.get("authorization")
+
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
+    }
     if (!token) {
       return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }

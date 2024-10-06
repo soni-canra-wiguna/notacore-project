@@ -8,9 +8,12 @@ export const dynamic = "force-dynamic"
 
 export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => {
   try {
-    const token = req.headers.get("authorization")
     const userId = req.headers.get("userId") ?? ""
+    const token = req.headers.get("authorization")
 
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
+    }
     if (!token) {
       return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }

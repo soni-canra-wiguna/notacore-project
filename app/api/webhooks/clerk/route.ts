@@ -37,9 +37,9 @@ export async function POST(req: NextRequest) {
       },
       "apiVersion": "v1"
     } 
-*/
-    const { id: clerkUserId } = payload.data
-    if (!clerkUserId) return NextResponse.json({ error: "No user ID provided" }, { status: 400 })
+    */
+    const { id: userId } = payload.data
+    if (!userId) return NextResponse.json({ error: "No user ID provided" }, { status: 400 })
 
     // Create or delete a user in the database based on the Clerk Webhook event
     let user = null
@@ -47,13 +47,13 @@ export async function POST(req: NextRequest) {
       case "user.created": {
         user = await prisma.user.upsert({
           where: {
-            userId: clerkUserId,
+            userId,
           },
           update: {
-            userId: clerkUserId,
+            userId,
           },
           create: {
-            userId: clerkUserId,
+            userId,
           },
         })
         break
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
       case "user.deleted": {
         user = await prisma.user.delete({
           where: {
-            userId: clerkUserId,
+            userId,
           },
         })
         break
