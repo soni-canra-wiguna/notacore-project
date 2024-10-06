@@ -1,6 +1,7 @@
 import { FormEditProduct } from "@/components/dashboard/form-edit-product"
 import { Container } from "@/components/layout/container"
 import { auth } from "@clerk/nextjs/server"
+import { MainContainer } from "@/components/layout/main-container"
 import prisma from "@/lib/prisma"
 
 const EditProductPage = async ({ params }: { params: { id: string } }) => {
@@ -19,11 +20,11 @@ const EditProductPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <main className="min-h-screen w-full">
+    <MainContainer>
       <Container className="pb-20 pt-16">
         <FormEditProduct product={product} token={token} />
       </Container>
-    </main>
+    </MainContainer>
   )
 }
 

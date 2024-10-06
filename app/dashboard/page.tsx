@@ -5,6 +5,7 @@ import { FallbackFilterButton, FilterProducts } from "@/components/dashboard/fil
 import { Suspense } from "react"
 import { SalesRecordView } from "@/components/dashboard/sales-record-view"
 import { SectionHeader, SectionLayout } from "@/components/section"
+import { MainContainer } from "@/components/layout/main-container"
 
 const DashboardPage = async () => {
   const { userId, getToken } = auth()
@@ -17,7 +18,7 @@ const DashboardPage = async () => {
   )
 
   return (
-    <main className="min-h-screen w-full">
+    <MainContainer>
       <Container className="py-20">
         <SectionLayout>
           <SectionHeader actionButton={actionButtonProduct}>produk kamu</SectionHeader>
@@ -27,7 +28,7 @@ const DashboardPage = async () => {
         </SectionLayout>
       </Container>
       <SalesRecordView token={token!} /> {/* checkout button ~ absolute position */}
-    </main>
+    </MainContainer>
   )
 }
 

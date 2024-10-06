@@ -9,11 +9,11 @@ const DashboardLayout = async ({ children }: WithChildren) => {
   const token = await getToken()
 
   return (
-    <div className="min-h-screen w-full">
+    <>
       <TopBar token={token!} />
       {children}
       <BottomBar />
-    </div>
+    </>
   )
 }
 

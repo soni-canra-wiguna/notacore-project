@@ -5,6 +5,7 @@ import { Container } from "@/components/layout/container"
 import TableRecords from "@/components/dashboard/statistic/table-records"
 import { SectionHeader, SectionLayout } from "@/components/section"
 import { DownloadTransactionHistory } from "@/components/dashboard/statistic/download-transaction-history"
+import { MainContainer } from "@/components/layout/main-container"
 
 const StatisticsPage = () => {
   const actionButtonStatistic = (
@@ -14,7 +15,7 @@ const StatisticsPage = () => {
   )
 
   return (
-    <main className="min-h-screen w-full">
+    <MainContainer>
       <Container className="py-20">
         <SectionLayout>
           <SectionHeader actionButton={actionButtonStatistic}>statistik penjualan</SectionHeader>
@@ -29,7 +30,7 @@ const StatisticsPage = () => {
           <TableRecords />
         </SectionLayout>
       </Container>
-    </main>
+    </MainContainer>
   )
 }
 
