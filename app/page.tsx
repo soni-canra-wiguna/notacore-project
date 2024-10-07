@@ -15,7 +15,7 @@ export default function Home() {
   if (userId) redirect("/dashboard")
 
   return (
-    <MainContainer className="overflow-hidden">
+    <MainContainer className="h-screen overflow-hidden">
       <Wrapper className="relative flex h-full flex-col items-center justify-between overflow-hidden pb-8 pt-48">
         <div className="flex w-full flex-col items-center justify-center">
           <div className="relative mb-6 size-16">
