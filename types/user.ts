@@ -1,6 +1,6 @@
-import { Product, SaleRecord, User } from "@prisma/client"
+import { Product, SalesRecord, User } from "@prisma/client"
 
 export interface UserType extends User {
   products: Product[]
-  salesRecord: SaleRecord[]
+  salesRecord: SalesRecord[]
 }

@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import Link from "next/link"
 
-export default function Account() {
+export default function UserProfile() {
   const { user, isLoaded } = useUser()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -40,7 +40,7 @@ export default function Account() {
         align="end"
         className="gradientCard relative flex w-72 flex-col gap-4 p-0"
       >
-        <AccountSettings togglePopover={togglePopover} />
+        <UserSettings togglePopover={togglePopover} />
         <div className="flex flex-col gap-1 p-4">
           <h6 className="text-base font-semibold">{fullName}</h6>
           <p className="text-xs font-medium text-muted-foreground">{email}</p>
@@ -58,7 +58,7 @@ export default function Account() {
   )
 }
 
-export const AccountSettings = ({
+const UserSettings = ({
   togglePopover,
 }: {
   togglePopover: () => void

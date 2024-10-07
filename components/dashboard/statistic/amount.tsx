@@ -2,17 +2,12 @@
 
 import { Card } from "@/components/ui/card"
 import { formatToIDR } from "@/utils/format-to-idr"
-import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel"
+import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 import { useEffect, useState } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import { Badge } from "@/components/ui/badge"
-import { getSalesRecord } from "@/services/get-sales-record"
-import { SalesAndRevenueByCategoryResponse } from "@/types/sale-record"
+import { getSalesRecords } from "@/services/get-sales-records"
+import { SalesAndRevenueByCategoryResponse } from "@/types/sales-record"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useQueryState } from "nuqs"
 import { format } from "date-fns"
@@ -24,7 +19,7 @@ const Amount = () => {
   const [to] = useQueryState("to", {
     defaultValue: format(new Date(), "yyyy-MM-dd"),
   })
-  const { data, isPending, isError } = getSalesRecord(from, to)
+  const { data, isPending, isError } = getSalesRecords(from, to)
   const statistic = data?.statistic
 
   if (isPending) return <LoadingAmount />
@@ -32,48 +27,33 @@ const Amount = () => {
   if (!statistic || data?.data.length <= 0)
     return <ErrorAmount title="Belum ada yang terjual nih" />
 
-  if (isError)
-    return <ErrorAmount title="Internet kamu lemot, coba deh refresh lagi" />
+  if (isError) return <ErrorAmount title="Internet kamu lemot, coba deh refresh lagi" />
 
   return (
     <div className="space-y-2">
       <div className="grid grid-cols-2 gap-2">
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            total penjualan
-          </span>
-          <span className="text-lg font-bold leading-none">
-            {statistic?.totalSales}
-          </span>
+          <span className="text-xs capitalize text-muted-foreground">total penjualan</span>
+          <span className="text-lg font-bold leading-none">{statistic?.totalSales}</span>
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            total Transaksi
-          </span>
-          <span className="text-lg font-bold leading-none">
-            {statistic?.totalTransactions}
-          </span>
+          <span className="text-xs capitalize text-muted-foreground">total Transaksi</span>
+          <span className="text-lg font-bold leading-none">{statistic?.totalTransactions}</span>
         </Card>
         <Card className="gradientCard col-span-2 flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            total pendapatan
-          </span>
+          <span className="text-xs capitalize text-muted-foreground">total pendapatan</span>
           <span className="text-lg font-bold leading-none">
             {formatToIDR(statistic?.totalRevenue)}
           </span>
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs text-muted-foreground">
-            Avg Penjualan per Transaksi
-          </span>
+          <span className="text-xs text-muted-foreground">Avg Penjualan per Transaksi</span>
           <span className="text-lg font-bold leading-none">
             {statistic?.averageSalePerTransaction}
           </span>
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs text-muted-foreground">
-            Avg Pendapatan per Transaksi
-          </span>
+          <span className="text-xs text-muted-foreground">Avg Pendapatan per Transaksi</span>
           <span className="text-lg font-bold leading-none">
             {formatToIDR(statistic?.averageRevenuePerTransaction)}
           </span>
@@ -91,37 +71,27 @@ export const LoadingAmount = () => {
     <section className="space-y-2">
       <div className="grid grid-cols-2 gap-2">
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            total penjualan
-          </span>
+          <span className="text-xs capitalize text-muted-foreground">total penjualan</span>
           <Skeleton variant="shimmer" className="size-7" />
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            total Transaksi
-          </span>
+          <span className="text-xs capitalize text-muted-foreground">total Transaksi</span>
           <span className="text-lg font-bold leading-none">
             <Skeleton variant="shimmer" className="size-7" />
           </span>
         </Card>
         <Card className="gradientCard col-span-2 flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs capitalize text-muted-foreground">
-            Total Pendapatan
-          </span>
+          <span className="text-xs capitalize text-muted-foreground">Total Pendapatan</span>
           <Skeleton variant="shimmer" className="h-7 w-24" />
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs text-muted-foreground">
-            Avg Penjualan per Transaksi
-          </span>
+          <span className="text-xs text-muted-foreground">Avg Penjualan per Transaksi</span>
           <span className="text-lg font-bold leading-none">
             <Skeleton variant="shimmer" className="size-7" />
           </span>
         </Card>
         <Card className="gradientCard flex flex-col gap-1 rounded-xl p-4">
-          <span className="text-xs text-muted-foreground">
-            Avg Pendapatan per Transaksi
-          </span>
+          <span className="text-xs text-muted-foreground">Avg Pendapatan per Transaksi</span>
           <span className="text-lg font-bold leading-none">
             <Skeleton variant="shimmer" className="h-7 w-20" />
           </span>
@@ -130,9 +100,7 @@ export const LoadingAmount = () => {
       <Card className="gradientCard grid h-[130px] w-full grid-cols-2 overflow-hidden rounded-xl selection:bg-transparent">
         <div className="flex flex-col gap-1 p-4">
           <Skeleton variant="shimmer" className="mb-3 h-5 w-20 rounded-full" />
-          <span className="mb-1 text-xs capitalize text-muted-foreground">
-            total terjual
-          </span>
+          <span className="mb-1 text-xs capitalize text-muted-foreground">total terjual</span>
           <Skeleton variant="shimmer" className="size-7" />
         </div>
         <div className="flex items-center justify-center">
@@ -196,12 +164,8 @@ export const AmountByCategory = ({
                 <Badge variant="secondary" className="mb-3 w-max capitalize">
                   {category.label}
                 </Badge>
-                <span className="mb-1 text-xs capitalize text-muted-foreground">
-                  total terjual
-                </span>
-                <span className="text-lg font-bold leading-none">
-                  {category.quantity}
-                </span>
+                <span className="mb-1 text-xs capitalize text-muted-foreground">total terjual</span>
+                <span className="text-lg font-bold leading-none">{category.quantity}</span>
               </div>
               <div className="flex items-center justify-center">
                 <span className="text-lg font-bold leading-none">

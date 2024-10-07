@@ -1,12 +1,12 @@
 "use client"
 
-import { Container } from "../layout/container"
+import { useEffect, useState } from "react"
+import { Wrapper } from "./wrapper"
 import useVisibleNavbar from "@/hook/use-visible-navbar"
 import { cn } from "@/lib/utils"
-import Account from "./account"
-import { SearchBar } from "./search"
+import UserProfile from "../dashboard/user-profile"
+import { SearchBar } from "../dashboard/search"
 import { Bell } from "lucide-react"
-import { useEffect, useState } from "react"
 
 export const TopBar = ({ token }: { token: string }) => {
   const { visible } = useVisibleNavbar()
@@ -35,13 +35,13 @@ export const TopBar = ({ token }: { token: string }) => {
         isBorderVisible ? "border-b" : "border-none",
       )}
     >
-      <Container className="flex items-center gap-6 py-3">
+      <Wrapper className="flex items-center gap-6 py-3">
         <SearchBar token={token} />
         <div className="flex items-center gap-6">
           <Bell className="size-5 stroke-[1.5]" />
-          <Account />
+          <UserProfile />
         </div>
-      </Container>
+      </Wrapper>
     </nav>
   )
 }

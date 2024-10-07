@@ -2,11 +2,12 @@ import { Button } from "@/components/ui/button"
 import { auth } from "@clerk/nextjs/server"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { Container } from "@/components/layout/container"
+import { Wrapper } from "@/components/layout/wrapper"
 import Image from "next/image"
 import FlickeringGrid from "@/components/ui/flickering-grid"
 import { Github } from "lucide-react"
 import { ThemeSwitcher } from "@/components/theme-switcher"
+import { MainContainer } from "@/components/layout/main-container"
 
 export default function Home() {
   const { userId } = auth()
@@ -14,15 +15,13 @@ export default function Home() {
   if (userId) redirect("/dashboard")
 
   return (
-    <main className="h-screen w-full overflow-hidden">
-      <Container className="relative flex h-full flex-col items-center justify-between overflow-hidden pb-8 pt-48">
+    <MainContainer className="overflow-hidden">
+      <Wrapper className="relative flex h-full flex-col items-center justify-between overflow-hidden pb-8 pt-48">
         <div className="flex w-full flex-col items-center justify-center">
           <div className="relative mb-6 size-16">
             <Image alt="logo" className="grayscale" src="/notacore.png" fill />
           </div>
-          <h1 className="mb-2 text-center text-4xl font-bold uppercase">
-            notacore
-          </h1>
+          <h1 className="mb-2 text-center text-4xl font-bold uppercase">notacore</h1>
           <p className="mb-10 text-center text-sm text-muted-foreground">
             Catat hasil penjualanmu dan lihatlah hasilnya!
           </p>
@@ -42,19 +41,15 @@ export default function Home() {
         />
         {/* overlay bottom */}
         <div className="absolute bottom-0 left-0 -z-10 h-[400px] w-full bg-gradient-to-t from-background" />
-      </Container>
-    </main>
+      </Wrapper>
+    </MainContainer>
   )
 }
 
 const SocialMedia = () => {
   return (
     <div className="absolute right-8 top-8 flex items-center gap-6">
-      <a
-        className=""
-        href="https://github.com/soni-canra-wiguna"
-        target="_blank"
-      >
+      <a className="" href="https://github.com/soni-canra-wiguna" target="_blank">
         <Github className="size-6" />
       </a>
       <ThemeSwitcher sizeIcon="6" className="w-max border-none p-0" />
@@ -71,11 +66,7 @@ const SignInSignUpButton = () => {
         </Button>
       </Link>
       <Link className="w-full" href="/sign-up">
-        <Button
-          variant="outline"
-          size="lg"
-          className="w-full rounded-xl capitalize"
-        >
+        <Button variant="outline" size="lg" className="w-full rounded-xl capitalize">
           Daftar
         </Button>
       </Link>

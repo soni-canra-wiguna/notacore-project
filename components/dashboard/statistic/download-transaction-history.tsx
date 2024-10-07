@@ -1,6 +1,6 @@
 "use client"
 
-import { FileType } from "@/app/api/sale-records/download/[userId]/route"
+import { FileType } from "@/app/api/sales-records/download/[userId]/route"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import {
@@ -21,7 +21,7 @@ export const DownloadTransactionHistory = () => {
 
   async function handleDownload(type: FileType) {
     try {
-      const { data } = await axios.get(`/api/sale-records/download/${userId}?fileType=${type}`, {
+      const { data } = await axios.get(`/api/sales-records/download/${userId}?fileType=${type}`, {
         responseType: "blob",
       })
 

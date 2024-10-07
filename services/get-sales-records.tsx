@@ -1,31 +1,28 @@
-import { StatisticResponse } from "@/types/sale-record"
+import { StatisticResponse } from "@/types/sales-record"
 import { useAuth } from "@clerk/nextjs"
-import { SaleRecord } from "@prisma/client"
+import { SalesRecord } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
 export interface GetSalesRecordProps {
   message: string
-  data: SaleRecord[]
+  data: SalesRecord[]
   statistic: StatisticResponse
 }
 
-export const getSalesRecord = (from: string | null, to: string | null) => {
+export const getSalesRecords = (from: string | null, to: string | null) => {
   const { userId, getToken } = useAuth()
 
   const { data, isPending, isError } = useQuery<GetSalesRecordProps>({
-    queryKey: ["sales_record", from, to],
+    queryKey: ["sales_records", from, to],
     queryFn: async () => {
       const token = await getToken()
-      const { data } = await axios.get(
-        `/api/sale-records?from=${from}&to=${to}`,
-        {
-          headers: {
-            Authorization: token,
-            userId: userId!,
-          },
+      const { data } = await axios.get(`/api/sales-records?from=${from}&to=${to}`, {
+        headers: {
+          Authorization: token,
+          userId: userId!,
         },
-      )
+      })
 
       return data
     },

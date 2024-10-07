@@ -1,16 +1,17 @@
 import { FormCreateProduct } from "@/components/dashboard/form-create-product"
-import { Container } from "@/components/layout/container"
+import { Wrapper } from "@/components/layout/wrapper"
+import { MainContainer } from "@/components/layout/main-container"
 import { auth } from "@clerk/nextjs/server"
 
 const CreateProductPage = async () => {
   const { userId, getToken } = auth()
   const token = await getToken()
   return (
-    <main className="min-h-screen w-full">
-      <Container className="pb-20 pt-16">
+    <MainContainer>
+      <Wrapper className="pb-20 pt-16">
         <FormCreateProduct userId={userId} token={token} />
-      </Container>
-    </main>
+      </Wrapper>
+    </MainContainer>
   )
 }
 

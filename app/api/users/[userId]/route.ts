@@ -2,19 +2,16 @@ import prisma from "@/lib/prisma"
 import { NextRequest, NextResponse } from "next/server"
 import { clerkClient } from "@clerk/nextjs/server"
 
-export const GET = async (
-  req: NextRequest,
-  { params }: { params: { userId: string } },
-) => {
+export const GET = async (req: NextRequest, { params }: { params: { userId: string } }) => {
   try {
     const { userId } = params
     const token = req.headers.get("authorization")
 
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
+    }
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
@@ -27,12 +24,9 @@ export const GET = async (
       },
     })
 
-    return NextResponse.json(
-      { message: "user was retrieved", data: user },
-      { status: 200 },
-    )
+    return NextResponse.json({ message: "user was retrieved", data: user }, { status: 200 })
   } catch (error) {
-    console.log(error)
+    console.log("[ERROR GET USER] : ", error)
     return NextResponse.json(
       {
         message: "Internal server error",
@@ -44,25 +38,16 @@ export const GET = async (
   }
 }
 
-export const DELETE = async (
-  req: NextRequest,
-  { params }: { params: { userId: string } },
-) => {
+export const DELETE = async (req: NextRequest, { params }: { params: { userId: string } }) => {
   try {
     const { userId } = params
     if (!userId) {
-      return NextResponse.json(
-        { message: "Unauthorized. User not Found." },
-        { status: 404 },
-      )
+      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
     }
 
     const token = req.headers.get("authorization")
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     // delete user from clerk
@@ -82,7 +67,7 @@ export const DELETE = async (
       { status: 200 },
     )
   } catch (error) {
-    console.log(error)
+    console.log("[ERROR DELETE USER] : ", error)
     return NextResponse.json(
       {
         message: "Internal server error",

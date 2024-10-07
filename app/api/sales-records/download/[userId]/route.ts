@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
 
     const fileType: "xlsx" | "csv" = (getSearchParams(req, "fileType") as FileType) ?? "csv"
 
-    const salesRecord = await prisma.saleRecord.findMany({
+    const salesRecord = await prisma.salesRecord.findMany({
       where: {
         userId: userId,
       },
@@ -77,7 +77,7 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
       },
     })
   } catch (error) {
-    console.log("[ERROR DOWNLOAD PRODUCT API] : ", error)
+    console.log("[ERROR GET DOWNLOAD SALES RECORDS] : ", error)
     return NextResponse.json(
       {
         message: "internal server error",

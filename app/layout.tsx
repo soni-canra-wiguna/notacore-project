@@ -1,14 +1,11 @@
 import "./globals.css"
 import type { Metadata } from "next"
 import { Plus_Jakarta_Sans } from "next/font/google"
-import {
-  WithClerkProvider,
-  TanstackProvider,
-  ReduxProvider,
-} from "@/lib/provider"
+import { WithClerkProvider, TanstackProvider, ReduxProvider } from "@/lib/provider"
 import NextTopLoader from "nextjs-toploader"
 import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/lib/provider/theme-provider"
+import { MAIN_COLOR } from "@/constants/colors"
 
 export const metadata: Metadata = {
   title: {
@@ -41,9 +38,7 @@ export const metadata: Metadata = {
     "solusi bisnis",
     "laporan penjualan",
   ],
-  authors: [
-    { name: "Soni Canra Wiguna", url: "https://instagram.com/sonicanra" },
-  ],
+  authors: [{ name: "Soni Canra Wiguna", url: "https://instagram.com/sonicanra" }],
   creator: "Soni Canra Wiguna",
   publisher: "Soni Canra Wiguna",
   generator: "Next.Js 14.2",
@@ -93,8 +88,7 @@ export const metadata: Metadata = {
     site: "@NotacoreApp",
     creator: "@SoniCanra",
     title: "Notacore - Solusi Catatan Penjualan Bisnis",
-    description:
-      "Notacore membantu bisnis mencatat dan melacak penjualan dengan efisien.",
+    description: "Notacore membantu bisnis mencatat dan melacak penjualan dengan efisien.",
     images: [
       {
         url: "https://utfs.io/f/5e90efc6-f787-4db9-84b0-56a6ee939e02-jn3obm.png",
@@ -122,7 +116,7 @@ export default function RootLayout({
         <ReduxProvider>
           <html lang="en">
             <body className={plusJakartaSans.className}>
-              <NextTopLoader color="#00C897" height={3} showSpinner={false} />
+              <NextTopLoader color={MAIN_COLOR} height={3} showSpinner={false} />
               <ThemeProvider
                 attribute="class"
                 defaultTheme="system"

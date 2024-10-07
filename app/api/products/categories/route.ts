@@ -9,11 +9,11 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     const token = req.headers.get("authorization")
     const userId = req.headers.get("userId") ?? ""
 
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
+    }
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized. No token provided." },
-        { status: 401 },
-      )
+      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
     const categories = await prisma.product.findMany({
@@ -36,16 +36,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       },
     )
   } catch (error) {
-    console.log(error)
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        {
-          message: "Validation error",
-          errors: error.errors,
-        },
-        { status: 400 },
-      )
-    }
+    console.log("[ERROR GET CATEGORIES] : ", error)
     return NextResponse.json(
       {
         message: "internal server error",
