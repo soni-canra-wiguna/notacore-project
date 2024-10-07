@@ -11,13 +11,7 @@ import { useInView } from "react-intersection-observer"
 import { useQueryState } from "nuqs"
 import { ProductResponse } from "@/types/product"
 
-const ListsProducts = ({
-  userId,
-  token,
-}: {
-  userId: string
-  token: string
-}) => {
+const ListsProducts = ({ userId, token }: { userId: string; token: string }) => {
   const [sortBy] = useQueryState("sortBy", {
     defaultValue: "new",
     history: "push",
@@ -74,7 +68,7 @@ const ListsProducts = ({
 
   if (products?.length === 0) {
     return (
-      <div className="mt-40 flex h-full w-full flex-col items-center justify-center gap-4 text-center">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-4 pt-40 text-center">
         <PackageOpen className="size-16" strokeWidth={1} />
         <p className="max-w-[60vw]">Belum ada produknya nih, Yuk tambahin😆!</p>
       </div>
@@ -83,11 +77,9 @@ const ListsProducts = ({
 
   if (isError) {
     return (
-      <div className="mt-40 flex h-full w-full flex-col items-center justify-center gap-4 text-center">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-4 pt-40 text-center">
         <Frown className="size-16" strokeWidth={1} />
-        <p className="max-w-[60vw]">
-          Ada yang salah nih, coba refresh lagi deh😞
-        </p>
+        <p className="max-w-[60vw]">Ada yang salah nih, coba refresh lagi deh😞</p>
       </div>
     )
   }
@@ -97,22 +89,13 @@ const ListsProducts = ({
       <div className="flex h-full flex-col gap-4">
         {isSuccess &&
           products?.map((product) => (
-            <ProductCard
-              product={product}
-              key={product.id}
-              userId={userId}
-              token={token}
-            />
+            <ProductCard product={product} key={product.id} userId={userId} token={token} />
           ))}
       </div>
-      <div
-        ref={ref}
-        className="mb-8 mt-4 flex w-full items-center justify-center"
-      >
+      <div ref={ref} className="mb-8 mt-4 flex w-full items-center justify-center">
         {isFetchingNextPage && (
           <p className="flex items-center gap-2">
-            <Loader2 className="size-4 animate-spin text-primary" /> Load
-            more...
+            <Loader2 className="size-4 animate-spin text-primary" /> Load more...
           </p>
         )}
       </div>
@@ -130,9 +113,7 @@ export const LoadingListProducts = ({
   lengthLoading?: number
 }) => {
   const loadings = Array.from({ length: lengthLoading }, (_, i) => {
-    return (
-      <Skeleton variant="shimmer" className="h-24 w-full rounded-xl" key={i} />
-    )
+    return <Skeleton variant="shimmer" className="h-24 w-full rounded-xl" key={i} />
   })
 
   if (type === "loading") {
