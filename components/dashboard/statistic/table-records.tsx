@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Badge } from "@/components/ui/badge"
 import { formatToIDR } from "@/utils/format-to-idr"
 import { useAuth } from "@clerk/nextjs"
 import { SalesRecord } from "@prisma/client"
@@ -28,6 +29,7 @@ import { format } from "date-fns"
 import { ChevronLeft, ChevronRight, ChevronsUpDown } from "lucide-react"
 import React, { useState } from "react"
 import { id } from "date-fns/locale"
+import Link from "next/link"
 
 export interface GetSalesRecordWithPaggingProps {
   message: string
@@ -93,23 +95,25 @@ const TableRecords = () => {
         {isPending ? (
           <LoadingTableProduct />
         ) : (
-          <div className="w-[844px] overflow-x-auto">
+          <div className="w-[1100px] overflow-x-auto">
             <table className="min-w-full border-collapse text-sm">
               <thead>
                 <tr>
-                  <th className="w-60 border p-2 capitalize">Nama Produk</th>
-                  <th className="w-36 border p-2 capitalize" onClick={() => handleSortBy("price")}>
+                  <th className="w-60 border p-3 capitalize">Nama Produk</th>
+                  <th className="w-32 border p-3 capitalize">kategori</th>
+                  <th className="w-36 border p-3 capitalize">Gambar</th>
+                  <th className="w-36 border p-3 capitalize" onClick={() => handleSortBy("price")}>
                     <div className="flex items-center justify-center gap-2">
                       harga <ChevronsUpDown className="size-3" />
                     </div>
                   </th>
-                  <th className="w-24 border p-2 capitalize" onClick={() => handleSortBy("qty")}>
+                  <th className="w-24 border p-3 capitalize" onClick={() => handleSortBy("qty")}>
                     <div className="flex items-center justify-center gap-2">
                       jumlah <ChevronsUpDown className="size-3" />
                     </div>
                   </th>
-                  <th className="w-40 border p-2 capitalize">total harga</th>
-                  <th className="border p-2 capitalize" onClick={() => handleSortBy("date")}>
+                  <th className="w-40 border p-3 capitalize">total harga</th>
+                  <th className="border p-3 capitalize" onClick={() => handleSortBy("date")}>
                     <div className="flex items-center justify-center gap-2">
                       tanggal <ChevronsUpDown className="size-3" />
                     </div>
@@ -192,16 +196,26 @@ export const LoadingTableProduct = () => {
 
 const TableList = ({ data }: { data: GetSalesRecordWithPaggingProps | undefined }) => {
   const tableItem = data?.data.map((p) => {
-    const formattedDate = format(p.createdAt, "dd MMMM yyyy", {
+    const formattedDate = format(p.createdAt, "EEE, dd MMM yyyy", {
       locale: id,
     })
     return (
       <tr key={p.id} className="selection:bg-transparent">
-        <td className="max-w-60 truncate border p-2">{p.title}</td>
-        <td className="w-36 border p-2 text-left">{formatToIDR(p.price)}</td>
-        <td className="w-24 border p-2 text-center">{p.quantity}</td>
-        <td className="w-40 border p-2 text-left">{formatToIDR(p.totalPrice)}</td>
-        <td className="border p-2 text-left tracking-wide">{formattedDate}</td>
+        <td className="max-w-60 truncate border p-3">{p.title}</td>
+        <td className="w-32 border p-3 text-center">
+          <Badge variant="secondary" className="capitalize">
+            {p.category}
+          </Badge>
+        </td>
+        <td className="w-36 truncate border p-3 text-left">
+          <Link href={p.image} target="_blank" className="truncate text-main">
+            {p.image.slice(0, 17)}...
+          </Link>
+        </td>
+        <td className="w-36 border p-3 text-left">{formatToIDR(p.price)}</td>
+        <td className="w-24 border p-3 text-center">{p.quantity}</td>
+        <td className="w-40 border p-3 text-left">{formatToIDR(p.totalPrice)}</td>
+        <td className="border p-3 text-left tracking-wide">{formattedDate}</td>
       </tr>
     )
   })
