@@ -204,15 +204,13 @@ const FilterItem = ({ title, description, active, onClick, index }: FilterItemPr
           <h4 className="font-semibold capitalize">{title}</h4>
           <p className="text-xs capitalize text-muted-foreground">{description}</p>
         </div>
-        <div className="">
-          <div
-            className={cn(
-              "flex size-5 items-center justify-center rounded-full border-2 border-primary",
-              active && "border-main",
-            )}
-          >
-            {active && <span className="size-3 rounded-full bg-main" />}
-          </div>
+        <div
+          className={cn(
+            "flex size-5 items-center justify-center rounded-full border-2 border-primary",
+            active && "border-main",
+          )}
+        >
+          {active && <span className="size-2.5 rounded-full bg-main" />}
         </div>
       </div>
       {index !== 5 && <Separator />}
