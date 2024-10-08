@@ -6,8 +6,12 @@ import TableRecords from "@/components/dashboard/statistic/table-records"
 import { SectionHeader, SectionContent } from "@/components/section"
 import { DownloadTransactionHistory } from "@/components/dashboard/statistic/download-transaction-history"
 import { MainContainer } from "@/components/layout/main-container"
+import { auth } from "@clerk/nextjs/server"
 
-const StatisticsPage = () => {
+const StatisticsPage = async () => {
+  const { userId, getToken } = auth()
+  const token = await getToken()
+
   const actionButtonStatistic = (
     <Suspense fallback={<FilterButton />}>
       <FilterStatistic />
@@ -20,14 +24,14 @@ const StatisticsPage = () => {
         <SectionContent>
           <SectionHeader actionButton={actionButtonStatistic}>statistik penjualan</SectionHeader>
           <Suspense fallback={<LoadingAmount />}>
-            <Amount />
+            <Amount token={token ?? ""} userId={userId ?? ""} />
           </Suspense>
         </SectionContent>
         <SectionContent>
           <SectionHeader actionButton={<DownloadTransactionHistory />}>
             riwayat transaksi
           </SectionHeader>
-          <TableRecords />
+          <TableRecords token={token ?? ""} userId={userId ?? ""} />
         </SectionContent>
       </Wrapper>
     </MainContainer>

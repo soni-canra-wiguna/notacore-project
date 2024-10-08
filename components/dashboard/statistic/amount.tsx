@@ -6,20 +6,27 @@ import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/componen
 import React, { useEffect, useState } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import { Badge } from "@/components/ui/badge"
-import { getSalesRecords } from "@/services/get-sales-records"
-import { SalesAndRevenueByCategoryResponse } from "@/types/sales-record"
+import { SalesAndRevenueByCategoryResponse, SalesRecordsResponse } from "@/types/sales-record"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useQueryState } from "nuqs"
 import { format } from "date-fns"
+import { useQuery } from "@tanstack/react-query"
+import { salesRecordsServices } from "@/services/sales-records.services"
+import { WithTokenAndUserId } from "@/types"
 
-const Amount = () => {
+const Amount: React.FC<WithTokenAndUserId> = ({ token, userId }) => {
   const [from] = useQueryState("from", {
     defaultValue: format(new Date(), "yyyy-MM-dd"),
   })
   const [to] = useQueryState("to", {
     defaultValue: format(new Date(), "yyyy-MM-dd"),
   })
-  const { data, isPending, isError } = getSalesRecords(from, to)
+
+  const { data, isPending, isError } = useQuery<SalesRecordsResponse>({
+    queryKey: ["sales_records", from, to],
+    queryFn: () => salesRecordsServices({ from, to, token, userId }),
+  })
+
   const statistic = data?.statistic
 
   if (isPending) return <LoadingAmount />

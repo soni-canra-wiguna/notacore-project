@@ -37,3 +37,18 @@ export interface StatisticResponse {
     quantity: number
   }[]
 }
+
+export interface SalesRecordsResponse {
+  message: string
+  data: SalesRecord[]
+  statistic: StatisticResponse
+}
+
+export interface SalesRecordsPaginationResponse {
+  message: string
+  data: SalesRecord[]
+  currentPage: number
+  totalPages: number
+  totalSalesRecordsPerPage: number
+  totalSalesRecords: number
+}

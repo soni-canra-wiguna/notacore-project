@@ -13,3 +13,7 @@ export type TimeProps =
   | "threeMonthsAgo"
   | "sixMonthsAgo"
   | "oneYearAgo"
+
+export interface WithTokenAndUserId extends TokenProps {
+  userId: string
+}

@@ -4,13 +4,12 @@ import React from "react"
 import { ProductCard } from "./product-card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import axios from "axios"
 import { Frown, Loader2, PackageOpen } from "lucide-react"
 import { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
 import { useQueryState } from "nuqs"
-import { ProductResponse } from "@/types/product"
 import { TokenProps } from "@/types"
+import { listsProductsServices } from "@/services/product.services"
 
 interface ListProducts extends TokenProps {
   userId: string
@@ -34,18 +33,7 @@ const ListsProducts: React.FC<ListProducts> = ({ userId, token }) => {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["lists_products", sortBy],
-    queryFn: async ({ pageParam = 1 }) => {
-      const { data }: { data: ProductResponse } = await axios.get(
-        `/api/products?sortBy=${sortBy}&page=${+pageParam}&limit=${20}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            userId: userId,
-          },
-        },
-      )
-      return data
-    },
+    queryFn: ({ pageParam = 1 }) => listsProductsServices({ pageParam, sortBy, token, userId }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPage) => {
       if (lastPage.currentPage < lastPage.totalPages) {

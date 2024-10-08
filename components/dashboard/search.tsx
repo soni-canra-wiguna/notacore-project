@@ -13,13 +13,13 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { useDebounce } from "use-debounce"
 import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
 import { Product } from "@prisma/client"
 import { useAuth } from "@clerk/nextjs"
 import { Loader2, SearchIcon, XIcon, ArrowUpFromLine } from "lucide-react"
 import { ProductCard } from "./product-card"
 import { Wrapper } from "../layout/wrapper"
 import { TokenProps } from "@/types"
+import { searchProductsServices } from "@/services/product.services"
 
 export const SearchBar: React.FC<TokenProps> = ({ token }) => {
   const { userId } = useAuth()
@@ -33,15 +33,8 @@ export const SearchBar: React.FC<TokenProps> = ({ token }) => {
     isError,
   } = useQuery<Product[]>({
     queryKey: ["search_input", debounceSearchInput],
-    queryFn: async () => {
-      const { data } = await axios.get(`/api/products?search=${debounceSearchInput}`, {
-        headers: {
-          Authorization: token,
-          userId,
-        },
-      })
-      return data.data
-    },
+    queryFn: () =>
+      searchProductsServices({ query: debounceSearchInput, token, userId: userId ?? "" }),
     enabled: !!debounceSearchInput,
   })
 

@@ -21,3 +21,8 @@ export interface ProductResponse {
   totalProductsPerPage: number
   totalProducts: number
 }
+
+export interface SearchResponse {
+  message: string
+  data: ResponseDataType[]
+}
