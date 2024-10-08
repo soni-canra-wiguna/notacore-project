@@ -69,7 +69,7 @@ const UserSettings = ({
       href="/dashboard/settings"
       className="absolute right-3 top-3"
     >
-      <Settings className="size-4" />
+      <Settings className="size-4 stroke-[1.5]" />
     </Link>
   )
 }
