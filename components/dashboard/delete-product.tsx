@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { TrashIcon } from "lucide-react"
-import LoadingButton from "../loading-button"
-import { useState } from "react"
+import { LoadingButton } from "../loading-button"
+import React, { useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { toast } from "../ui/use-toast"
@@ -15,13 +15,13 @@ interface DeleteProductProps {
   title: string
 }
 
-export const DeleteProduct = ({
+export const DeleteProduct: React.FC<DeleteProductProps> = ({
   setIsOpen,
   id,
   userId,
   token,
   title,
-}: DeleteProductProps) => {
+}) => {
   const [isOpenDialog, setIsOpenDialog] = useState(false)
   const queryClient = useQueryClient()
 

@@ -115,7 +115,7 @@ export const FilterProducts = () => {
   )
 }
 
-const FilterItem = ({ item, sortBy, setSortBy, isOpen, setIsOpen }: FilterItemProps) => {
+const FilterItem: React.FC<FilterItemProps> = ({ item, sortBy, setSortBy, isOpen, setIsOpen }) => {
   return (
     <button
       onClick={() => {

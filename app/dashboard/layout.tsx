@@ -4,7 +4,7 @@ import { WithChildren } from "@/types"
 import { auth } from "@clerk/nextjs/server"
 import React from "react"
 
-const DashboardLayout = async ({ children }: WithChildren) => {
+const DashboardLayout: React.FC<WithChildren> = async ({ children }) => {
   const { getToken } = auth()
   const token = await getToken()
 

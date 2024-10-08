@@ -3,8 +3,9 @@ import { Wrapper } from "@/components/layout/wrapper"
 import { auth } from "@clerk/nextjs/server"
 import { MainContainer } from "@/components/layout/main-container"
 import prisma from "@/lib/prisma"
+import React from "react"
 
-const EditProductPage = async ({ params }: { params: { id: string } }) => {
+const EditProductPage: React.FC<{ params: { id: string } }> = async ({ params }) => {
   const { userId, getToken } = auth()
   const token = await getToken()
 
@@ -22,7 +23,7 @@ const EditProductPage = async ({ params }: { params: { id: string } }) => {
   return (
     <MainContainer>
       <Wrapper className="pb-20 pt-16">
-        <FormEditProduct product={product} token={token} />
+        <FormEditProduct product={product} token={token ?? ""} />
       </Wrapper>
     </MainContainer>
   )

@@ -3,7 +3,7 @@ import { MainContainer } from "@/components/layout/main-container"
 import { Wrapper } from "@/components/layout/wrapper"
 import { auth } from "@clerk/nextjs/server"
 
-export default async function SettingsPage() {
+const SettingsPage = async () => {
   const { userId, getToken } = auth()
   const token = await getToken()
 
@@ -20,3 +20,5 @@ export default async function SettingsPage() {
     </MainContainer>
   )
 }
+
+export default SettingsPage

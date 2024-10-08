@@ -3,23 +3,30 @@
 import { Card } from "@/components/ui/card"
 import { formatToIDR } from "@/utils/format-to-idr"
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import { Badge } from "@/components/ui/badge"
-import { getSalesRecords } from "@/services/get-sales-records"
-import { SalesAndRevenueByCategoryResponse } from "@/types/sales-record"
+import { SalesAndRevenueByCategoryResponse, SalesRecordsResponse } from "@/types/sales-record"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useQueryState } from "nuqs"
 import { format } from "date-fns"
+import { useQuery } from "@tanstack/react-query"
+import { salesRecordsServices } from "@/services/sales-records.services"
+import { WithTokenAndUserId } from "@/types"
 
-const Amount = () => {
+const Amount: React.FC<WithTokenAndUserId> = ({ token, userId }) => {
   const [from] = useQueryState("from", {
     defaultValue: format(new Date(), "yyyy-MM-dd"),
   })
   const [to] = useQueryState("to", {
     defaultValue: format(new Date(), "yyyy-MM-dd"),
   })
-  const { data, isPending, isError } = getSalesRecords(from, to)
+
+  const { data, isPending, isError } = useQuery<SalesRecordsResponse>({
+    queryKey: ["sales_records", from, to],
+    queryFn: () => salesRecordsServices({ from, to, token, userId }),
+  })
+
   const statistic = data?.statistic
 
   if (isPending) return <LoadingAmount />
@@ -111,7 +118,7 @@ export const LoadingAmount = () => {
   )
 }
 
-const ErrorAmount = ({ title }: { title: string }) => {
+const ErrorAmount: React.FC<{ title: string }> = ({ title }) => {
   return (
     <Card className="gradientCard flex h-40 items-center justify-center rounded-xl p-4">
       <p className="text-sm text-muted-foreground">{title}</p>
@@ -119,11 +126,9 @@ const ErrorAmount = ({ title }: { title: string }) => {
   )
 }
 
-export const AmountByCategory = ({
-  categories,
-}: {
+export const AmountByCategory: React.FC<{
   categories: SalesAndRevenueByCategoryResponse[] | undefined
-}) => {
+}> = ({ categories }) => {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)

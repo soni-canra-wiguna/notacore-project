@@ -1,11 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { SignOutButton, useUser } from "@clerk/nextjs"
 import { ArrowLeft, Settings } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -26,8 +22,7 @@ export default function UserProfile() {
     setIsOpen(!isOpen)
   }
 
-  if (!isLoaded)
-    return <Skeleton variant="shimmer" className="size-9 rounded-full" />
+  if (!isLoaded) return <Skeleton variant="shimmer" className="size-9 rounded-full" />
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -36,10 +31,7 @@ export default function UserProfile() {
           <img src={image} alt={fullName} className="size-full object-cover" />
         </div>
       </PopoverTrigger>
-      <PopoverContent
-        align="end"
-        className="gradientCard relative flex w-72 flex-col gap-4 p-0"
-      >
+      <PopoverContent align="end" className="gradientCard relative flex w-72 flex-col gap-4 p-0">
         <UserSettings togglePopover={togglePopover} />
         <div className="flex flex-col gap-1 p-4">
           <h6 className="text-base font-semibold">{fullName}</h6>
@@ -58,18 +50,10 @@ export default function UserProfile() {
   )
 }
 
-const UserSettings = ({
-  togglePopover,
-}: {
-  togglePopover: () => void
-}) => {
+const UserSettings: React.FC<{ togglePopover: () => void }> = ({ togglePopover }) => {
   return (
-    <Link
-      onClick={togglePopover}
-      href="/dashboard/settings"
-      className="absolute right-3 top-3"
-    >
-      <Settings className="size-4" />
+    <Link onClick={togglePopover} href="/dashboard/settings" className="absolute right-3 top-3">
+      <Settings className="size-4 stroke-[1.5]" />
     </Link>
   )
 }

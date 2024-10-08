@@ -1,23 +1,22 @@
 "use client"
 
-import LoadingButton from "@/components/loading-button"
+import { LoadingButton } from "@/components/loading-button"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { TriangleAlert } from "lucide-react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useClerk } from "@clerk/nextjs"
 import { DeleteModal } from "@/components/delete-modal"
+import { TokenProps } from "@/types"
 
-export const DeteleAccount = ({
-  userId,
-  token,
-}: {
+export interface DeleteAccountProps extends TokenProps {
   userId: string
-  token: string
-}) => {
+}
+
+export const DeteleAccount: React.FC<DeleteAccountProps> = ({ userId, token }) => {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const { signOut } = useClerk()

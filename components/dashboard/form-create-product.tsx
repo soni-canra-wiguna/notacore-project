@@ -11,14 +11,13 @@ import { useRouter } from "next/navigation"
 import { toast } from "@/components/ui/use-toast"
 import { v4 as uuidv4 } from "uuid"
 import { ProductForm } from "./product-form"
+import { TokenProps } from "@/types"
 
-export const FormCreateProduct = ({
-  userId,
-  token,
-}: {
-  userId: string | null
-  token: string | null
-}) => {
+interface FormCreateProductProps extends TokenProps {
+  userId: string
+}
+
+export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, token }) => {
   const router = useRouter()
   const queryClient = useQueryClient()
 

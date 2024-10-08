@@ -82,11 +82,11 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ fileType, onClick }) =>
   return (
     <Card
       onClick={onClick}
-      className="gradientCard flex w-full cursor-pointer items-center gap-1.5 rounded-xl p-1.5"
+      className="gradientCard flex w-full cursor-pointer items-center gap-1.5 rounded-xl px-1.5 py-2.5"
     >
       <FileDown className="size-8 stroke-[1.5] text-main" />
-      <div>
-        <h1 className="text-sm font-medium leading-none">{fileType}</h1>
+      <div className="flex flex-col">
+        <span className="text-sm font-medium leading-none">{fileType}</span>
         <span className="text-xs text-muted-foreground">catatanku.{fileType}</span>
       </div>
     </Card>

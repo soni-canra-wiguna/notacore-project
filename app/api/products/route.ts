@@ -63,7 +63,6 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
     const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "20")
     const skip = (page - 1) * limit
     const sortBy = req.nextUrl.searchParams.get("sortBy")
-    const searchQuery = req.nextUrl.searchParams.get("search")?.replace(/-/g, " ")
 
     let orderBy = {}
     switch (sortBy) {
@@ -98,12 +97,6 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
     const products = await prisma.product.findMany({
       where: {
         userId,
-        AND: {
-          title: {
-            contains: searchQuery,
-            mode: "insensitive",
-          },
-        },
       },
       orderBy,
       skip: skip,
@@ -118,16 +111,6 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
 
     const productNotFound = products.length === 0
 
-    if (searchQuery && productNotFound) {
-      return NextResponse.json(
-        {
-          message: "search result not found",
-          data: [],
-        },
-        { status: 200 },
-      )
-    }
-
     if (!totalProducts || productNotFound) {
       return NextResponse.json(
         {
@@ -138,16 +121,11 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
       )
     }
 
-    const responseMessage = searchQuery
-      ? "Search results successfully retrieved"
-      : "Products successfully retrieved"
-    const responseTotalPages = Math.ceil(searchQuery ? products.length : totalProducts / limit)
-
     const response = {
-      message: responseMessage,
+      message: "Products successfully retrieved",
       data: products,
       currentPage: page,
-      totalPages: responseTotalPages,
+      totalPages: totalProducts / limit,
       totalProductsPerPage: products.length,
       totalProducts,
     }

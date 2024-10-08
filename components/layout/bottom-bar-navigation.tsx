@@ -55,7 +55,7 @@ export const BottomBarNavigation = () => {
   )
 }
 
-const BottomBarItem = ({ item, pathname }: BottomBarItemProps) => {
+const BottomBarItem: React.FC<BottomBarItemProps> = ({ item, pathname }) => {
   return (
     <Link
       key={item.label}

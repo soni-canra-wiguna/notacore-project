@@ -1,14 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import {
   Select,
   SelectContent,
@@ -21,48 +14,33 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { formatToIDR } from "@/utils/format-to-idr"
-import { useAuth } from "@clerk/nextjs"
-import { SalesRecord } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
 import { format } from "date-fns"
 import { ChevronLeft, ChevronRight, ChevronsUpDown } from "lucide-react"
 import React, { useState } from "react"
 import { id } from "date-fns/locale"
 import Link from "next/link"
-
-export interface GetSalesRecordWithPaggingProps {
-  message: string
-  data: SalesRecord[]
-  currentPage: number
-  totalPages: number
-  totalSaleRecordsPerPage: number
-  totalSaleRecords: number
-}
+import { salesRecordsPaginationServices } from "@/services/sales-records.services"
+import { SalesRecordsPaginationResponse } from "@/types/sales-record"
+import { WithTokenAndUserId } from "@/types"
 
 type handleSortByType = "price" | "date" | "qty"
 
-const TableRecords = () => {
-  const { userId, getToken } = useAuth()
+const TableRecords: React.FC<WithTokenAndUserId> = ({ token, userId }) => {
   const [page, setPage] = useState(1)
   const [sortBy, setSortBy] = useState("date-desc")
   const [limit, setLimit] = useState("20")
 
-  const { data, isPending, isError } = useQuery<GetSalesRecordWithPaggingProps>({
+  const { data, isPending, isError } = useQuery<SalesRecordsPaginationResponse>({
     queryKey: ["pagging_salesrecord", sortBy, page, limit],
-    queryFn: async () => {
-      const token = await getToken()
-      const { data } = await axios.get(
-        `/api/sales-records/pagination?sortBy=${sortBy}&page=${page}&limit=${limit}`,
-        {
-          headers: {
-            Authorization: token,
-            userId: userId,
-          },
-        },
-      )
-      return data
-    },
+    queryFn: () =>
+      salesRecordsPaginationServices({
+        sortBy,
+        page,
+        limit,
+        token,
+        userId,
+      }),
   })
 
   const handleSortBy = (type: handleSortByType) => {
@@ -194,7 +172,7 @@ export const LoadingTableProduct = () => {
   return <div className="flex flex-col gap-2">{loading}</div>
 }
 
-const TableList = ({ data }: { data: GetSalesRecordWithPaggingProps | undefined }) => {
+const TableList: React.FC<{ data: SalesRecordsPaginationResponse | undefined }> = ({ data }) => {
   const tableItem = data?.data.map((p) => {
     const formattedDate = format(p.createdAt, "EEE, dd MMM yyyy", {
       locale: id,

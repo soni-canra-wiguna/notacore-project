@@ -4,14 +4,18 @@ import React from "react"
 import { ProductCard } from "./product-card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import axios from "axios"
 import { Frown, Loader2, PackageOpen } from "lucide-react"
 import { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
 import { useQueryState } from "nuqs"
-import { ProductResponse } from "@/types/product"
+import { TokenProps } from "@/types"
+import { listsProductsServices } from "@/services/product.services"
 
-const ListsProducts = ({ userId, token }: { userId: string; token: string }) => {
+interface ListProducts extends TokenProps {
+  userId: string
+}
+
+const ListsProducts: React.FC<ListProducts> = ({ userId, token }) => {
   const [sortBy] = useQueryState("sortBy", {
     defaultValue: "new",
     history: "push",
@@ -29,18 +33,7 @@ const ListsProducts = ({ userId, token }: { userId: string; token: string }) => 
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["lists_products", sortBy],
-    queryFn: async ({ pageParam = 1 }) => {
-      const { data }: { data: ProductResponse } = await axios.get(
-        `/api/products?sortBy=${sortBy}&page=${+pageParam}&limit=${20}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            userId: userId,
-          },
-        },
-      )
-      return data
-    },
+    queryFn: ({ pageParam = 1 }) => listsProductsServices({ pageParam, sortBy, token, userId }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPage) => {
       if (lastPage.currentPage < lastPage.totalPages) {
@@ -105,13 +98,10 @@ const ListsProducts = ({ userId, token }: { userId: string; token: string }) => 
 
 export default ListsProducts
 
-export const LoadingListProducts = ({
-  type,
-  lengthLoading = 4,
-}: {
+export const LoadingListProducts: React.FC<{
   type: "loading" | "fallback"
   lengthLoading?: number
-}) => {
+}> = ({ type, lengthLoading = 4 }) => {
   const loadings = Array.from({ length: lengthLoading }, (_, i) => {
     return <Skeleton variant="shimmer" className="h-24 w-full rounded-xl" key={i} />
   })
