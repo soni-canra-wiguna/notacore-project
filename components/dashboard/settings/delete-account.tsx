@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation"
 import { useClerk } from "@clerk/nextjs"
 import { DeleteModal } from "@/components/delete-modal"
 import { TokenProps } from "@/types"
-import { deleteUserServices } from "@/services/user.services"
 
 export interface DeleteAccountProps extends TokenProps {
   userId: string
@@ -27,7 +26,16 @@ export const DeteleAccount: React.FC<DeleteAccountProps> = ({ userId, token }) =
     isPending,
     isError,
   } = useMutation({
-    mutationFn: () => deleteUserServices({ token, userId }),
+    mutationFn: async () => {
+      await axios.delete(`/api/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          userId: userId,
+        },
+      })
+
+      await signOut()
+    },
     onSuccess: () => {
       toast({
         description: "akun telah di hapus",
