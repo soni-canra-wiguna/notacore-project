@@ -7,7 +7,9 @@ export default function useVisibleNavbar() {
     typeof window !== "undefined" ? window.scrollY : null,
   )
   const [visible, setVisible] = useState<boolean>(true)
+  const [isBorderVisible, setIsBorderVisible] = useState(false)
 
+  // handle visible navbar
   const handleScroll = () => {
     const currentScroll = window?.scrollY
     if (prevScroll > currentScroll) {
@@ -26,7 +28,24 @@ export default function useVisibleNavbar() {
     }
   }, [prevScroll])
 
+  // handle visible border
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 90) {
+        setIsBorderVisible(true)
+      } else {
+        setIsBorderVisible(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
   return {
     visible,
+    isBorderVisible,
   }
 }
