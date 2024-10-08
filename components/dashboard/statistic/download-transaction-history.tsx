@@ -87,7 +87,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ fileType, onClick }) =>
       <FileDown className="size-8 stroke-[1.5] text-main" />
       <div>
         <h1 className="text-sm font-medium leading-none">{fileType}</h1>
-        <span className="text-xs text-muted-foreground">sales-record.{fileType}</span>
+        <span className="text-xs text-muted-foreground">catatanku.{fileType}</span>
       </div>
     </Card>
   )

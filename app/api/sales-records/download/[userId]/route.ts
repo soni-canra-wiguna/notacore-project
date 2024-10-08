@@ -63,11 +63,11 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
     if (fileType === "csv") {
       buffer = Buffer.from(await workbook.csv.writeBuffer())
       contentType = "text/csv"
-      fileName = "sales-record.csv"
+      fileName = "catatanku.csv"
     } else {
       buffer = Buffer.from(await workbook.xlsx.writeBuffer())
       contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      fileName = "sales-record.xlsx"
+      fileName = "catatanku.xlsx"
     }
 
     return new NextResponse(buffer, {
