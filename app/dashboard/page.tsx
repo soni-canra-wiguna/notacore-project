@@ -4,7 +4,7 @@ import ListsProducts, { LoadingListProducts } from "@/components/dashboard/lists
 import { FallbackFilterButton, FilterProducts } from "@/components/dashboard/filter-products"
 import { Suspense } from "react"
 import { SalesRecordView } from "@/components/dashboard/sales-record-view"
-import { SectionHeader, SectionLayout } from "@/components/section"
+import { SectionHeader, SectionContent } from "@/components/section"
 import { MainContainer } from "@/components/layout/main-container"
 
 const DashboardPage = async () => {
@@ -20,12 +20,12 @@ const DashboardPage = async () => {
   return (
     <MainContainer>
       <Wrapper className="py-20">
-        <SectionLayout>
+        <SectionContent>
           <SectionHeader actionButton={actionButtonProduct}>produk kamu</SectionHeader>
           <Suspense fallback={<LoadingListProducts type="fallback" />}>
             <ListsProducts userId={userId!} token={token!} />
           </Suspense>
-        </SectionLayout>
+        </SectionContent>
       </Wrapper>
       <SalesRecordView token={token!} /> {/* checkout button ~ absolute position */}
     </MainContainer>

@@ -104,7 +104,7 @@ export const LoadingAmount = () => {
           <Skeleton variant="shimmer" className="size-7" />
         </div>
         <div className="flex items-center justify-center">
-          <Skeleton variant="shimmer" className="h-7 w-40" />
+          <Skeleton variant="shimmer" className="h-7 w-32" />
         </div>
       </Card>
     </section>

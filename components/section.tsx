@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import type { HTMLAttributes, ReactNode } from "react"
 
-const SectionLayout: React.FC<HTMLAttributes<HTMLDivElement>> = ({
+const SectionContent: React.FC<HTMLAttributes<HTMLDivElement>> = ({
   children,
   className,
   ...props
@@ -26,4 +26,4 @@ const SectionHeader: React.FC<
   )
 }
 
-export { SectionLayout, SectionHeader }
+export { SectionContent, SectionHeader }

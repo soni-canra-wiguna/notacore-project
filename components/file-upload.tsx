@@ -48,7 +48,7 @@ export const FileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
 
   return (
     <UploadDropzone
-      className="ut-allowed-content:text-paragraph !rounded-xl !border-foreground/50 ut-button:bg-primary ut-button:text-background ut-label:font-medium ut-label:text-primary ut-upload-icon:text-primary/30"
+      className="ut-allowed-content:text-paragraph !rounded-xl !border-foreground/50 ut-button:bg-primary ut-button:text-background ut-label:font-medium ut-label:text-primary ut-upload-icon:text-primary/30 !px-4 !py-6"
       endpoint={endpoint}
       onClientUploadComplete={(res) => {
         if (!res) return
