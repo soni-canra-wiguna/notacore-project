@@ -8,24 +8,20 @@ import { toast } from "../ui/use-toast"
 import { Card } from "@/components/ui/card"
 import React, { useState } from "react"
 import { MoreVertical, Plus, Pencil, FileSearch } from "lucide-react"
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover"
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { PreviewDetailProduct } from "@/components/dashboard/preview-product"
 import { ResponseDataType } from "@/types/product"
 import { DeleteProduct } from "./delete-product"
 import Link from "next/link"
+import { TokenProps } from "@/types"
 
-interface ProductCardProps {
+interface ProductCardProps extends TokenProps {
   product: ResponseDataType
   userId: string
-  token: string
 }
 
-export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ product, userId, token }) => {
   const dispacth = useDispatch()
 
   const dataProduct = {
@@ -52,11 +48,7 @@ export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
     >
       <div className="flex w-full items-start gap-2">
         <div className="aspect-square h-20 overflow-hidden rounded-xl border">
-          <img
-            alt="image"
-            src={product.image}
-            className="size-full object-cover"
-          />
+          <img alt="image" src={product.image} className="size-full object-cover" />
         </div>
         <div className="">
           <h4 className="text-sm font-semibold capitalize">{product.title}</h4>
@@ -88,7 +80,7 @@ export const ProductCard = ({ product, userId, token }: ProductCardProps) => {
   )
 }
 
-const MoreOptions = ({ product, userId, token }: ProductCardProps) => {
+const MoreOptions: React.FC<ProductCardProps> = ({ product, userId, token }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (

@@ -12,7 +12,7 @@ interface TextEditorProps {
   onChange: (value: string) => void
 }
 
-export const TextEditor = ({ className, value, onChange }: TextEditorProps) => {
+export const TextEditor: React.FC<TextEditorProps> = ({ className, value, onChange }) => {
   const { isMounted } = useMounted()
   const editor = useEditor({
     content: value,

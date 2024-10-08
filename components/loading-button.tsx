@@ -10,7 +10,7 @@ type LoadingButtonProps = {
   loading?: boolean
 } & ButtonProps
 
-const LoadingButton = ({ children, loading, ...props }: LoadingButtonProps) => {
+export const LoadingButton: React.FC<LoadingButtonProps> = ({ children, loading, ...props }) => {
   return (
     <Button disabled={loading ? true : false} {...props}>
       {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -18,5 +18,3 @@ const LoadingButton = ({ children, loading, ...props }: LoadingButtonProps) => {
     </Button>
   )
 }
-
-export default LoadingButton

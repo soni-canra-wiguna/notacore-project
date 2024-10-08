@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card"
 import { formatToIDR } from "@/utils/format-to-idr"
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import { Badge } from "@/components/ui/badge"
 import { getSalesRecords } from "@/services/get-sales-records"
@@ -111,7 +111,7 @@ export const LoadingAmount = () => {
   )
 }
 
-const ErrorAmount = ({ title }: { title: string }) => {
+const ErrorAmount: React.FC<{ title: string }> = ({ title }) => {
   return (
     <Card className="gradientCard flex h-40 items-center justify-center rounded-xl p-4">
       <p className="text-sm text-muted-foreground">{title}</p>
@@ -119,11 +119,9 @@ const ErrorAmount = ({ title }: { title: string }) => {
   )
 }
 
-export const AmountByCategory = ({
-  categories,
-}: {
+export const AmountByCategory: React.FC<{
   categories: SalesAndRevenueByCategoryResponse[] | undefined
-}) => {
+}> = ({ categories }) => {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)

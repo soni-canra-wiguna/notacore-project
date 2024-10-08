@@ -1,11 +1,11 @@
 import "./globals.css"
 import type { Metadata } from "next"
 import { Plus_Jakarta_Sans } from "next/font/google"
-import { WithClerkProvider, TanstackProvider, ReduxProvider } from "@/lib/provider"
+import { WithClerkProvider, TanstackProvider, ReduxProvider, ThemeProvider } from "@/lib/provider"
 import NextTopLoader from "nextjs-toploader"
 import { Toaster } from "@/components/ui/toaster"
-import { ThemeProvider } from "@/lib/provider/theme-provider"
 import { MAIN_COLOR } from "@/constants/colors"
+import { WithChildren } from "@/types"
 
 export const metadata: Metadata = {
   title: {
@@ -105,11 +105,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus_jakarta_sans",
 })
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: Readonly<WithChildren>) {
   return (
     <WithClerkProvider>
       <TanstackProvider>

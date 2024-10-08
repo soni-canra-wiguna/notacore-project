@@ -31,14 +31,28 @@ import {
 import { formatToIDR } from "@/utils/format-to-idr"
 import { useMounted } from "@/hook/use-mounted"
 import { toast } from "@/components/ui/use-toast"
-import LoadingButton from "../loading-button"
+import { LoadingButton } from "../loading-button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useAuth } from "@clerk/nextjs"
 import { CreateSalesRecordRequest } from "@/types/sales-record"
 import { DeleteModal } from "../delete-modal"
+import { TokenProps } from "@/types"
 
-export const SalesRecordView = ({ token }: { token: string }) => {
+interface LayoutSwitcherProps {
+  disabledButton: boolean
+  layoutSwitcher: "list" | "slider"
+  setLayoutSwitcher: (layoutSwitcher: "list" | "slider") => void
+}
+
+interface ResetListsProductsButtonProps {
+  disabledButton: boolean
+  closeDrawer: () => void
+}
+
+type AddProductToRecordProps = ResetListsProductsButtonProps & TokenProps
+
+export const SalesRecordView: React.FC<TokenProps> = ({ token }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [layoutSwitcher, setLayoutSwitcher] = useState<"list" | "slider">("list")
 
@@ -143,7 +157,7 @@ export const SalesRecordView = ({ token }: { token: string }) => {
   )
 }
 
-const CardDrawer = ({ product }: { product: ProductSliceType }) => {
+const CardDrawer: React.FC<{ product: ProductSliceType }> = ({ product }) => {
   const dispatch = useDispatch()
 
   const DeleteButton = ({ id }: { id: string }) => {
@@ -206,17 +220,11 @@ const CardDrawer = ({ product }: { product: ProductSliceType }) => {
   )
 }
 
-interface LayoutSwitcherProps {
-  disabledButton: boolean
-  layoutSwitcher: "list" | "slider"
-  setLayoutSwitcher: (layoutSwitcher: "list" | "slider") => void
-}
-
-const LayoutSwitcher = ({
+const LayoutSwitcher: React.FC<LayoutSwitcherProps> = ({
   disabledButton,
   layoutSwitcher,
   setLayoutSwitcher,
-}: LayoutSwitcherProps) => {
+}) => {
   const [isOpen, setIsOpen] = useState(false)
 
   function ButtonSwitcher(item: { type: "list" | "slider"; icon: any }) {
@@ -260,13 +268,10 @@ const LayoutSwitcher = ({
   )
 }
 
-const ResetListsProductsButton = ({
-  disabledButton,
-  closeDrawer,
-}: {
+const ResetListsProductsButton: React.FC<{
   disabledButton: boolean
   closeDrawer: () => void
-}) => {
+}> = ({ disabledButton, closeDrawer }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const dispatch = useDispatch()
 
@@ -305,14 +310,10 @@ const ResetListsProductsButton = ({
   )
 }
 
-const AddProductToRecord = ({
+const AddProductToRecord: React.FC<AddProductToRecordProps> = ({
   token,
   closeDrawer,
   disabledButton,
-}: {
-  token: string
-  closeDrawer: () => void
-  disabledButton: boolean
 }) => {
   const { userId } = useAuth()
   const dispatch = useDispatch()

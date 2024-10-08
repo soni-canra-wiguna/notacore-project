@@ -3,18 +3,19 @@
 import { cn } from "@/lib/utils"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
+import React from "react"
 
 interface ThemeSwitcherProps extends React.HTMLAttributes<HTMLDivElement> {
   togglePopover?: () => void
   sizeIcon?: string
 }
 
-export const ThemeSwitcher = ({
+export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   togglePopover,
   className,
   sizeIcon = "4",
   ...props
-}: ThemeSwitcherProps) => {
+}) => {
   const { theme, setTheme } = useTheme()
 
   return (

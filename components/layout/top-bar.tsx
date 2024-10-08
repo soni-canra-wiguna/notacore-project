@@ -7,8 +7,9 @@ import { cn } from "@/lib/utils"
 import UserProfile from "../dashboard/user-profile"
 import { SearchBar } from "../dashboard/search"
 import { Bell } from "lucide-react"
+import { TokenProps } from "@/types"
 
-export const TopBar = ({ token }: { token: string }) => {
+export const TopBar: React.FC<TokenProps> = ({ token }) => {
   const { visible } = useVisibleNavbar()
   const [isBorderVisible, setIsBorderVisible] = useState(false)
 

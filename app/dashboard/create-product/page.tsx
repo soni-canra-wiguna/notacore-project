@@ -9,7 +9,7 @@ const CreateProductPage = async () => {
   return (
     <MainContainer>
       <Wrapper className="pb-20 pt-16">
-        <FormCreateProduct userId={userId} token={token} />
+        <FormCreateProduct userId={userId ?? ""} token={token ?? ""} />
       </Wrapper>
     </MainContainer>
   )

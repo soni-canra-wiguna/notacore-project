@@ -17,8 +17,9 @@ import { useAuth } from "@clerk/nextjs"
 import { Loader2, SearchIcon, XIcon, ArrowUpFromLine } from "lucide-react"
 import { ProductCard } from "./product-card"
 import { Wrapper } from "../layout/wrapper"
+import { TokenProps } from "@/types"
 
-export const SearchBar = ({ token }: { token: string }) => {
+export const SearchBar: React.FC<TokenProps> = ({ token }) => {
   const { userId } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [searchInput, setSeachInput] = useState("")

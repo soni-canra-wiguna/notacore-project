@@ -1,3 +1,5 @@
+"use client"
+
 import { StatisticResponse } from "@/types/sales-record"
 import { useAuth } from "@clerk/nextjs"
 import { SalesRecord } from "@prisma/client"

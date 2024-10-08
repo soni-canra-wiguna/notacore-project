@@ -194,7 +194,7 @@ export const LoadingTableProduct = () => {
   return <div className="flex flex-col gap-2">{loading}</div>
 }
 
-const TableList = ({ data }: { data: GetSalesRecordWithPaggingProps | undefined }) => {
+const TableList: React.FC<{ data: GetSalesRecordWithPaggingProps | undefined }> = ({ data }) => {
   const tableItem = data?.data.map((p) => {
     const formattedDate = format(p.createdAt, "EEE, dd MMM yyyy", {
       locale: id,

@@ -19,20 +19,17 @@ import { Filter } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 import { dateTime } from "@/utils/date-time"
-
-type TimeProps =
-  | "today"
-  | "oneWeekAgo"
-  | "oneMonthAgo"
-  | "threeMonthsAgo"
-  | "sixMonthsAgo"
-  | "oneYearAgo"
+import { TimeProps } from "@/types"
 
 interface ListTimeProps {
   title: string
   description: string
   onClick: () => void
   active: boolean
+}
+
+interface FilterItemProps extends ListTimeProps {
+  index: number | undefined
 }
 
 export const FilterButton = () => {
@@ -192,11 +189,7 @@ export const FilterStatistic = () => {
   )
 }
 
-interface FilterItemProps extends ListTimeProps {
-  index: number | undefined
-}
-
-const FilterItem = ({ title, description, active, onClick, index }: FilterItemProps) => {
+const FilterItem: React.FC<FilterItemProps> = ({ title, description, active, onClick, index }) => {
   return (
     <>
       <div className={"justfiy-between flex w-full items-center py-4"} onClick={onClick}>

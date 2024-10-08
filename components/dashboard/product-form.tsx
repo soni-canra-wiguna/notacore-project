@@ -23,7 +23,7 @@ import {
 import { UNIT_PRODUCTS } from "@/constants/units"
 import { Label } from "@/components/ui/label"
 import { formatToIDR } from "@/utils/format-to-idr"
-import LoadingButton from "@/components/loading-button"
+import { LoadingButton } from "@/components/loading-button"
 import { Button } from "../ui/button"
 import { FileSearch } from "lucide-react"
 import { PreviewDetailProduct } from "./preview-product"
@@ -39,19 +39,16 @@ export interface ProductFormProps {
   previewProduct: Product
 }
 
-export const ProductForm = ({
+export const ProductForm: React.FC<ProductFormProps> = ({
   label,
   form,
   onSubmit,
   isPending,
   previewProduct,
-}: ProductFormProps) => {
+}) => {
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto w-full space-y-6"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto w-full space-y-6">
         <FormField
           control={form.control}
           name="image"
@@ -60,11 +57,7 @@ export const ProductForm = ({
               <FormItem>
                 <FormLabel>Image</FormLabel>
                 <FormControl>
-                  <FileUpload
-                    endpoint="product"
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
+                  <FileUpload endpoint="product" value={field.value} onChange={field.onChange} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -79,11 +72,7 @@ export const ProductForm = ({
               <FormItem>
                 <FormLabel>Title produk</FormLabel>
                 <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="masukkan nama produk"
-                    {...field}
-                  />
+                  <Input type="text" placeholder="masukkan nama produk" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -114,11 +103,7 @@ export const ProductForm = ({
                 <FormItem className="flex-1">
                   <FormLabel>Harga produk</FormLabel>
                   <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="masukkan nominal harga"
-                      {...field}
-                    />
+                    <Input type="number" placeholder="masukkan nominal harga" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -141,11 +126,7 @@ export const ProductForm = ({
                 <FormItem className="flex-1">
                   <FormLabel>Jumlah produk</FormLabel>
                   <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="jumlah produk tersedia"
-                      {...field}
-                    />
+                    <Input type="number" placeholder="jumlah produk tersedia" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -160,10 +141,7 @@ export const ProductForm = ({
               return (
                 <FormItem>
                   <FormLabel>Satuan</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="satuan produk" />
@@ -172,11 +150,7 @@ export const ProductForm = ({
                     <SelectContent align="end">
                       <SelectGroup>
                         {UNIT_PRODUCTS.map((unit) => (
-                          <SelectItem
-                            className="capitalize"
-                            key={unit.value}
-                            value={unit.value}
-                          >
+                          <SelectItem className="capitalize" key={unit.value} value={unit.value}>
                             {unit.label}
                           </SelectItem>
                         ))}
@@ -197,11 +171,7 @@ export const ProductForm = ({
               <FormItem>
                 <FormLabel>kategori produk</FormLabel>
                 <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="masukkan kategori"
-                    {...field}
-                  />
+                  <Input type="text" placeholder="masukkan kategori" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

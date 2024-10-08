@@ -18,36 +18,36 @@ import { Badge } from "../ui/badge"
 import { cn } from "@/lib/utils"
 import { Balancer } from "react-wrap-balancer"
 import parse from "html-react-parser"
+import React from "react"
 
 interface PreviewDetailProductProps extends WithChildren {
   product: ResponseDataType
   setIsOpen?: (isOpen: boolean) => void
 }
 
-export const PreviewDetailProduct = ({
+interface WrapperDetailProductProps extends WithChildren {
+  title: string
+  type?: string
+  className?: string
+}
+
+export const PreviewDetailProduct: React.FC<PreviewDetailProductProps> = ({
   product,
   children,
   setIsOpen,
-}: PreviewDetailProductProps) => {
+}) => {
   return (
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent className="">
         <DrawerHeader className="flex items-center justify-between border-b">
           <DrawerTitle className="sr-only">detail produk</DrawerTitle>
-          <DrawerDescription className="sr-only">
-            detail produk {product.title}
-          </DrawerDescription>
+          <DrawerDescription className="sr-only">detail produk {product.title}</DrawerDescription>
           <div className="flex items-center gap-3">
             <h3 className="font-semibold capitalize">Detail produk</h3>
           </div>
           <DrawerClose asChild>
-            <Button
-              onClick={() => setIsOpen?.(false)}
-              className=""
-              variant="ghost"
-              size="icon"
-            >
+            <Button onClick={() => setIsOpen?.(false)} className="" variant="ghost" size="icon">
               <X className="size-6 stroke-[1.5]" />
               <p className="sr-only">close</p>
             </Button>
@@ -55,11 +55,7 @@ export const PreviewDetailProduct = ({
         </DrawerHeader>
         <div className="scrollbar-hide h-full max-h-[450px] w-full overflow-y-auto p-4">
           <div className="mb-5 aspect-[14/9] w-full overflow-hidden rounded-xl">
-            <img
-              src={product.image}
-              alt={product.title}
-              className="size-full object-cover"
-            />
+            <img src={product.image} alt={product.title} className="size-full object-cover" />
           </div>
           <div className="rounded-xl border">
             <WrapperDetailProduct title="title">
@@ -78,9 +74,7 @@ export const PreviewDetailProduct = ({
             </WrapperDetailProduct>
             {/* using type description in here */}
             <WrapperDetailProduct title="deskripsi">
-              <WithTypographyStyle>
-                {parse(product.description!)}
-              </WithTypographyStyle>
+              <WithTypographyStyle>{parse(product.description!)}</WithTypographyStyle>
             </WrapperDetailProduct>
           </div>
         </div>
@@ -89,37 +83,25 @@ export const PreviewDetailProduct = ({
   )
 }
 
-const WithTypographyStyle = ({
-  className,
-  children,
-}: {
+const WithTypographyStyle: React.FC<{
   className?: string
   children: React.ReactNode
-}) => {
+}> = ({ className, children }) => {
   return (
     <div
-      className={cn(
-        "no-before no-after prose prose-p:text-sm prose-p:text-foreground",
-        className,
-      )}
+      className={cn("no-before no-after prose prose-p:text-sm prose-p:text-foreground", className)}
     >
       {children}
     </div>
   )
 }
 
-interface WrapperDetailProductProps extends WithChildren {
-  title: string
-  type?: string
-  className?: string
-}
-
-const WrapperDetailProduct = ({
+const WrapperDetailProduct: React.FC<WrapperDetailProductProps> = ({
   children,
   title,
   type,
   className,
-}: WrapperDetailProductProps) => {
+}) => {
   return (
     <div className={cn("flex w-full items-start px-3 py-3 text-sm", className)}>
       <div className="w-16">

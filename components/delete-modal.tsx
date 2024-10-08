@@ -22,7 +22,7 @@ export interface DeleteModalProps {
   setIsOpen: (isOpen: boolean) => void
 }
 
-export const DeleteModal = ({
+export const DeleteModal: React.FC<DeleteModalProps> = ({
   title,
   titleProduct,
   description,
@@ -30,7 +30,7 @@ export const DeleteModal = ({
   trigger,
   isOpen,
   setIsOpen,
-}: DeleteModalProps) => {
+}) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -39,20 +39,12 @@ export const DeleteModal = ({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
             {" "}
-            {description}{" "}
-            {titleProduct && (
-              <span className="font-semibold">{titleProduct}</span>
-            )}{" "}
-            ?
+            {description} {titleProduct && <span className="font-semibold">{titleProduct}</span>} ?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2.5">
           <DialogClose asChild>
-            <Button
-              onClick={() => setIsOpen(false)}
-              className="capitalize"
-              variant="outline"
-            >
+            <Button onClick={() => setIsOpen(false)} className="capitalize" variant="outline">
               batal
             </Button>
           </DialogClose>

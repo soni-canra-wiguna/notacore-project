@@ -10,8 +10,13 @@ import { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
 import { useQueryState } from "nuqs"
 import { ProductResponse } from "@/types/product"
+import { TokenProps } from "@/types"
 
-const ListsProducts = ({ userId, token }: { userId: string; token: string }) => {
+interface ListProducts extends TokenProps {
+  userId: string
+}
+
+const ListsProducts: React.FC<ListProducts> = ({ userId, token }) => {
   const [sortBy] = useQueryState("sortBy", {
     defaultValue: "new",
     history: "push",
@@ -105,13 +110,10 @@ const ListsProducts = ({ userId, token }: { userId: string; token: string }) => 
 
 export default ListsProducts
 
-export const LoadingListProducts = ({
-  type,
-  lengthLoading = 4,
-}: {
+export const LoadingListProducts: React.FC<{
   type: "loading" | "fallback"
   lengthLoading?: number
-}) => {
+}> = ({ type, lengthLoading = 4 }) => {
   const loadings = Array.from({ length: lengthLoading }, (_, i) => {
     return <Skeleton variant="shimmer" className="h-24 w-full rounded-xl" key={i} />
   })

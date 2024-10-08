@@ -11,14 +11,13 @@ import { toast } from "@/components/ui/use-toast"
 import { v4 as uuidv4 } from "uuid"
 import { Product } from "@prisma/client"
 import { ProductForm } from "./product-form"
+import { TokenProps } from "@/types"
 
-export const FormEditProduct = ({
-  token,
-  product,
-}: {
-  token: string | null
+interface FormEditProductProps extends TokenProps {
   product: Product
-}) => {
+}
+
+export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product }) => {
   const router = useRouter()
   const queryClient = useQueryClient()
 
