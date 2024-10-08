@@ -38,7 +38,6 @@ import { useAuth } from "@clerk/nextjs"
 import { CreateSalesRecordRequest } from "@/types/sales-record"
 import { DeleteModal } from "../delete-modal"
 import { TokenProps } from "@/types"
-import { invalidate } from "@/utils/invalidate"
 
 interface LayoutSwitcherProps {
   disabledButton: boolean
@@ -352,9 +351,9 @@ const AddProductToRecord: React.FC<AddProductToRecordProps> = ({
           ),
         ),
       )
-      invalidate("lists_products")
-      invalidate("pagging_salesrecord")
-      invalidate("sales_records")
+      queryClient.invalidateQueries({ queryKey: ["lists_products"] })
+      queryClient.invalidateQueries({ queryKey: ["pagging_salesrecord"] })
+      queryClient.invalidateQueries({ queryKey: ["sales_records"] })
       dispatch(resetProduct())
       closeDrawer()
       toast({

@@ -2,11 +2,10 @@ import { cn } from "@/lib/utils"
 import { TrashIcon } from "lucide-react"
 import { LoadingButton } from "../loading-button"
 import React, { useState } from "react"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { toast } from "../ui/use-toast"
 import { DeleteModal } from "../delete-modal"
-import { invalidate } from "@/utils/invalidate"
 
 interface DeleteProductProps {
   setIsOpen: (isOpen: boolean) => void
@@ -24,6 +23,7 @@ export const DeleteProduct: React.FC<DeleteProductProps> = ({
   title,
 }) => {
   const [isOpenDialog, setIsOpenDialog] = useState(false)
+  const queryClient = useQueryClient()
 
   const {
     mutate: deleteProduct,
@@ -39,8 +39,8 @@ export const DeleteProduct: React.FC<DeleteProductProps> = ({
       })
     },
     onSuccess: () => {
-      invalidate("lists_products")
-      invalidate("search_input")
+      queryClient.invalidateQueries({ queryKey: ["lists_products"] })
+      queryClient.invalidateQueries({ queryKey: ["search_input"] })
       toast({
         description: "produk telah di hapus",
         // variant: "destructive",

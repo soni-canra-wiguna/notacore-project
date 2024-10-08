@@ -5,14 +5,13 @@ import React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import axios from "axios"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { toast } from "@/components/ui/use-toast"
 import { v4 as uuidv4 } from "uuid"
 import { Product } from "@prisma/client"
 import { ProductForm } from "./product-form"
 import { TokenProps } from "@/types"
-import { invalidate } from "@/utils/invalidate"
 
 interface FormEditProductProps extends TokenProps {
   product: Product
@@ -20,6 +19,7 @@ interface FormEditProductProps extends TokenProps {
 
 export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product }) => {
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const defaultValues = {
     userId: product.userId,
@@ -58,7 +58,7 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product
         description: "Product berhasil di update",
       })
       router.push("/dashboard")
-      invalidate("lists_products")
+      queryClient.invalidateQueries({ queryKey: ["lists_products"] })
     },
     onError: () => {
       toast({
