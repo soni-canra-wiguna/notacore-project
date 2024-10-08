@@ -32,7 +32,7 @@ import { formatToIDR } from "@/utils/format-to-idr"
 import { useMounted } from "@/hook/use-mounted"
 import { toast } from "@/components/ui/use-toast"
 import { LoadingButton } from "../loading-button"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useAuth } from "@clerk/nextjs"
 import { CreateSalesRecordRequest } from "@/types/sales-record"
@@ -318,6 +318,7 @@ const AddProductToRecord: React.FC<AddProductToRecordProps> = ({
   const { userId } = useAuth()
   const dispatch = useDispatch()
   const { isMounted } = useMounted()
+  const queryClient = useQueryClient()
   const { products } = useSelector((state: RootState) => state.products)
 
   const {
