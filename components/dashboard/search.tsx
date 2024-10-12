@@ -88,9 +88,9 @@ export const SearchBar: React.FC<TokenProps> = ({ token }) => {
         <Button
           onClick={() => setIsOpen(!isOpen)}
           variant="link"
-          className="absolute -bottom-12 right-6 px-0 capitalize tracking-wide text-background"
+          className="absolute -bottom-12 right-6 px-0 capitalize tracking-wide text-white"
         >
-          <ArrowUpFromLine className="mr-1.5 size-4 text-inherit" />
+          <ArrowUpFromLine className="mr-1.5 size-4" />
           tutup
         </Button>
       </SheetContent>
