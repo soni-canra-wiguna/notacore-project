@@ -1,3 +1,5 @@
+import prisma from "@/lib/prisma"
+import { handleCsvFile } from "@/utils/handle-csv-file"
 import { auth } from "@clerk/nextjs/server"
 import { createUploadthing, type FileRouter } from "uploadthing/next"
 
@@ -18,8 +20,8 @@ export const ourFileRouter = {
 
   productsCsv: f({
     "text/csv": {
-      maxFileCount: 5,
-      maxFileSize: "16MB",
+      maxFileSize: "8MB",
+      maxFileCount: 1,
       minFileCount: 1,
     },
   })
@@ -28,25 +30,32 @@ export const ourFileRouter = {
       if (!user || !user.userId) throw new Error("Unauthorized")
       return { userId: user.userId }
     })
+    .onUploadError(({ error }) => {
+      console.log("[ON UPLOAD ERROR] : ", error)
+    })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("file url", file.url)
+      try {
+        const records = await handleCsvFile(file.url)
+        if (!records) return
+
+        console.log(records)
+        await prisma.product.createMany({
+          data: records.map((record) => ({
+            userId: metadata.userId,
+            title: record.title,
+            description: record.description,
+            image: record.image,
+            price: +record.price,
+            category: record.category,
+            stock: +record.stock,
+            unit: record.unit ?? "PCS",
+          })),
+          skipDuplicates: true,
+        })
+      } catch (error) {
+        console.log("[ERROR INSERT PRODUCT] : ", error)
+      }
     }),
-
-  // productsClsx: f({
-  //   "text/csv": {
-  //     maxFileCount: 5,
-  //     maxFileSize: "16MB",
-  //     minFileCount: 1,
-  //   },
-
-  // }).middleware(async () => {
-  //   const user = auth()
-  //   if (!user || !user.userId) throw new Error("Unauthorized")
-  //   return { userId: user.userId }
-  // })
-  // .onUploadComplete(async ({ metadata, file }) => {
-  //   console.log("file url", file.url)
-  // })
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter
