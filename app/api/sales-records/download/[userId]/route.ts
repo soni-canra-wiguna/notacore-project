@@ -61,7 +61,13 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
     let fileName: string
 
     if (fileType === "csv") {
-      buffer = Buffer.from(await workbook.csv.writeBuffer())
+      buffer = Buffer.from(
+        await workbook.csv.writeBuffer({
+          formatterOptions: {
+            delimiter: ";",
+          },
+        }),
+      )
       contentType = "text/csv"
       fileName = "catatanku.csv"
     } else {
