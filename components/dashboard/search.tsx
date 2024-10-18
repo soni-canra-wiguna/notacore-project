@@ -53,7 +53,7 @@ const FilterSeachProduct: React.FC<FilterSeachProductProps> = ({ searchBy, setSe
 
   return (
     <Select defaultValue={searchBy} value={searchBy} onValueChange={setSearchBy}>
-      <SelectTrigger className="focus:ring-none border-r-none border-y-none h-8 w-max gap-1.5 rounded-l-none rounded-r-lg border-l border-l-secondary-foreground/10 bg-secondary focus:ring-0">
+      <SelectTrigger className="focus:ring-none border-l-none border-y-none h-8 w-max gap-1.5 rounded-l-lg rounded-r-none border-r border-r-secondary-foreground/10 bg-secondary focus:ring-0">
         <SelectValue placeholder="cari" className="" />
       </SelectTrigger>
       <SelectContent align="end">
@@ -103,10 +103,10 @@ export const SearchBar: React.FC<TokenProps> = ({ token }) => {
           <SheetDescription>cari produk yang kamu suka</SheetDescription>
         </SheetHeader>
         <Wrapper className="flex w-full flex-col gap-6">
-          <div className="flex w-full items-center">
+          <div className="flex w-full flex-row-reverse items-center">
             <div className="relative h-max w-full">
               <Input
-                className="h-8 rounded-l-lg rounded-r-none border-none bg-secondary px-4 text-sm placeholder:text-sm placeholder:capitalize focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+                className="h-8 rounded-l-none rounded-r-lg border-none bg-secondary px-4 text-sm placeholder:text-sm placeholder:capitalize focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
                 placeholder="cari produk"
                 value={searchInput}
                 onChange={(e) => setSeachInput(e.target.value)}
@@ -120,7 +120,7 @@ export const SearchBar: React.FC<TokenProps> = ({ token }) => {
             </div>
             <FilterSeachProduct searchBy={searchBy} setSearchBy={setSearchBy} />
           </div>
-          {/*  */}
+          {/* render search results */}
           {debounceSearchInput.length === 0 ? null : isPending ? (
             <div className="flex items-center justify-center">
               <Loader2 className="size-6 animate-spin stroke-[1.5]" />
