@@ -27,8 +27,36 @@ interface PreviewDetailProductProps extends WithChildren {
 
 interface WrapperDetailProductProps extends WithChildren {
   title: string
-  type?: string
   className?: string
+}
+
+const WithTypographyStyle: React.FC<{
+  className?: string
+  children: React.ReactNode
+}> = ({ className, children }) => {
+  return (
+    <div
+      className={cn("no-before no-after prose prose-p:text-sm prose-p:text-foreground", className)}
+    >
+      {children}
+    </div>
+  )
+}
+
+const WrapperDetailProduct: React.FC<WrapperDetailProductProps> = ({
+  children,
+  title,
+  className,
+}) => {
+  return (
+    <div className={cn("flex w-full items-start px-3 py-3 text-sm", className)}>
+      <div className="w-16">
+        <h5 className="text-balance font-semibold capitalize">{title}</h5>
+      </div>
+      <span className="mx-2">:</span>
+      <div className="flex-1">{children}</div>
+    </div>
+  )
 }
 
 export const PreviewDetailProduct: React.FC<PreviewDetailProductProps> = ({
@@ -69,50 +97,20 @@ export const PreviewDetailProduct: React.FC<PreviewDetailProductProps> = ({
                 {product.category}
               </Badge>
             </WrapperDetailProduct>
-            <WrapperDetailProduct className="bg-secondary" title="stock">
+            <WrapperDetailProduct className="bg-secondary" title="sku">
+              <Badge variant="secondary" className="">
+                {product.sku}
+              </Badge>
+            </WrapperDetailProduct>
+            <WrapperDetailProduct title="stock">
               <p className="">{`${product.stock} ${product.unit}`}</p>
             </WrapperDetailProduct>
-            {/* using type description in here */}
-            <WrapperDetailProduct title="deskripsi">
+            <WrapperDetailProduct className="bg-secondary" title="deskripsi">
               <WithTypographyStyle>{parse(product.description!)}</WithTypographyStyle>
             </WrapperDetailProduct>
           </div>
         </div>
       </DrawerContent>
     </Drawer>
-  )
-}
-
-const WithTypographyStyle: React.FC<{
-  className?: string
-  children: React.ReactNode
-}> = ({ className, children }) => {
-  return (
-    <div
-      className={cn("no-before no-after prose prose-p:text-sm prose-p:text-foreground", className)}
-    >
-      {children}
-    </div>
-  )
-}
-
-const WrapperDetailProduct: React.FC<WrapperDetailProductProps> = ({
-  children,
-  title,
-  type,
-  className,
-}) => {
-  return (
-    <div className={cn("flex w-full items-start px-3 py-3 text-sm", className)}>
-      <div className="w-16">
-        <h5 className="text-balance font-semibold capitalize">{title}</h5>
-      </div>
-      <span className="mx-2">:</span>
-      {type === "description" ? (
-        <p>content using text editor</p>
-      ) : (
-        <div className="flex-1">{children}</div>
-      )}
-    </div>
   )
 }

@@ -35,6 +35,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, userId, token
     quantity: 1,
     unit: product.unit!,
     unitPrice: product.price,
+    sku: product.sku,
   }
 
   return (

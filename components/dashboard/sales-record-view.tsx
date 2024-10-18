@@ -381,6 +381,7 @@ const AddProductToRecord: React.FC<AddProductToRecordProps> = ({
         price: product.unitPrice,
         totalPrice: product.price,
         quantity: product.quantity,
+        sku: product.sku ?? "",
       }))
 
       createRecords(records)

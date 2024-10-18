@@ -30,6 +30,7 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product
     category: product.category,
     stock: product.stock,
     unit: product.unit!,
+    sku: product.sku!,
   }
 
   const form = useForm<InferProductType>({
@@ -79,6 +80,7 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product
     title: form.watch("title") ?? "",
     image: form.watch("image") ?? "",
     description: form.watch("description") ?? "",
+    sku: form.watch("sku") ?? "",
     price: form.watch("price") ?? 0,
     category: form.watch("category") ?? "PCS",
     stock: form.watch("stock"),

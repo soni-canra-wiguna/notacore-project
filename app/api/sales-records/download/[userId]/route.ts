@@ -32,6 +32,7 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
 
     worksheet.columns = [
       { header: "No", key: "no" },
+      { header: "SKU Produk", key: "sku" },
       { header: "Nama Produk", key: "title" },
       { header: "Kategori", key: "category" },
       { header: "Gambar", key: "image" },
@@ -42,9 +43,10 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
     ]
 
     salesRecord.forEach(
-      ({ title, category, image, price, quantity, totalPrice, createdAt }, index) => {
+      ({ sku, title, category, image, price, quantity, totalPrice, createdAt }, index) => {
         worksheet.addRow({
           no: index + 1,
+          sku,
           title,
           category,
           image: fileType === "xlsx" ? { text: image, hyperlink: image } : image, // Hyperlink image

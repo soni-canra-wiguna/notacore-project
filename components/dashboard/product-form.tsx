@@ -85,7 +85,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           render={({ field }) => {
             return (
               <FormItem>
-                <FormLabel>Deskripsi produk</FormLabel>
+                <FormLabel>Deskripsi produk (optional)</FormLabel>
                 <FormControl>
                   <TextEditor value={field.value!} onChange={field.onChange} />
                 </FormControl>
@@ -163,6 +163,21 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             }}
           />
         </div>
+        <FormField
+          control={form.control}
+          name="sku"
+          render={({ field }) => {
+            return (
+              <FormItem>
+                <FormLabel>SKU (optional)</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="masukkan nomor sku" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
         <FormField
           control={form.control}
           name="category"

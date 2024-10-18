@@ -22,6 +22,7 @@ export class ProductValidation {
       .transform((val) => val.toLowerCase()),
     stock: z.coerce.number().nonnegative(),
     unit: z.nativeEnum(Unit).optional(),
+    sku: z.string().max(50).optional(),
   })
 
   static readonly UPDATE = z.object({
@@ -36,6 +37,7 @@ export class ProductValidation {
       .optional(),
     stock: z.coerce.number().nonnegative(),
     unit: z.nativeEnum(Unit).optional(),
+    sku: z.string().max(50).optional(),
   })
 }
 

@@ -49,6 +49,7 @@ export const ourFileRouter = {
             category: record.category,
             stock: +record.stock,
             unit: record.unit ?? "PCS",
+            sku: record.sku,
           })),
           skipDuplicates: true,
         })
