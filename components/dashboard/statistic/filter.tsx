@@ -143,7 +143,7 @@ export const FilterStatistic = () => {
           <Filter className="size-4 stroke-[1.5]" />
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="mobileDrawer">
         <DrawerHeader className="flex items-center justify-between border-b">
           <DrawerTitle className="sr-only">filter catatan</DrawerTitle>
           <DrawerDescription className="sr-only">
