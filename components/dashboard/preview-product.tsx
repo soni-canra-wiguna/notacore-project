@@ -98,9 +98,7 @@ export const PreviewDetailProduct: React.FC<PreviewDetailProductProps> = ({
               </Badge>
             </WrapperDetailProduct>
             <WrapperDetailProduct className="bg-secondary" title="sku">
-              <Badge variant="secondary" className="">
-                {product.sku}
-              </Badge>
+              <p>{product.sku}</p>
             </WrapperDetailProduct>
             <WrapperDetailProduct title="stock">
               <p className="">{`${product.stock} ${product.unit}`}</p>
