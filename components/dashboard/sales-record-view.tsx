@@ -85,7 +85,7 @@ export const SalesRecordView: React.FC<TokenProps> = ({ token }) => {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <SaleRecordsButton totalProducts={totalProducts} />
-      <DrawerContent className="">
+      <DrawerContent className="mobileDrawer">
         <DrawerHeader className="flex items-center justify-between border-b">
           <DrawerTitle className="sr-only">jumlah produk</DrawerTitle>
           <DrawerDescription className="sr-only">
@@ -381,6 +381,7 @@ const AddProductToRecord: React.FC<AddProductToRecordProps> = ({
         price: product.unitPrice,
         totalPrice: product.price,
         quantity: product.quantity,
+        sku: product.sku ?? "",
       }))
 
       createRecords(records)

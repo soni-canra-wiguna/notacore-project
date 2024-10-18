@@ -9,6 +9,7 @@ export class SalesRecordValidation {
     price: z.coerce.number().positive(),
     totalPrice: z.coerce.number().positive(),
     quantity: z.coerce.number().positive(),
+    sku: z.string().max(50).optional(),
   })
 
   static readonly ARRAY_CREATE = z.array(
@@ -20,6 +21,7 @@ export class SalesRecordValidation {
       price: z.coerce.number().positive(),
       totalPrice: z.coerce.number().positive(),
       quantity: z.coerce.number().positive(),
+      sku: z.string().max(50).optional(),
     }),
   )
 }

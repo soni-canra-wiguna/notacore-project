@@ -91,7 +91,7 @@ export const FilterProducts = () => {
           <Settings2 className="size-4 stroke-[1.5]" />
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="">
+      <DrawerContent className="mobileDrawer">
         <DrawerHeader className="sr-only">
           <DrawerTitle>filter produk</DrawerTitle>
           <DrawerDescription>filter produk dengan berbagai pilihan</DrawerDescription>

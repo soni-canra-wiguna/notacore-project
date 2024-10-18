@@ -37,6 +37,7 @@ model Product {
   price       Int
   category    String  @db.VarChar(50)
   stock       Int
+  sku         String? @db.VarChar(50)
   unit        Unit?   @default(PCS)
 
   user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
@@ -49,12 +50,13 @@ model Product {
 }
 
 model SalesRecord {
-  id         String @id @default(uuid())
+  id         String  @id @default(uuid())
   userId     String
-  title      String @db.VarChar(255)
-  category   String @db.VarChar(50)
+  title      String  @db.VarChar(255)
+  category   String  @db.VarChar(50)
   image      String
   price      Int
+  sku        String? @db.VarChar(50)
   quantity   Int // total product sales
   totalPrice Int // price * quantity
 

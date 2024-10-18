@@ -1,8 +1,42 @@
 import prisma from "@/lib/prisma"
+import { Prisma } from "@prisma/client"
 import { getSearchParams } from "@/utils/get-search-params"
 import { NextRequest, NextResponse } from "next/server"
 
 export const dynamic = "force-dynamic"
+
+export type SearchByType = "productName" | "sku" | "category"
+
+const searchFilter = (query: string, searchBy: SearchByType) => {
+  let filters = []
+
+  if (searchBy === "productName") {
+    filters.push({
+      title: {
+        contains: query,
+        mode: "insensitive" as Prisma.QueryMode,
+      },
+    })
+  }
+  if (searchBy === "sku") {
+    filters.push({
+      sku: {
+        contains: query,
+        mode: "insensitive" as Prisma.QueryMode,
+      },
+    })
+  }
+  if (searchBy === "category") {
+    filters.push({
+      category: {
+        contains: query,
+        mode: "insensitive" as Prisma.QueryMode,
+      },
+    })
+  }
+
+  return filters
+}
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -16,17 +50,14 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
     }
 
-    const query = getSearchParams(req, "query")?.replace(/-/g, " ")
+    const query = getSearchParams(req, "query") ?? ""
+    const searchBy = (getSearchParams(req, "searchBy") ?? "productName") as SearchByType
+    const filters = searchFilter(query, searchBy)
 
     const products = await prisma.product.findMany({
       where: {
         userId,
-        AND: {
-          title: {
-            contains: query,
-            mode: "insensitive",
-          },
-        },
+        AND: filters,
       },
       orderBy: {
         createdAt: "desc",

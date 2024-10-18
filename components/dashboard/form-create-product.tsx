@@ -2,7 +2,6 @@
 
 import { InferProductType, ProductValidation } from "@/schema/product.schema"
 import React from "react"
-import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import axios from "axios"
@@ -32,6 +31,7 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
       category: "",
       stock: 0,
       unit: "PCS",
+      sku: "",
     },
   })
 
@@ -58,6 +58,7 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
         category: "",
         stock: 0,
         unit: "PCS",
+        sku: "",
       })
       toast({
         title: "Produk di buat",
@@ -85,6 +86,7 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
     title: form.watch("title"),
     image: form.watch("image"),
     description: form.watch("description") ?? "",
+    sku: form.watch("sku") ?? "",
     price: form.watch("price"),
     category: form.watch("category"),
     stock: form.watch("stock"),

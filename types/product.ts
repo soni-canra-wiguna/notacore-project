@@ -9,6 +9,7 @@ export type CreateProductRequest = {
   category: string
   stock: number
   unit?: Unit
+  sku: string | null
 }
 
 export type ResponseDataType = Product

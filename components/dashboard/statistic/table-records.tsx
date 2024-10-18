@@ -73,10 +73,11 @@ const TableRecords: React.FC<WithTokenAndUserId> = ({ token, userId }) => {
         {isPending ? (
           <LoadingTableProduct />
         ) : (
-          <div className="w-[1100px] overflow-x-auto">
+          <div className="w-[1200px] overflow-x-auto">
             <table className="min-w-full border-collapse text-sm">
               <thead>
                 <tr>
+                  <th className="w-32 border p-3 capitalize">SKU Produk</th>
                   <th className="w-60 border p-3 capitalize">Nama Produk</th>
                   <th className="w-32 border p-3 capitalize">kategori</th>
                   <th className="w-36 border p-3 capitalize">Gambar</th>
@@ -179,6 +180,7 @@ const TableList: React.FC<{ data: SalesRecordsPaginationResponse | undefined }> 
     })
     return (
       <tr key={p.id} className="selection:bg-transparent">
+        <td className="w-32 truncate border p-3 text-left">{p.sku?.slice(0, 10)}...</td>
         <td className="max-w-60 truncate border p-3">{p.title}</td>
         <td className="w-32 border p-3 text-center">
           <Badge variant="secondary" className="capitalize">

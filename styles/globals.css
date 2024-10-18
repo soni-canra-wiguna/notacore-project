@@ -146,5 +146,9 @@
       transform: translateX(100%)
     }
   }
+
+  .mobileDrawer {
+    @apply max-w-md mx-auto w-full;
+  }
 }
 
