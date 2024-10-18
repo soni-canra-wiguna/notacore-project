@@ -21,7 +21,7 @@ const searchFilter = (query: string, searchBy: SearchByType) => {
   if (searchBy === "sku") {
     filters.push({
       sku: {
-        contains: query,
+        contains: query.replace(/\s+/g, "-"),
         mode: "insensitive" as Prisma.QueryMode,
       },
     })
