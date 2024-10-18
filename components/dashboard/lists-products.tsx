@@ -15,6 +15,21 @@ interface ListProducts extends TokenProps {
   userId: string
 }
 
+export const LoadingListProducts: React.FC<{
+  type: "loading" | "fallback"
+  lengthLoading?: number
+}> = ({ type, lengthLoading = 4 }) => {
+  const loadings = Array.from({ length: lengthLoading }, (_, i) => {
+    return <Skeleton variant="shimmer" className="h-24 w-full rounded-xl" key={i} />
+  })
+
+  if (type === "loading") {
+    return <>{loadings}</>
+  }
+
+  return <div className="flex h-full flex-col gap-4">{loadings}</div>
+}
+
 const ListsProducts: React.FC<ListProducts> = ({ userId, token }) => {
   const [sortBy] = useQueryState("sortBy", {
     defaultValue: "new",
@@ -97,18 +112,3 @@ const ListsProducts: React.FC<ListProducts> = ({ userId, token }) => {
 }
 
 export default ListsProducts
-
-export const LoadingListProducts: React.FC<{
-  type: "loading" | "fallback"
-  lengthLoading?: number
-}> = ({ type, lengthLoading = 4 }) => {
-  const loadings = Array.from({ length: lengthLoading }, (_, i) => {
-    return <Skeleton variant="shimmer" className="h-24 w-full rounded-xl" key={i} />
-  })
-
-  if (type === "loading") {
-    return <>{loadings}</>
-  }
-
-  return <div className="flex h-full flex-col gap-4">{loadings}</div>
-}
