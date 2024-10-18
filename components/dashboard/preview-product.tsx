@@ -85,7 +85,7 @@ export const PreviewDetailProduct: React.FC<PreviewDetailProductProps> = ({
           <div className="mb-5 aspect-[14/9] w-full overflow-hidden rounded-xl">
             <img src={product.image} alt={product.title} className="size-full object-cover" />
           </div>
-          <div className="rounded-xl border">
+          <div className="overflow-hidden rounded-xl border">
             <WrapperDetailProduct title="title">
               <Balancer className="">{product.title}</Balancer>
             </WrapperDetailProduct>
