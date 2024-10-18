@@ -28,7 +28,7 @@
     "@tiptap/starter-kit": "^2.6.4",
     "@uploadthing/react": "^7.0.2",
     "@upstash/redis": "^1.32.0",
-    "axios": "^1.7.3",
+    "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "csv-parse": "^5.5.6",
