@@ -16,6 +16,26 @@ import { useAuth } from "@clerk/nextjs"
 import axios from "axios"
 import { Download, FileDown, X } from "lucide-react"
 
+interface DownloadButtonProps {
+  fileType: FileType
+  onClick: React.MouseEventHandler<HTMLDivElement> | undefined
+}
+
+const DownloadButton: React.FC<DownloadButtonProps> = ({ fileType, onClick }) => {
+  return (
+    <Card
+      onClick={onClick}
+      className="gradientCard flex w-full cursor-pointer items-center gap-1.5 rounded-xl px-1.5 py-2.5"
+    >
+      <FileDown className="size-8 stroke-[1.5] text-main" />
+      <div className="flex flex-col">
+        <span className="text-sm font-medium leading-none">{fileType}</span>
+        <span className="text-xs text-muted-foreground">catatanku.{fileType}</span>
+      </div>
+    </Card>
+  )
+}
+
 export const DownloadTransactionHistory = () => {
   const { userId } = useAuth()
 
@@ -50,7 +70,7 @@ export const DownloadTransactionHistory = () => {
           <Download className="size-4 stroke-[1.5]" />
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="mobileDrawer">
         <DrawerHeader className="flex items-center justify-between border-b">
           <DrawerTitle className="sr-only">Download</DrawerTitle>
           <DrawerDescription className="sr-only">Download Transaksi Penjualan</DrawerDescription>
@@ -70,25 +90,5 @@ export const DownloadTransactionHistory = () => {
         </div>
       </DrawerContent>
     </Drawer>
-  )
-}
-
-interface DownloadButtonProps {
-  fileType: FileType
-  onClick: React.MouseEventHandler<HTMLDivElement> | undefined
-}
-
-const DownloadButton: React.FC<DownloadButtonProps> = ({ fileType, onClick }) => {
-  return (
-    <Card
-      onClick={onClick}
-      className="gradientCard flex w-full cursor-pointer items-center gap-1.5 rounded-xl px-1.5 py-2.5"
-    >
-      <FileDown className="size-8 stroke-[1.5] text-main" />
-      <div className="flex flex-col">
-        <span className="text-sm font-medium leading-none">{fileType}</span>
-        <span className="text-xs text-muted-foreground">catatanku.{fileType}</span>
-      </div>
-    </Card>
   )
 }

@@ -67,7 +67,7 @@ export const PreviewDetailProduct: React.FC<PreviewDetailProductProps> = ({
   return (
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
-      <DrawerContent className="">
+      <DrawerContent className="mobileDrawer">
         <DrawerHeader className="flex items-center justify-between border-b">
           <DrawerTitle className="sr-only">detail produk</DrawerTitle>
           <DrawerDescription className="sr-only">detail produk {product.title}</DrawerDescription>
