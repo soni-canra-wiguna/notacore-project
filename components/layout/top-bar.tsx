@@ -1,12 +1,12 @@
 import { Wrapper } from "./wrapper"
-import UserProfile from "../dashboard/user-profile"
+import {UserProfile} from "../dashboard/user-profile"
 import { SearchBar } from "../dashboard/search"
 import { Bell } from "lucide-react"
 import { TopBarWrapper } from "./topbar-wrapper"
 import { auth } from "@clerk/nextjs/server"
 
 export const TopBar = async () => {
-  const { getToken } = auth()
+  const { getToken, userId } = auth()
   const token = await getToken()
 
   return (
@@ -15,7 +15,7 @@ export const TopBar = async () => {
         <SearchBar token={token ?? ""} />
         <div className="flex items-center gap-6">
           <Bell className="size-5 stroke-[1.5]" />
-          <UserProfile />
+          <UserProfile userId={userId ?? ""} />
         </div>
       </Wrapper>
     </TopBarWrapper>
