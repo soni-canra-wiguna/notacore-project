@@ -1,4 +1,6 @@
+import { ContactDeveloper } from "@/components/dashboard/settings/contact-developer"
 import { DeteleAccount } from "@/components/dashboard/settings/delete-account"
+import { SectionSettingLayout } from "@/components/dashboard/settings/section-setting-layout"
 import { MainContainer } from "@/components/layout/main-container"
 import { Wrapper } from "@/components/layout/wrapper"
 import { auth } from "@clerk/nextjs/server"
@@ -10,12 +12,12 @@ const SettingsPage = async () => {
   return (
     <MainContainer>
       <Wrapper className="my-20">
-        <section className="space-y-4">
-          <h1 className="text-lg font-bold capitalize">Pengaturan</h1>
-          <div>
-            <DeteleAccount token={token ?? ""} userId={userId ?? ""} />
-          </div>
-        </section>
+        <SectionSettingLayout title="akun" className="mb-8">
+          <DeteleAccount token={token ?? ""} userId={userId ?? ""} />
+        </SectionSettingLayout>
+        <SectionSettingLayout title="kontak developer">
+          <ContactDeveloper />
+        </SectionSettingLayout>
       </Wrapper>
     </MainContainer>
   )
