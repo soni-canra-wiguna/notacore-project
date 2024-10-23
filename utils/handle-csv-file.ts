@@ -23,7 +23,7 @@ export const handleCsvFile = async (url: string) => {
     const records = parse(csvText, {
       columns: (header) => header.map((col: any) => col.toLowerCase()), // Jika CSV memiliki header dan kamu ingin parsing sebagai objek
       skip_empty_lines: true,
-      delimiter: ";",
+      delimiter: ",",
     })
 
     return records as CreateProductRequest[]
